@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Client {
+  id               String     @id @default(cuid())
+  token            String     @unique
+  email            String
+  firstName        String?
+  lastName         String?
+  phone            String?
+  company          String?
+  socials          String?
+  niche            String?
+  objective        String?
+  offer            String?
+  address          String?
+  siret            String?
+  paymentSchedule  String?
+  questionnaire    String?
+  signatureData    String?
+  currentStep      Int        @default(0)
+  videoWatched     Boolean    @default(false)
+  paymentSent      Boolean    @default(false)
+  paymentConfirmed Boolean    @default(false)
+  contractSigned   Boolean    @default(false)
+  callBooked       Boolean    @default(false)
+  completedAt      DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  documents        Document[]
+  activities       Activity[]
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  name      String
+  url       String
+  type      String
+  createdAt DateTime @default(now())
+}
+
+model Activity {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  action    String
+  createdAt DateTime @default(now())
+}
+
+model Config {
+  id              String  @id @default(cuid())
+  offer           String?
+  welcomeVideoUrl String?
+  contractUrl     String?
+  guideUrl        String?
+  calComUrl       String?
+  usefulLinks     String?
+  nexusAmount     Float?
+  slackInviteUrl  String?
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String?  @unique
+  password  String
+  createdAt DateTime @default(now())
+}
