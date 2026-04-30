@@ -274,21 +274,39 @@ export default function ClientDetailPage() {
         )}
       </div>
 
-      {/* Signature */}
-      {client.signatureData && (
-        <div className="evo-card p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Signature du contrat</h2>
-          <div className="bg-[#0A0F1E] border border-[#1E2D45] rounded-xl p-4 inline-block">
-            <img
-              src={client.signatureData}
-              alt="Signature"
-              className="max-w-xs h-auto"
-              style={{ filter: "invert(0)" }}
-            />
-          </div>
-          <p className="text-[#475569] text-xs mt-2">Signé électroniquement lors de l&apos;onboarding</p>
+      {/* Contrat généré */}
+      <div className="evo-card p-6">
+        <h2 className="text-lg font-semibold text-white mb-4">Contrat</h2>
+        <div className="flex items-center gap-4 flex-wrap">
+          <a
+            href={`/api/onboarding/${client.token}/generate-contract`}
+            download
+            className="inline-flex items-center gap-2 bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Télécharger le contrat rempli (.docx)
+          </a>
+          {client.contractSigned && (
+            <span className="text-[#10B981] text-sm flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Contrat signé
+            </span>
+          )}
         </div>
-      )}
+        {client.signatureData && (
+          <div className="mt-4">
+            <p className="text-[#94A3B8] text-xs mb-2">Signature électronique :</p>
+            <div className="bg-[#0A0F1E] border border-[#1E2D45] rounded-xl p-4 inline-block">
+              <img src={client.signatureData} alt="Signature" className="max-w-xs h-auto" />
+            </div>
+            <p className="text-[#475569] text-xs mt-2">Signé électroniquement lors de l&apos;onboarding</p>
+          </div>
+        )}
+      </div>
 
       {/* Progress steps */}
       <div className="evo-card p-6">
