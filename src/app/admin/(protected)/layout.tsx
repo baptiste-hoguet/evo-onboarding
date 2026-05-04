@@ -15,7 +15,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-[#0A0F1E]">
+    <div className="flex min-h-screen bg-[#000000]">
       <AdminSidebar />
       <main className="flex-1 overflow-auto lg:ml-0">
         {/* Offset for mobile top bar */}

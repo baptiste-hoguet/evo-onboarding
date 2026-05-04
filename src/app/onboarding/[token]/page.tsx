@@ -34,7 +34,7 @@ export default async function OnboardingPage({
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-white">Lien invalide</h1>
-          <p className="text-[#94A3B8]">
+          <p className="text-[#A1A1AA]">
             Ce lien d&apos;onboarding est invalide ou a expire. Veuillez contacter
             votre conseiller EVO pour obtenir un nouveau lien.
           </p>

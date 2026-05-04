@@ -72,18 +72,18 @@ export default function NewClientPage() {
       <div className="max-w-lg mx-auto space-y-6">
         <h1 className="text-2xl font-bold text-white">Client créé</h1>
         <div className="evo-card p-6 space-y-4">
-          <p className="text-[#94A3B8] text-sm">
+          <p className="text-[#A1A1AA] text-sm">
             Le client a été créé avec succès. Partagez ce lien d&apos;accès :
           </p>
           <div className="flex items-center gap-2">
             <Input
               readOnly
               value={generatedLink}
-              className="bg-[#0A0F1E] border-[#1E2D45] text-white rounded-lg font-mono text-sm"
+              className="bg-[#000000] border-[#262626] text-white rounded-lg font-mono text-sm"
             />
             <Button
               onClick={copyLink}
-              className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] rounded-lg shrink-0"
+              className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] rounded-lg shrink-0"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -94,7 +94,7 @@ export default function NewClientPage() {
             <Button
               variant="outline"
               onClick={() => router.push("/admin")}
-              className="border-[#1E2D45] text-[#94A3B8] hover:text-white hover:bg-[#1A2438] rounded-lg"
+              className="border-[#262626] text-[#A1A1AA] hover:text-white hover:bg-[#171717] rounded-lg"
             >
               Retour au dashboard
             </Button>
@@ -103,7 +103,7 @@ export default function NewClientPage() {
                 setGeneratedLink(null);
                 setForm({ email: "", offer: "", firstName: "", lastName: "", paymentSchedule: "1x" });
               }}
-              className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] rounded-lg"
+              className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] rounded-lg"
             >
               Créer un autre client
             </Button>
@@ -119,7 +119,7 @@ export default function NewClientPage() {
         <Button
           variant="ghost"
           onClick={() => router.push("/admin")}
-          className="text-[#94A3B8] hover:text-white hover:bg-[#1A2438] rounded-lg"
+          className="text-[#A1A1AA] hover:text-white hover:bg-[#171717] rounded-lg"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -131,7 +131,7 @@ export default function NewClientPage() {
       <div className="evo-card p-6">
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-[#94A3B8]">
+            <Label htmlFor="email" className="text-[#A1A1AA]">
               Email <span className="text-red-400">*</span>
             </Label>
             <Input
@@ -141,22 +141,22 @@ export default function NewClientPage() {
               value={form.email}
               onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
               required
-              className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
+              className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="offer" className="text-[#94A3B8]">
+            <Label htmlFor="offer" className="text-[#A1A1AA]">
               Offre <span className="text-red-400">*</span>
             </Label>
             <Select
               value={form.offer}
               onValueChange={(value) => setForm((p) => ({ ...p, offer: value ?? "" }))}
             >
-              <SelectTrigger className="bg-[#111827] border-[#1E2D45] text-white rounded-lg">
+              <SelectTrigger className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg">
                 <SelectValue placeholder="Sélectionner une offre" />
               </SelectTrigger>
-              <SelectContent className="bg-[#111827] border-[#1E2D45]">
+              <SelectContent className="bg-[#0A0A0A] border-[#262626]">
                 <SelectItem value="AGORA">AGORA</SelectItem>
                 <SelectItem value="NEXUS">NEXUS</SelectItem>
                 <SelectItem value="ATLAS">ATLAS</SelectItem>
@@ -165,17 +165,17 @@ export default function NewClientPage() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="paymentSchedule" className="text-[#94A3B8]">
+            <Label htmlFor="paymentSchedule" className="text-[#A1A1AA]">
               Échelonnement de paiement
             </Label>
             <Select
               value={form.paymentSchedule}
               onValueChange={(value) => setForm((p) => ({ ...p, paymentSchedule: value ?? "1x" }))}
             >
-              <SelectTrigger className="bg-[#111827] border-[#1E2D45] text-white rounded-lg">
+              <SelectTrigger className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-[#111827] border-[#1E2D45]">
+              <SelectContent className="bg-[#0A0A0A] border-[#262626]">
                 <SelectItem value="1x">1 fois (paiement comptant)</SelectItem>
                 <SelectItem value="2x">2 fois</SelectItem>
                 <SelectItem value="3x">3 fois</SelectItem>
@@ -186,7 +186,7 @@ export default function NewClientPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName" className="text-[#94A3B8]">
+              <Label htmlFor="firstName" className="text-[#A1A1AA]">
                 Prénom
               </Label>
               <Input
@@ -194,11 +194,11 @@ export default function NewClientPage() {
                 placeholder="Jean"
                 value={form.firstName}
                 onChange={(e) => setForm((p) => ({ ...p, firstName: e.target.value }))}
-                className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="lastName" className="text-[#94A3B8]">
+              <Label htmlFor="lastName" className="text-[#A1A1AA]">
                 Nom
               </Label>
               <Input
@@ -206,7 +206,7 @@ export default function NewClientPage() {
                 placeholder="Dupont"
                 value={form.lastName}
                 onChange={(e) => setForm((p) => ({ ...p, lastName: e.target.value }))}
-                className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
               />
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function NewClientPage() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] rounded-lg font-semibold h-11"
+            className="w-full bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] rounded-lg font-semibold h-11"
           >
             {loading ? "Création..." : "Créer le client"}
           </Button>

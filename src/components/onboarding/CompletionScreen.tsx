@@ -35,13 +35,13 @@ export function CompletionScreen() {
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
             Bienvenue dans EVO
           </h1>
-          <p className="text-[#94A3B8] text-lg">
+          <p className="text-[#A1A1AA] text-lg">
             Votre onboarding est terminé. Rejoignez la communauté sur Slack !
           </p>
         </div>
 
         {/* Animated progress bar */}
-        <div className="w-full h-2 bg-[#1E2D45] rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-[#262626] rounded-full overflow-hidden">
           <div
             className="h-full progress-gradient rounded-full transition-all duration-1000 ease-out"
             style={{ width: redirecting ? "100%" : `${((3 - countdown) / 3) * 100}%` }}
@@ -49,7 +49,7 @@ export function CompletionScreen() {
         </div>
 
         {/* Countdown */}
-        <p className="text-[#94A3B8] text-sm">
+        <p className="text-[#A1A1AA] text-sm">
           {redirecting
             ? "Redirection vers Slack..."
             : `Redirection automatique dans ${countdown} seconde${countdown > 1 ? "s" : ""}...`}
@@ -60,7 +60,7 @@ export function CompletionScreen() {
           href={SLACK_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg text-base transition-all duration-200"
+          className="inline-block bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg text-base transition-all duration-200"
         >
           Clique ici pour rejoindre Slack
         </a>

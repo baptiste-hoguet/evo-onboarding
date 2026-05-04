@@ -37,8 +37,8 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col h-full bg-[#111827]">
-      <div className="flex items-center h-16 px-6 border-b border-[#1E2D45]">
+    <div className="flex flex-col h-full bg-[#0A0A0A]">
+      <div className="flex items-center h-16 px-6 border-b border-[#262626]">
         <Link
           href="/admin"
           onClick={onNavigate}
@@ -63,7 +63,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
                   ? "bg-[#C9A84C]/10 text-[#C9A84C]"
-                  : "text-[#94A3B8] hover:text-white hover:bg-[#1A2438]"
+                  : "text-[#A1A1AA] hover:text-white hover:bg-[#171717]"
               }`}
             >
               {item.icon}
@@ -73,11 +73,11 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         })}
       </nav>
 
-      <div className="px-4 py-4 border-t border-[#1E2D45]">
+      <div className="px-4 py-4 border-t border-[#262626]">
         <Button
           variant="ghost"
           onClick={() => signOut({ callbackUrl: "/admin/login" })}
-          className="w-full justify-start text-[#94A3B8] hover:text-white hover:bg-[#1A2438] rounded-lg"
+          className="w-full justify-start text-[#A1A1AA] hover:text-white hover:bg-[#171717] rounded-lg"
         >
           <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -95,19 +95,19 @@ export function AdminSidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-[#111827] border-r border-[#1E2D45] min-h-screen">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-[#0A0A0A] border-r border-[#262626] min-h-screen">
         <SidebarContent />
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center h-14 px-4 bg-[#111827] border-b border-[#1E2D45]">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center h-14 px-4 bg-[#0A0A0A] border-b border-[#262626]">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             render={
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-[#94A3B8] hover:text-white hover:bg-[#1A2438] mr-3"
+                className="text-[#A1A1AA] hover:text-white hover:bg-[#171717] mr-3"
               />
             }
           >
@@ -117,7 +117,7 @@ export function AdminSidebar() {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="p-0 w-64 bg-[#111827] border-[#1E2D45]"
+            className="p-0 w-64 bg-[#0A0A0A] border-[#262626]"
           >
             <SidebarContent onNavigate={() => setOpen(false)} />
           </SheetContent>

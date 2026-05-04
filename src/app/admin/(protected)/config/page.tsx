@@ -147,7 +147,7 @@ export default function ConfigPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <div className="text-[#94A3B8]">Chargement...</div>
+        <div className="text-[#A1A1AA]">Chargement...</div>
       </div>
     );
   }
@@ -157,7 +157,7 @@ export default function ConfigPage() {
       <h1 className="text-2xl font-bold text-white">Configuration</h1>
 
       <Tabs defaultValue="AGORA" className="space-y-4">
-        <TabsList className="bg-[#111827] border border-[#1E2D45] rounded-lg p-1">
+        <TabsList className="bg-[#0A0A0A] border border-[#262626] rounded-lg p-1">
           <TabsTrigger
             value="AGORA"
             className="rounded-md data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400"
@@ -186,55 +186,55 @@ export default function ConfigPage() {
               </h2>
 
               <div className="space-y-2">
-                <Label className="text-[#94A3B8]">URL Vidéo de bienvenue</Label>
+                <Label className="text-[#A1A1AA]">URL Vidéo de bienvenue</Label>
                 <Input
                   placeholder="https://..."
                   value={configs[offer].welcomeVideoUrl}
                   onChange={(e) =>
                     updateOfferField(offer, "welcomeVideoUrl", e.target.value)
                   }
-                  className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg"
+                  className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-[#94A3B8]">URL Contrat</Label>
+                <Label className="text-[#A1A1AA]">URL Contrat</Label>
                 <Input
                   placeholder="https://..."
                   value={configs[offer].contractUrl}
                   onChange={(e) =>
                     updateOfferField(offer, "contractUrl", e.target.value)
                   }
-                  className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg"
+                  className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-[#94A3B8]">URL Guide</Label>
+                <Label className="text-[#A1A1AA]">URL Guide</Label>
                 <Input
                   placeholder="https://..."
                   value={configs[offer].guideUrl}
                   onChange={(e) =>
                     updateOfferField(offer, "guideUrl", e.target.value)
                   }
-                  className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg"
+                  className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-[#94A3B8]">URL Cal.com</Label>
+                <Label className="text-[#A1A1AA]">URL Cal.com</Label>
                 <Input
                   placeholder="https://cal.com/..."
                   value={configs[offer].calComUrl}
                   onChange={(e) =>
                     updateOfferField(offer, "calComUrl", e.target.value)
                   }
-                  className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg"
+                  className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-[#94A3B8]">Liens utiles</Label>
+                <Label className="text-[#A1A1AA]">Liens utiles</Label>
                 <Textarea
                   placeholder="Un lien par ligne..."
                   rows={4}
@@ -242,14 +242,14 @@ export default function ConfigPage() {
                   onChange={(e) =>
                     updateOfferField(offer, "usefulLinks", e.target.value)
                   }
-                  className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg resize-none"
+                  className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg resize-none"
                 />
               </div>
 
               <Button
                 onClick={() => saveOfferConfig(offer)}
                 disabled={saving === offer}
-                className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] rounded-lg font-semibold"
+                className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] rounded-lg font-semibold"
               >
                 {saving === offer ? "Sauvegarde..." : "Sauvegarder"}
               </Button>
@@ -258,14 +258,14 @@ export default function ConfigPage() {
         ))}
       </Tabs>
 
-      <Separator className="bg-[#1E2D45]" />
+      <Separator className="bg-[#262626]" />
 
       {/* Global config */}
       <div className="evo-card p-6 space-y-5">
         <h2 className="text-lg font-semibold text-white">Configuration globale</h2>
 
         <div className="space-y-2">
-          <Label className="text-[#94A3B8]">Montant NEXUS (&euro;)</Label>
+          <Label className="text-[#A1A1AA]">Montant NEXUS (&euro;)</Label>
           <Input
             type="number"
             placeholder="0"
@@ -273,26 +273,26 @@ export default function ConfigPage() {
             onChange={(e) =>
               setGlobal((p) => ({ ...p, nexusAmount: Number(e.target.value) }))
             }
-            className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg"
+            className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg"
           />
         </div>
 
         <div className="space-y-2">
-          <Label className="text-[#94A3B8]">URL Invitation Slack</Label>
+          <Label className="text-[#A1A1AA]">URL Invitation Slack</Label>
           <Input
             placeholder="https://join.slack.com/..."
             value={global.slackInviteUrl}
             onChange={(e) =>
               setGlobal((p) => ({ ...p, slackInviteUrl: e.target.value }))
             }
-            className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg"
+            className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg"
           />
         </div>
 
         <Button
           onClick={saveGlobalConfig}
           disabled={saving === "global"}
-          className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] rounded-lg font-semibold"
+          className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] rounded-lg font-semibold"
         >
           {saving === "global" ? "Sauvegarde..." : "Sauvegarder"}
         </Button>

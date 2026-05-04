@@ -62,7 +62,7 @@ export function OfferSelector({ onSelect, loading }: OfferSelectorProps) {
 
   return (
     <div className="space-y-6">
-      <p className="text-[#94A3B8] text-center">
+      <p className="text-[#A1A1AA] text-center">
         Choisissez votre offre pour demarrer votre parcours avec EVO.
       </p>
 
@@ -85,7 +85,7 @@ export function OfferSelector({ onSelect, loading }: OfferSelectorProps) {
             >
               {isSelected && (
                 <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-[#C9A84C] flex items-center justify-center">
-                  <Check className="w-3.5 h-3.5 text-[#0A0F1E]" />
+                  <Check className="w-3.5 h-3.5 text-[#000000]" />
                 </div>
               )}
 
@@ -95,7 +95,7 @@ export function OfferSelector({ onSelect, loading }: OfferSelectorProps) {
                   ${
                     isSelected
                       ? "bg-[#C9A84C]/20 text-[#C9A84C]"
-                      : "bg-[#1E2D45]/50 text-[#94A3B8]"
+                      : "bg-[#262626]/50 text-[#A1A1AA]"
                   }
                 `}
               >
@@ -109,7 +109,7 @@ export function OfferSelector({ onSelect, loading }: OfferSelectorProps) {
               >
                 {offer.name}
               </h4>
-              <p className="text-sm text-[#94A3B8] mb-3">{offer.subtitle}</p>
+              <p className="text-sm text-[#A1A1AA] mb-3">{offer.subtitle}</p>
               <p
                 className={`text-xl font-bold mb-4 ${
                   isSelected ? "text-[#E8C97A]" : "text-white"
@@ -120,7 +120,7 @@ export function OfferSelector({ onSelect, loading }: OfferSelectorProps) {
 
               <ul className="space-y-2">
                 {offer.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-[#94A3B8]">
+                  <li key={f} className="flex items-center gap-2 text-sm text-[#A1A1AA]">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C]/60" />
                     {f}
                   </li>
@@ -136,7 +136,7 @@ export function OfferSelector({ onSelect, loading }: OfferSelectorProps) {
           <Button
             onClick={() => onSelect(selected)}
             disabled={loading}
-            className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg text-base transition-all duration-200"
+            className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg text-base transition-all duration-200"
           >
             {loading ? "Chargement..." : "Commencer mon onboarding"}
           </Button>

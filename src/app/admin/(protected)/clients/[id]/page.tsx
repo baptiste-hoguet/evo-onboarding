@@ -194,7 +194,7 @@ export default function ClientDetailPage() {
         <Button
           variant="ghost"
           onClick={() => router.push("/admin")}
-          className="text-[#94A3B8] hover:text-white hover:bg-[#1A2438] rounded-lg p-2"
+          className="text-[#A1A1AA] hover:text-white hover:bg-[#171717] rounded-lg p-2"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -209,7 +209,7 @@ export default function ClientDetailPage() {
               </Badge>
             )}
           </div>
-          <p className="text-[#94A3B8] text-sm">{client.email}</p>
+          <p className="text-[#A1A1AA] text-sm">{client.email}</p>
         </div>
         {client.offer && (
           <Badge
@@ -226,11 +226,11 @@ export default function ClientDetailPage() {
         <svg className="w-4 h-4 text-[#C9A84C] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
         </svg>
-        <span className="text-[#94A3B8] text-xs font-mono truncate flex-1">{portalLink}</span>
+        <span className="text-[#A1A1AA] text-xs font-mono truncate flex-1">{portalLink}</span>
         <Button
           variant="ghost"
           onClick={copyPortalLink}
-          className="text-[#94A3B8] hover:text-white hover:bg-[#1A2438] rounded-lg h-7 px-2 text-xs shrink-0"
+          className="text-[#A1A1AA] hover:text-white hover:bg-[#171717] rounded-lg h-7 px-2 text-xs shrink-0"
         >
           Copier
         </Button>
@@ -268,7 +268,7 @@ export default function ClientDetailPage() {
         </div>
         {client.objective && (
           <div className="mt-4">
-            <dt className="text-[#475569] text-xs uppercase tracking-wider">Objectif</dt>
+            <dt className="text-[#52525B] text-xs uppercase tracking-wider">Objectif</dt>
             <dd className="text-white mt-1 text-sm leading-relaxed">{client.objective}</dd>
           </div>
         )}
@@ -281,7 +281,7 @@ export default function ClientDetailPage() {
           <a
             href={`/api/onboarding/${client.token}/generate-contract`}
             download
-            className="inline-flex items-center gap-2 bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+            className="inline-flex items-center gap-2 bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -299,11 +299,11 @@ export default function ClientDetailPage() {
         </div>
         {client.signatureData && (
           <div className="mt-4">
-            <p className="text-[#94A3B8] text-xs mb-2">Signature électronique :</p>
-            <div className="bg-[#0A0F1E] border border-[#1E2D45] rounded-xl p-4 inline-block">
+            <p className="text-[#A1A1AA] text-xs mb-2">Signature électronique :</p>
+            <div className="bg-[#000000] border border-[#262626] rounded-xl p-4 inline-block">
               <img src={client.signatureData} alt="Signature" className="max-w-xs h-auto" />
             </div>
-            <p className="text-[#475569] text-xs mt-2">Signé électroniquement lors de l&apos;onboarding</p>
+            <p className="text-[#52525B] text-xs mt-2">Signé électroniquement lors de l&apos;onboarding</p>
           </div>
         )}
       </div>
@@ -320,7 +320,7 @@ export default function ClientDetailPage() {
                   className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
                     completed
                       ? "bg-[#C9A84C]/20 text-[#C9A84C]"
-                      : "bg-[#1A2438] text-[#475569]"
+                      : "bg-[#171717] text-[#52525B]"
                   }`}
                 >
                   {completed ? (
@@ -332,7 +332,7 @@ export default function ClientDetailPage() {
                   )}
                 </div>
                 <span
-                  className={`text-sm ${completed ? "text-white" : "text-[#475569]"}`}
+                  className={`text-sm ${completed ? "text-white" : "text-[#52525B]"}`}
                 >
                   {step.label}
                 </span>
@@ -350,7 +350,7 @@ export default function ClientDetailPage() {
             variant="outline"
             onClick={resendLink}
             disabled={actionLoading === "resend"}
-            className="border-[#1E2D45] text-[#94A3B8] hover:text-white hover:bg-[#1A2438] rounded-lg"
+            className="border-[#262626] text-[#A1A1AA] hover:text-white hover:bg-[#171717] rounded-lg"
           >
             {actionLoading === "resend" ? "Envoi..." : "Renvoyer le lien d'accès"}
           </Button>
@@ -366,10 +366,10 @@ export default function ClientDetailPage() {
             >
               Supprimer le client
             </DialogTrigger>
-            <DialogContent className="bg-[#111827] border-[#1E2D45] text-white">
+            <DialogContent className="bg-[#0A0A0A] border-[#262626] text-white">
               <DialogHeader>
                 <DialogTitle>Confirmer la suppression</DialogTitle>
-                <DialogDescription className="text-[#94A3B8]">
+                <DialogDescription className="text-[#A1A1AA]">
                   Cette action est irréversible. Toutes les données de{" "}
                   <strong className="text-white">{clientName}</strong> seront
                   définitivement supprimées.
@@ -379,7 +379,7 @@ export default function ClientDetailPage() {
                 <Button
                   variant="outline"
                   onClick={() => setDeleteOpen(false)}
-                  className="border-[#1E2D45] text-[#94A3B8] hover:text-white hover:bg-[#1A2438] rounded-lg"
+                  className="border-[#262626] text-[#A1A1AA] hover:text-white hover:bg-[#171717] rounded-lg"
                 >
                   Annuler
                 </Button>
@@ -407,20 +407,20 @@ export default function ClientDetailPage() {
                 href={doc.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#1A2438] transition-colors group"
+                className="flex items-center gap-3 p-3 rounded-lg hover:bg-[#171717] transition-colors group"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#1A2438] flex items-center justify-center shrink-0">
-                  <svg className="w-4 h-4 text-[#94A3B8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 rounded-lg bg-[#171717] flex items-center justify-center shrink-0">
+                  <svg className="w-4 h-4 text-[#A1A1AA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-white truncate">{doc.name}</p>
-                  <p className="text-xs text-[#475569]">
+                  <p className="text-xs text-[#52525B]">
                     {new Date(doc.createdAt).toLocaleDateString("fr-FR")}
                   </p>
                 </div>
-                <svg className="w-4 h-4 text-[#475569] group-hover:text-[#94A3B8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-[#52525B] group-hover:text-[#A1A1AA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
               </a>
@@ -429,13 +429,13 @@ export default function ClientDetailPage() {
         </div>
       )}
 
-      <Separator className="bg-[#1E2D45]" />
+      <Separator className="bg-[#262626]" />
 
       {/* Activity timeline */}
       <div className="evo-card p-6">
         <h2 className="text-lg font-semibold text-white mb-4">Historique des actions</h2>
         {client.activities.length === 0 ? (
-          <p className="text-[#475569] text-sm">Aucune activité enregistrée</p>
+          <p className="text-[#52525B] text-sm">Aucune activité enregistrée</p>
         ) : (
           <div className="space-y-0">
             {[...client.activities].reverse().map((activity, i) => (
@@ -443,12 +443,12 @@ export default function ClientDetailPage() {
                 <div className="flex flex-col items-center">
                   <div className="w-2 h-2 rounded-full bg-[#C9A84C] mt-2 shrink-0" />
                   {i < client.activities.length - 1 && (
-                    <div className="w-px flex-1 bg-[#1E2D45] mt-1 mb-0" />
+                    <div className="w-px flex-1 bg-[#262626] mt-1 mb-0" />
                   )}
                 </div>
                 <div className="pb-4">
                   <p className="text-sm text-white">{activity.action}</p>
-                  <p className="text-xs text-[#475569] mt-0.5">
+                  <p className="text-xs text-[#52525B] mt-0.5">
                     {new Date(activity.createdAt).toLocaleString("fr-FR", {
                       day: "numeric",
                       month: "short",
@@ -470,9 +470,9 @@ export default function ClientDetailPage() {
 function InfoField({ label, value }: { label: string; value: string | null }) {
   return (
     <div>
-      <dt className="text-[#475569] text-xs uppercase tracking-wider">{label}</dt>
+      <dt className="text-[#52525B] text-xs uppercase tracking-wider">{label}</dt>
       <dd className="text-white mt-0.5 text-sm">
-        {value || <span className="text-[#475569]">--</span>}
+        {value || <span className="text-[#52525B]">--</span>}
       </dd>
     </div>
   );

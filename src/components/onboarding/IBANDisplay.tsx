@@ -45,7 +45,7 @@ export function IBANDisplay({ iban, amount, reference }: IBANDisplayProps) {
         {/* IBAN */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-sm text-[#94A3B8]">IBAN</span>
+            <span className="text-sm text-[#A1A1AA]">IBAN</span>
             <CopyButton text={iban.replace(/\s/g, "")} label="l'IBAN" />
           </div>
           <p className="font-mono-iban text-white text-lg tracking-wider">
@@ -55,14 +55,14 @@ export function IBANDisplay({ iban, amount, reference }: IBANDisplayProps) {
 
         {/* Amount */}
         <div>
-          <span className="text-sm text-[#94A3B8] block mb-1.5">Montant</span>
+          <span className="text-sm text-[#A1A1AA] block mb-1.5">Montant</span>
           <p className="text-[#C9A84C] text-xl font-bold">{amount}</p>
         </div>
 
         {/* Reference */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-sm text-[#94A3B8]">Reference de virement</span>
+            <span className="text-sm text-[#A1A1AA]">Reference de virement</span>
             <CopyButton text={reference} label="la reference" />
           </div>
           <p className="font-mono-iban text-white text-base tracking-wide">

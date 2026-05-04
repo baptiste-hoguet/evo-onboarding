@@ -23,10 +23,10 @@ export function StepCard({
     return (
       <div className="evo-card p-5 opacity-40 pointer-events-none transition-all duration-200">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full border border-[#1E2D45] bg-[#111827] flex items-center justify-center">
-            <Lock className="w-3.5 h-3.5 text-[#94A3B8]" />
+          <div className="w-8 h-8 rounded-full border border-[#262626] bg-[#0A0A0A] flex items-center justify-center">
+            <Lock className="w-3.5 h-3.5 text-[#A1A1AA]" />
           </div>
-          <h3 className="text-[#94A3B8] font-medium">
+          <h3 className="text-[#A1A1AA] font-medium">
             Étape {stepNumber} — {title}
           </h3>
         </div>
@@ -44,7 +44,7 @@ export function StepCard({
           <h3 className="text-emerald-400 font-medium">
             Étape {stepNumber} — {title}
           </h3>
-          <span className="ml-auto text-xs text-[#94A3B8]">Terminé</span>
+          <span className="ml-auto text-xs text-[#A1A1AA]">Terminé</span>
         </div>
       </div>
     );
@@ -63,7 +63,7 @@ export function StepCard({
             Étape {stepNumber} — {title}
           </h3>
         </div>
-        <div className="flex items-center justify-center gap-3 py-8 text-[#94A3B8]">
+        <div className="flex items-center justify-center gap-3 py-8 text-[#A1A1AA]">
           <Loader2 className="w-5 h-5 animate-spin text-[#C9A84C]" />
           <span>{waitingMessage}</span>
         </div>

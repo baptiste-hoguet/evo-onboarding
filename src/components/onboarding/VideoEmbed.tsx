@@ -31,14 +31,14 @@ export function VideoEmbed({ url }: VideoEmbedProps) {
 
   if (!embedUrl) {
     return (
-      <div className="aspect-video bg-[#111827] border border-[#1E2D45] rounded-xl flex items-center justify-center">
-        <p className="text-[#94A3B8]">URL de video invalide</p>
+      <div className="aspect-video bg-[#0A0A0A] border border-[#262626] rounded-xl flex items-center justify-center">
+        <p className="text-[#A1A1AA]">URL de video invalide</p>
       </div>
     );
   }
 
   return (
-    <div className="aspect-video bg-[#0A0F1E] rounded-xl overflow-hidden border border-[#1E2D45]">
+    <div className="aspect-video bg-[#000000] rounded-xl overflow-hidden border border-[#262626]">
       <iframe
         src={embedUrl}
         className="w-full h-full"

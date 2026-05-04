@@ -32,10 +32,10 @@ export function ProgressBar({ currentStep }: ProgressBarProps) {
                     text-sm font-semibold transition-all duration-200 shrink-0
                     ${
                       isCompleted
-                        ? "bg-[#C9A84C] text-[#0A0F1E]"
+                        ? "bg-[#C9A84C] text-[#000000]"
                         : isActive
                         ? "border-2 border-[#C9A84C] text-[#C9A84C] bg-transparent animate-pulse"
-                        : "border border-[#1E2D45] text-[#94A3B8] bg-[#111827]"
+                        : "border border-[#262626] text-[#A1A1AA] bg-[#0A0A0A]"
                     }
                   `}
                 >
@@ -56,7 +56,7 @@ export function ProgressBar({ currentStep }: ProgressBarProps) {
                         ? "text-[#C9A84C]"
                         : isActive
                         ? "text-white font-medium"
-                        : "text-[#94A3B8]"
+                        : "text-[#A1A1AA]"
                     }
                   `}
                 >
@@ -67,7 +67,7 @@ export function ProgressBar({ currentStep }: ProgressBarProps) {
               {/* Connector line */}
               {index < STEPS.length - 1 && (
                 <div className="flex-1 h-0.5 mx-1.5 md:mx-3 relative overflow-hidden rounded-full">
-                  <div className="absolute inset-0 bg-[#1E2D45]" />
+                  <div className="absolute inset-0 bg-[#262626]" />
                   <div
                     className="absolute inset-y-0 left-0 progress-gradient transition-all duration-500 ease-out rounded-full"
                     style={{

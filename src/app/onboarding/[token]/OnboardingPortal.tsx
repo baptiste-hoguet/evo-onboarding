@@ -238,22 +238,22 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-[#94A3B8]">Prénom *</Label>
+              <Label className="text-[#A1A1AA]">Prénom *</Label>
               <Input
                 value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 required
-                className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C]"
                 placeholder="Jean"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-[#94A3B8]">Nom *</Label>
+              <Label className="text-[#A1A1AA]">Nom *</Label>
               <Input
                 value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 required
-                className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C]"
                 placeholder="Dupont"
               />
             </div>
@@ -261,75 +261,75 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-[#94A3B8]">Téléphone *</Label>
+              <Label className="text-[#A1A1AA]">Téléphone *</Label>
               <Input
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 required
-                className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C]"
                 placeholder="+33 6 12 34 56 78"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-[#94A3B8]">Email</Label>
+              <Label className="text-[#A1A1AA]">Email</Label>
               <Input
                 value={client.email}
                 readOnly
-                className="bg-[#0A0F1E] border-[#1E2D45] text-[#94A3B8] rounded-lg cursor-default"
+                className="bg-[#000000] border-[#262626] text-[#A1A1AA] rounded-lg cursor-default"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label className="text-[#94A3B8]">Nom de la société *</Label>
+            <Label className="text-[#A1A1AA]">Nom de la société *</Label>
             <Input
               value={formData.company}
               onChange={(e) => setFormData({ ...formData, company: e.target.value })}
               required
-              className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
+              className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C]"
               placeholder="Ma Société SAS"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-[#94A3B8]">Adresse siège social *</Label>
+            <Label className="text-[#A1A1AA]">Adresse siège social *</Label>
             <Input
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               required
-              className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
+              className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C]"
               placeholder="12 rue de la Paix, 75001 Paris"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-[#94A3B8]">SIRET *</Label>
+            <Label className="text-[#A1A1AA]">SIRET *</Label>
             <Input
               value={formData.siret}
               onChange={(e) => setFormData({ ...formData, siret: e.target.value })}
               required
-              className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
+              className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C]"
               placeholder="123 456 789 00012"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-[#94A3B8]">Instagram</Label>
+              <Label className="text-[#A1A1AA]">Instagram</Label>
               <Input
                 value={formData.instagram}
                 onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-                className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C]"
                 placeholder="@votre_compte"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-[#94A3B8]">LinkedIn</Label>
+              <Label className="text-[#A1A1AA]">LinkedIn</Label>
               <Input
                 value={formData.linkedin}
                 onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
-                className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C]"
                 placeholder="URL de votre profil"
               />
             </div>
@@ -339,7 +339,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
             <Button
               type="submit"
               disabled={loading}
-              className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
+              className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
             >
               {loading ? "Enregistrement..." : "Enregistrer mes informations"}
             </Button>
@@ -363,11 +363,11 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
                 const key = `q${qIndex++}`;
                 return (
                   <div key={key} className="space-y-2">
-                    <Label className="text-[#94A3B8] text-sm">{question}</Label>
+                    <Label className="text-[#A1A1AA] text-sm">{question}</Label>
                     <Textarea
                       value={answers[key] ?? ""}
                       onChange={(e) => setAnswers((prev) => ({ ...prev, [key]: e.target.value }))}
-                      className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C] min-h-[80px] resize-none"
+                      className="bg-[#0A0A0A] border-[#262626] text-white rounded-lg focus:border-[#C9A84C] min-h-[80px] resize-none"
                       placeholder="Votre réponse..."
                     />
                   </div>
@@ -379,7 +379,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
             <Button
               onClick={() => apiCall("save-questionnaire", { answers })}
               disabled={loading}
-              className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
+              className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
             >
               {loading ? "Enregistrement..." : "Valider le questionnaire"}
             </Button>
@@ -394,7 +394,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
       return (
         <div className="space-y-6">
           {calUrl ? (
-            <div className="rounded-xl overflow-hidden border border-[#1E2D45]">
+            <div className="rounded-xl overflow-hidden border border-[#262626]">
               <iframe
                 src={calUrl}
                 className="w-full border-0"
@@ -403,8 +403,8 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
               />
             </div>
           ) : (
-            <div className="bg-[#111827] border border-[#1E2D45] rounded-xl p-8 text-center">
-              <p className="text-[#94A3B8]">
+            <div className="bg-[#0A0A0A] border border-[#262626] rounded-xl p-8 text-center">
+              <p className="text-[#A1A1AA]">
                 Le lien de réservation sera bientôt disponible. Vous serez notifié par email.
               </p>
             </div>
@@ -413,7 +413,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
             <Button
               onClick={() => apiCall("book-call")}
               disabled={loading}
-              className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
+              className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
             >
               {loading ? "Chargement..." : "J'ai réservé mon call"}
             </Button>
@@ -430,16 +430,16 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
 
       return (
         <div className="space-y-6">
-          <p className="text-[#94A3B8]">
+          <p className="text-[#A1A1AA]">
             Voici un récapitulatif de vos documents et ressources utiles.
           </p>
 
           {/* Charte du client idéal — document fixe */}
-          <div className="bg-[#111827] border border-[#C9A84C]/30 rounded-xl p-4 flex items-center gap-3">
+          <div className="bg-[#0A0A0A] border border-[#C9A84C]/30 rounded-xl p-4 flex items-center gap-3">
             <FileText className="w-5 h-5 text-[#C9A84C] shrink-0" />
             <div className="flex-1">
               <span className="text-white block text-sm font-medium">La Charte du Client Idéal</span>
-              <span className="text-[#94A3B8] text-xs">Document à lire et à garder</span>
+              <span className="text-[#A1A1AA] text-xs">Document à lire et à garder</span>
             </div>
             <a
               href="/documents/EVO_Charte_Client_Ideal.docx"
@@ -451,7 +451,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
           </div>
 
           {config?.contractUrl && (
-            <div className="bg-[#111827] border border-[#1E2D45] rounded-xl p-4 flex items-center gap-3">
+            <div className="bg-[#0A0A0A] border border-[#262626] rounded-xl p-4 flex items-center gap-3">
               <FileText className="w-5 h-5 text-[#C9A84C] shrink-0" />
               <span className="text-white flex-1">Contrat</span>
               <a href={config.contractUrl} target="_blank" rel="noopener noreferrer" className="text-[#C9A84C] hover:text-[#E8C97A]">
@@ -461,7 +461,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
           )}
 
           {config?.guideUrl && (
-            <div className="bg-[#111827] border border-[#1E2D45] rounded-xl p-4 flex items-center gap-3">
+            <div className="bg-[#0A0A0A] border border-[#262626] rounded-xl p-4 flex items-center gap-3">
               <FileText className="w-5 h-5 text-[#C9A84C] shrink-0" />
               <span className="text-white flex-1">Guide PDF</span>
               <a href={config.guideUrl} target="_blank" rel="noopener noreferrer" className="text-[#C9A84C] hover:text-[#E8C97A]">
@@ -474,8 +474,8 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
             <div className="space-y-2">
               <h4 className="text-white font-medium text-sm">Vos documents</h4>
               {client.documents.map((doc) => (
-                <div key={doc.id} className="bg-[#111827] border border-[#1E2D45] rounded-xl p-4 flex items-center gap-3">
-                  <FileText className="w-5 h-5 text-[#94A3B8] shrink-0" />
+                <div key={doc.id} className="bg-[#0A0A0A] border border-[#262626] rounded-xl p-4 flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-[#A1A1AA] shrink-0" />
                   <span className="text-white flex-1 text-sm">{doc.name}</span>
                   <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-[#C9A84C] hover:text-[#E8C97A]">
                     <Download className="w-4 h-4" />
@@ -498,7 +498,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[#111827] border border-[#1E2D45] rounded-xl p-4 flex items-center gap-3 hover:border-[#C9A84C]/40 transition-colors block"
+                    className="bg-[#0A0A0A] border border-[#262626] rounded-xl p-4 flex items-center gap-3 hover:border-[#C9A84C]/40 transition-colors block"
                   >
                     <ExternalLink className="w-4 h-4 text-[#C9A84C] shrink-0" />
                     <span className="text-white text-sm">{label}</span>
@@ -512,7 +512,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
             <Button
               onClick={() => { window.location.href = `/onboarding/${token}/done`; }}
               disabled={loading}
-              className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
+              className="bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
             >
               Finaliser mon onboarding
             </Button>
@@ -525,14 +525,14 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0F1E] pb-12">
+    <div className="min-h-screen bg-[#000000] pb-12">
       {/* Header */}
       <div className="flex justify-center pt-8 pb-4">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white tracking-wider">
             <span className="text-[#C9A84C]">EVO</span> INCUBATOR
           </h1>
-          <p className="text-[#94A3B8] text-sm mt-1">Portail d&apos;onboarding</p>
+          <p className="text-[#A1A1AA] text-sm mt-1">Portail d&apos;onboarding</p>
         </div>
       </div>
 

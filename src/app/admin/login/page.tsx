@@ -34,13 +34,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center evo-gradient bg-[#0A0F1E] px-4">
+    <div className="min-h-screen flex items-center justify-center evo-gradient bg-[#000000] px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-[#C9A84C] tracking-wider">
             EVO
           </h1>
-          <p className="text-[#94A3B8] mt-2 text-sm">
+          <p className="text-[#A1A1AA] mt-2 text-sm">
             Plateforme d&apos;onboarding
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-[#94A3B8]">
+              <Label htmlFor="username" className="text-[#A1A1AA]">
                 Identifiant
               </Label>
               <Input
@@ -60,12 +60,12 @@ export default function LoginPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-[#94A3B8]">
+              <Label htmlFor="password" className="text-[#A1A1AA]">
                 Mot de passe
               </Label>
               <Input
@@ -75,7 +75,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="bg-[#111827] border-[#1E2D45] text-white placeholder:text-[#475569] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
+                className="bg-[#0A0A0A] border-[#262626] text-white placeholder:text-[#52525B] rounded-lg focus:ring-[#C9A84C] focus:border-[#C9A84C]"
               />
             </div>
 
@@ -86,7 +86,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] rounded-lg font-semibold h-11"
+              className="w-full bg-[#C9A84C] text-[#000000] hover:bg-[#E8C97A] rounded-lg font-semibold h-11"
             >
               {loading ? "Connexion..." : "Se connecter"}
             </Button>

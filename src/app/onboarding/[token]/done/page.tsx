@@ -18,7 +18,7 @@ export default async function DonePage({
       <div className="min-h-screen flex items-center justify-center p-6 evo-gradient">
         <div className="evo-card p-8 max-w-md w-full text-center">
           <h1 className="text-2xl font-bold text-white mb-3">Lien invalide</h1>
-          <p className="text-[#94A3B8]">
+          <p className="text-[#A1A1AA]">
             Ce lien d&apos;onboarding est invalide ou a expiré.
           </p>
         </div>

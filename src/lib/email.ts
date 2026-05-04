@@ -25,7 +25,7 @@ function baseTemplate(content: string) {
   <div style="max-width:600px;margin:0 auto;padding:40px 20px;">
     <div style="text-align:center;margin-bottom:24px;">
       <span style="font-size:28px;font-weight:800;color:#C9A84C;letter-spacing:2px;">EVO</span>
-      <span style="font-size:13px;font-weight:700;color:#1a1a2e;display:block;margin-top:2px;letter-spacing:3px;">INCUBATOR</span>
+      <span style="font-size:13px;font-weight:700;color:#0A0A0A;display:block;margin-top:2px;letter-spacing:3px;">INCUBATOR</span>
     </div>
     <div style="background-color:#ffffff;border:1px solid #e4e4e7;border-radius:16px;padding:36px;">
       ${content}
@@ -40,7 +40,7 @@ function baseTemplate(content: string) {
 
 function goldButton(text: string, url: string) {
   return `<div style="text-align:center;margin:24px 0;">
-    <a href="${url}" style="display:inline-block;background-color:#C9A84C;color:#0A0F1E;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:8px;font-size:14px;">${text}</a>
+    <a href="${url}" style="display:inline-block;background-color:#C9A84C;color:#000000;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:8px;font-size:14px;">${text}</a>
   </div>`;
 }
 
@@ -63,9 +63,9 @@ export async function sendWelcomeEmail(
     subject: "Ton espace EVO est prêt 🚀",
     html: baseTemplate(`
       <h2 style="color:#C9A84C;margin-top:0;font-size:22px;font-weight:700;">Bienvenue chez EVO INCUBATOR !</h2>
-      <p style="color:#374151;line-height:1.7;font-size:15px;">Ton espace d'onboarding personnel est prêt. Clique sur le bouton ci-dessous pour commencer ton parcours.</p>
+      <p style="color:#3F3F46;line-height:1.7;font-size:15px;">Ton espace d'onboarding personnel est prêt. Clique sur le bouton ci-dessous pour commencer ton parcours.</p>
       ${goldButton("Accéder à mon espace", portalUrl)}
-      <p style="color:#9ca3af;font-size:12px;margin-bottom:0;text-align:center;">Ce lien est personnel et unique. Ne le partage pas.</p>
+      <p style="color:#A1A1AA;font-size:12px;margin-bottom:0;text-align:center;">Ce lien est personnel et unique. Ne le partage pas.</p>
     `),
   });
 }
@@ -82,7 +82,7 @@ export async function sendPaymentPendingToAdmin(
     subject: `💰 Virement à confirmer — ${clientName}`,
     html: baseTemplate(`
       <h2 style="color:#C9A84C;margin-top:0;font-size:20px;">Nouveau virement à confirmer</h2>
-      <p style="color:#374151;line-height:1.6;"><strong style="color:#111827;">${clientName}</strong> (${clientEmail}) a indiqué avoir effectué son virement pour l'offre <strong style="color:#C9A84C;">${offer}</strong>.</p>
+      <p style="color:#3F3F46;line-height:1.6;"><strong style="color:#0A0A0A;">${clientName}</strong> (${clientEmail}) a indiqué avoir effectué son virement pour l'offre <strong style="color:#C9A84C;">${offer}</strong>.</p>
       ${goldButton("Voir la fiche client", adminUrl)}
     `),
   });
@@ -97,7 +97,7 @@ export async function sendPaymentConfirmedEmail(
     subject: "Virement reçu ✅ — ton contrat t'attend",
     html: baseTemplate(`
       <h2 style="color:#10B981;margin-top:0;font-size:20px;">Virement confirmé !</h2>
-      <p style="color:#374151;line-height:1.6;">Ton virement a bien été reçu et validé par l'équipe EVO. Tu peux maintenant passer à l'étape suivante : la signature de ton contrat.</p>
+      <p style="color:#3F3F46;line-height:1.6;">Ton virement a bien été reçu et validé par l'équipe EVO. Tu peux maintenant passer à l'étape suivante : la signature de ton contrat.</p>
       ${goldButton("Continuer mon onboarding", portalUrl)}
     `),
   });
@@ -114,7 +114,7 @@ export async function sendContractSignedEmail(
       subject: "Contrat signé ✅ — prochaine étape",
       html: baseTemplate(`
         <h2 style="color:#10B981;margin-top:0;font-size:20px;">Contrat signé !</h2>
-        <p style="color:#374151;line-height:1.6;">Ton contrat a bien été signé. Tu peux maintenant réserver ton call de démarrage.</p>
+        <p style="color:#3F3F46;line-height:1.6;">Ton contrat a bien été signé. Tu peux maintenant réserver ton call de démarrage.</p>
         ${goldButton("Réserver mon call", portalUrl)}
       `),
     }),
@@ -123,7 +123,7 @@ export async function sendContractSignedEmail(
       subject: `Contrat signé ✅ — ${clientName}`,
       html: baseTemplate(`
         <h2 style="color:#10B981;margin-top:0;font-size:20px;">Contrat signé</h2>
-        <p style="color:#374151;line-height:1.6;"><strong style="color:#111827;">${clientName}</strong> a signé son contrat.</p>
+        <p style="color:#3F3F46;line-height:1.6;"><strong style="color:#0A0A0A;">${clientName}</strong> a signé son contrat.</p>
       `),
     }),
   ]);
@@ -139,7 +139,7 @@ export async function sendCallBookedEmail(
     subject: `📅 Call booké — ${clientName}`,
     html: baseTemplate(`
       <h2 style="color:#C9A84C;margin-top:0;font-size:20px;">Call de démarrage réservé</h2>
-      <p style="color:#374151;line-height:1.6;"><strong style="color:#111827;">${clientName}</strong> a réservé son call de démarrage.</p>
+      <p style="color:#3F3F46;line-height:1.6;"><strong style="color:#0A0A0A;">${clientName}</strong> a réservé son call de démarrage.</p>
       ${goldButton("Voir la fiche client", adminUrl)}
     `),
   });
@@ -155,8 +155,8 @@ export async function sendOnboardingCompleteEmail(
       subject: `🎉 Onboarding terminé — Bienvenue dans EVO !`,
       html: baseTemplate(`
         <h2 style="color:#C9A84C;margin-top:0;font-size:20px;">Bienvenue dans la communauté EVO !</h2>
-        <p style="color:#374151;line-height:1.6;">Ton onboarding est terminé. Tu fais maintenant partie de la famille EVO INCUBATOR. On a hâte de collaborer avec toi !</p>
-        <p style="color:#374151;line-height:1.6;">Rejoins le canal Slack pour commencer à échanger avec la communauté.</p>
+        <p style="color:#3F3F46;line-height:1.6;">Ton onboarding est terminé. Tu fais maintenant partie de la famille EVO INCUBATOR. On a hâte de collaborer avec toi !</p>
+        <p style="color:#3F3F46;line-height:1.6;">Rejoins le canal Slack pour commencer à échanger avec la communauté.</p>
         ${goldButton("Rejoindre le Slack EVO", "https://join.slack.com/t/evo-incubator/shared_invite/zt-3tp5dgmxv-GC88JtMwto5br0n8tX87pg")}
       `),
     }),
@@ -165,7 +165,7 @@ export async function sendOnboardingCompleteEmail(
       subject: `🎉 Onboarding terminé — ${clientName}`,
       html: baseTemplate(`
         <h2 style="color:#10B981;margin-top:0;font-size:20px;">Onboarding complété</h2>
-        <p style="color:#374151;line-height:1.6;"><strong style="color:#111827;">${clientName}</strong> a terminé son onboarding avec succès.</p>
+        <p style="color:#3F3F46;line-height:1.6;"><strong style="color:#0A0A0A;">${clientName}</strong> a terminé son onboarding avec succès.</p>
       `),
     }),
   ]);
@@ -238,14 +238,14 @@ export async function sendQuestionnaireToAdmin(
     for (let i = 0; i < section.count; i++) {
       const key = `q${questionIndex}`;
       const question = ALL_QUESTIONS[questionIndex] || "";
-      const answer = answers[key] || "<em style='color:#9ca3af'>Sans réponse</em>";
+      const answer = answers[key] || "<em style='color:#A1A1AA'>Sans réponse</em>";
       rows.push(`
         <tr>
           <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top;width:45%;">
-            <span style="color:#374151;font-size:13px;">${question}</span>
+            <span style="color:#3F3F46;font-size:13px;">${question}</span>
           </td>
           <td style="padding:10px 12px;border-bottom:1px solid #f0f0f0;vertical-align:top;">
-            <span style="color:#111827;font-size:13px;font-weight:500;">${answer}</span>
+            <span style="color:#0A0A0A;font-size:13px;font-weight:500;">${answer}</span>
           </td>
         </tr>
       `);
@@ -269,8 +269,8 @@ export async function sendQuestionnaireToAdmin(
     subject: `📋 Questionnaire complété — ${clientName} (${offer || "?"})`,
     html: baseTemplate(`
       <h2 style="color:#C9A84C;margin-top:0;font-size:20px;">Questionnaire complété</h2>
-      <p style="color:#374151;line-height:1.6;">
-        <strong style="color:#111827;">${clientName}</strong> (${clientEmail}) — Offre <strong style="color:#C9A84C;">${offer || "?"}</strong>
+      <p style="color:#3F3F46;line-height:1.6;">
+        <strong style="color:#0A0A0A;">${clientName}</strong> (${clientEmail}) — Offre <strong style="color:#C9A84C;">${offer || "?"}</strong>
       </p>
       <hr style="border:none;border-top:1px solid #e4e4e7;margin:20px 0;" />
       ${sectionHtml}
@@ -287,9 +287,9 @@ export async function sendReminderEmail(
     subject: "N'oublie pas de finaliser ton onboarding EVO 🔔",
     html: baseTemplate(`
       <h2 style="color:#C9A84C;margin-top:0;font-size:20px;">Ton onboarding t'attend !</h2>
-      <p style="color:#374151;line-height:1.6;">On a remarqué que tu n'as pas encore terminé ton parcours d'onboarding. Reprends là où tu en étais !</p>
+      <p style="color:#3F3F46;line-height:1.6;">On a remarqué que tu n'as pas encore terminé ton parcours d'onboarding. Reprends là où tu en étais !</p>
       ${goldButton("Reprendre mon onboarding", portalUrl)}
-      <p style="color:#9ca3af;font-size:12px;margin-bottom:0;">Si tu as des questions, n'hésite pas à nous contacter.</p>
+      <p style="color:#A1A1AA;font-size:12px;margin-bottom:0;">Si tu as des questions, n'hésite pas à nous contacter.</p>
     `),
   });
 }
