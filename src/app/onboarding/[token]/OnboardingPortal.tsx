@@ -261,11 +261,12 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-[#94A3B8]">Téléphone</Label>
+              <Label className="text-[#94A3B8]">Téléphone *</Label>
               <Input
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                required
                 className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
                 placeholder="+33 6 12 34 56 78"
               />
@@ -281,30 +282,33 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-[#94A3B8]">Nom de la société</Label>
+            <Label className="text-[#94A3B8]">Nom de la société *</Label>
             <Input
               value={formData.company}
               onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+              required
               className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
               placeholder="Ma Société SAS"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-[#94A3B8]">Adresse siège social</Label>
+            <Label className="text-[#94A3B8]">Adresse siège social *</Label>
             <Input
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+              required
               className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
               placeholder="12 rue de la Paix, 75001 Paris"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-[#94A3B8]">SIRET</Label>
+            <Label className="text-[#94A3B8]">SIRET *</Label>
             <Input
               value={formData.siret}
               onChange={(e) => setFormData({ ...formData, siret: e.target.value })}
+              required
               className="bg-[#111827] border-[#1E2D45] text-white rounded-lg focus:border-[#C9A84C]"
               placeholder="123 456 789 00012"
             />

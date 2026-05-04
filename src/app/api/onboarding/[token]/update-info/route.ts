@@ -15,9 +15,9 @@ export async function POST(
   const body = await request.json();
   const { firstName, lastName, phone, company, address, siret, socials, niche, objective } = body;
 
-  if (!firstName || !lastName) {
+  if (!firstName || !lastName || !phone || !company || !address || !siret) {
     return Response.json(
-      { error: "Le prenom et le nom sont obligatoires" },
+      { error: "Tous les champs marqués d'une étoile sont obligatoires" },
       { status: 400 }
     );
   }
