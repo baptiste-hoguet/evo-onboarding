@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { CompletionScreen } from "@/components/onboarding/CompletionScreen";
 import { sendOnboardingCompleteEmail } from "@/lib/email";
+import { pushClientToTracker } from "@/lib/tracker";
 
 export default async function DonePage({
   params,
@@ -27,7 +28,7 @@ export default async function DonePage({
   }
 
   if (!client.completedAt) {
-    await prisma.client.update({
+    const updated = await prisma.client.update({
       where: { id: client.id },
       data: { completedAt: new Date() },
     });
@@ -42,7 +43,12 @@ export default async function DonePage({
     const clientName = [client.firstName, client.lastName]
       .filter(Boolean)
       .join(" ") || client.email;
-    await sendOnboardingCompleteEmail(client.email, clientName);
+
+    // Best-effort: never block completion if tracker push or email fail.
+    await Promise.allSettled([
+      sendOnboardingCompleteEmail(client.email, clientName),
+      pushClientToTracker(updated),
+    ]);
   }
 
   return <CompletionScreen />;
