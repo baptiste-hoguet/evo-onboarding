@@ -46,6 +46,7 @@ interface ClientDetail {
   offer: string | null;
   paymentSchedule: string | null;
   signatureData: string | null;
+  questionnaire: string | null;
   currentStep: number;
   videoWatched: boolean;
   paymentSent: boolean;
@@ -58,6 +59,96 @@ interface ClientDetail {
   activities: Activity[];
   documents: Document[];
 }
+
+const QUESTIONNAIRE_SECTIONS = [
+  {
+    emoji: "🎯",
+    title: "Vision & Offre",
+    questions: [
+      "Quelle est ton offre principale (en une phrase) ?",
+      "Quel problème précis résous-tu ?",
+      "Quelle transformation permets-tu au client ?",
+      "Quelle est ta cible principale (avatar client) ?",
+      "Quel est ton positionnement sur le marché ?",
+    ],
+  },
+  {
+    emoji: "💰",
+    title: "Produit & Pricing",
+    questions: [
+      "Quels sont tes produits et offres actuels ?",
+      "Quel est le prix de chaque offre ?",
+      "Proposes-tu du paiement en plusieurs fois ?",
+      "Quel est ton panier moyen actuel ?",
+      "Quelle offre génère le plus de chiffre d'affaires ?",
+    ],
+  },
+  {
+    emoji: "📈",
+    title: "Acquisition",
+    questions: [
+      "Quels sont tes principaux canaux d'acquisition ? (Instagram, Ads, bouche-à-oreille, etc.)",
+      "Combien de leads génères-tu par semaine ?",
+      "Quel est ton coût d'acquisition client estimé ?",
+      "As-tu déjà fait de la publicité ? Si oui, quels résultats ?",
+      "Quel est ton principal levier d'acquisition aujourd'hui ?",
+    ],
+  },
+  {
+    emoji: "🔄",
+    title: "Funnel & Conversion",
+    questions: [
+      "Décris ton funnel actuel (de leads jusqu'à clients).",
+      "Quel est ton taux de conversion leads → calls ?",
+      "Quel est ton taux de closing ?",
+      "Utilises-tu un setter, un closer, ou les deux ?",
+      "Combien de calls fais-tu par semaine ?",
+    ],
+  },
+  {
+    emoji: "🎨",
+    title: "Contenu & Branding",
+    questions: [
+      "Sur quelle(s) plateforme(s) es-tu actif ?",
+      "Combien de contenus publies-tu par semaine ?",
+      "Quel type de contenu fonctionne le mieux ?",
+      "As-tu une stratégie de contenu claire ?",
+      "Quel est ton principal objectif avec le contenu ?",
+    ],
+  },
+  {
+    emoji: "🚀",
+    title: "Delivery & Expérience Client",
+    questions: [
+      "Comment délivres-tu ton service ? (Coaching, formation, done for you, etc.)",
+      "Combien de clients peux-tu activer en même temps ?",
+      "Quelle est la durée moyenne d'un de tes accompagnements ?",
+      "As-tu un process interne documenté ?",
+      "Quel est ton problème principal en delivery aujourd'hui ?",
+    ],
+  },
+  {
+    emoji: "👥",
+    title: "Équipe & Organisation",
+    questions: [
+      "Combien de personnes sont dans ton équipe ?",
+      "Qui fait quoi dans ton équipe ?",
+      "As-tu des freelances ou des prestataires ?",
+      "Quel est ton rôle principal aujourd'hui ?",
+      "Quel est ton plus gros blocage organisationnel ?",
+    ],
+  },
+  {
+    emoji: "⚡",
+    title: "Problèmes & Priorités",
+    questions: [
+      "Quel est ton plus gros problème aujourd'hui ?",
+      "Que veux-tu débloquer en priorité ?",
+      "Qu'as-tu déjà testé sans succès ?",
+      "Quel est le principal frein à ta croissance ?",
+    ],
+  },
+];
 
 const offerColors: Record<string, string> = {
   AGORA: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -92,7 +183,7 @@ export default function ClientDetailPage() {
 
   const fetchClient = useCallback(async () => {
     try {
-      const res = await fetch(`/api/clients/${clientId}`);
+      const res = await fetch(`/api/clients/${clientId}`, { cache: "no-store" });
       if (!res.ok) throw new Error("Client introuvable");
       const data = await res.json();
       setClient(data);
@@ -273,6 +364,56 @@ export default function ClientDetailPage() {
           </div>
         )}
       </div>
+
+      {/* Questionnaire */}
+      {(() => {
+        if (!client.questionnaire) {
+          return (
+            <div className="evo-card p-6">
+              <h2 className="text-lg font-semibold text-white mb-2">Questionnaire</h2>
+              <p className="text-[#A1A1AA] text-sm">
+                Le client n&apos;a pas encore rempli son questionnaire.
+              </p>
+            </div>
+          );
+        }
+        let answers: Record<string, string> = {};
+        try {
+          answers = JSON.parse(client.questionnaire);
+        } catch {
+          answers = {};
+        }
+        let qIndex = 0;
+        return (
+          <div className="evo-card p-6">
+            <h2 className="text-lg font-semibold text-white mb-6">Questionnaire</h2>
+            <div className="space-y-8">
+              {QUESTIONNAIRE_SECTIONS.map((section) => (
+                <div key={section.title} className="space-y-4">
+                  <h3 className="text-[#C9A84C] font-semibold text-sm tracking-wide uppercase flex items-center gap-2">
+                    <span>{section.emoji}</span>
+                    <span>{section.title}</span>
+                  </h3>
+                  <div className="space-y-3">
+                    {section.questions.map((question) => {
+                      const key = `q${qIndex++}`;
+                      const answer = answers[key];
+                      return (
+                        <div key={key} className="space-y-1">
+                          <p className="text-[#A1A1AA] text-xs">{question}</p>
+                          <p className="text-white text-sm leading-relaxed whitespace-pre-wrap">
+                            {answer && answer.trim() ? answer : <span className="text-[#52525B] italic">Sans réponse</span>}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Contrat généré */}
       <div className="evo-card p-6">
