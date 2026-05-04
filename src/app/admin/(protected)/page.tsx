@@ -32,38 +32,27 @@ interface Client {
   contractSigned: boolean;
   callBooked: boolean;
   currentStep: number;
+  completedAt: string | null;
   createdAt: string;
 }
 
 const STEPS = [
-  "Inscription",
-  "Vidéo",
-  "Virement",
-  "Confirmation",
-  "Contrat",
+  "Infos",
+  "Questionnaire",
   "Appel",
+  "Documents",
   "Terminé",
 ];
 
 function getProgression(client: Client): number {
-  let count = 0;
-  if (client.offer) count++;
-  if (client.videoWatched) count++;
-  if (client.paymentSent) count++;
-  if (client.paymentConfirmed) count++;
-  if (client.contractSigned) count++;
-  if (client.callBooked) count++;
-  return Math.round((count / 6) * 100);
+  if (client.completedAt) return 100;
+  // 4 steps in the new flow (0..3) → 25 % each
+  return Math.min(client.currentStep, 4) * 25;
 }
 
 function getStepLabel(client: Client): string {
-  if (client.callBooked) return STEPS[6];
-  if (client.contractSigned) return STEPS[5];
-  if (client.paymentConfirmed) return STEPS[4];
-  if (client.paymentSent) return STEPS[3];
-  if (client.videoWatched) return STEPS[2];
-  if (client.offer) return STEPS[1];
-  return STEPS[0];
+  if (client.completedAt) return STEPS[4];
+  return STEPS[Math.min(client.currentStep, 3)];
 }
 
 const offerColors: Record<string, string> = {
@@ -85,7 +74,7 @@ export default function DashboardPage() {
 
   const fetchClients = async () => {
     try {
-      const res = await fetch("/api/clients");
+      const res = await fetch("/api/clients", { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
         setClients(data);
@@ -97,10 +86,8 @@ export default function DashboardPage() {
 
   const filteredClients = clients.filter((client) => {
     if (offerFilter !== "all" && client.offer !== offerFilter) return false;
-    if (statusFilter === "completed" && !client.callBooked) return false;
-    if (statusFilter === "in_progress" && client.callBooked) return false;
-    if (statusFilter === "payment_pending" && (client.paymentConfirmed || !client.paymentSent))
-      return false;
+    if (statusFilter === "completed" && !client.completedAt) return false;
+    if (statusFilter === "in_progress" && client.completedAt) return false;
     return true;
   });
 
@@ -140,7 +127,6 @@ export default function DashboardPage() {
             <SelectItem value="all">Tous les statuts</SelectItem>
             <SelectItem value="in_progress">En cours</SelectItem>
             <SelectItem value="completed">Terminé</SelectItem>
-            <SelectItem value="payment_pending">Virement en attente</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -168,7 +154,7 @@ export default function DashboardPage() {
                   &Eacute;tape
                 </TableHead>
                 <TableHead className="text-[#A1A1AA] hidden lg:table-cell">
-                  Virement
+                  Statut
                 </TableHead>
                 <TableHead className="text-[#A1A1AA] hidden lg:table-cell">
                   Date
@@ -216,16 +202,14 @@ export default function DashboardPage() {
                       {getStepLabel(client)}
                     </TableCell>
                     <TableCell className="hidden lg:table-cell">
-                      {client.paymentConfirmed ? (
+                      {client.completedAt ? (
                         <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 rounded-md">
-                          Confirm&eacute;
-                        </Badge>
-                      ) : client.paymentSent ? (
-                        <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 rounded-md">
-                          En attente
+                          Termin&eacute;
                         </Badge>
                       ) : (
-                        <span className="text-[#52525B]">--</span>
+                        <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 rounded-md">
+                          En cours
+                        </Badge>
                       )}
                     </TableCell>
                     <TableCell className="text-[#A1A1AA] hidden lg:table-cell">

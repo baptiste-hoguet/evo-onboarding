@@ -5,6 +5,9 @@ import { createId } from "@paralleldrive/cuid2";
 import { NextRequest } from "next/server";
 import { sendWelcomeEmail } from "@/lib/email";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session) {
