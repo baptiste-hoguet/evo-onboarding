@@ -68,9 +68,7 @@ export default function DashboardPage() {
   const [offerFilter, setOfferFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  useEffect(() => {
-    fetchClients();
-  }, []);
+
 
   const fetchClients = async () => {
     try {
@@ -83,6 +81,21 @@ export default function DashboardPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchClients();
+    // Refetch when the window/PWA regains focus or becomes visible
+    const onFocus = () => fetchClients();
+    const onVisible = () => {
+      if (document.visibilityState === "visible") fetchClients();
+    };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, []);
 
   const filteredClients = clients.filter((client) => {
     if (offerFilter !== "all" && client.offer !== offerFilter) return false;

@@ -93,7 +93,7 @@ export default function NewClientPage() {
           <div className="flex gap-3 pt-2">
             <Button
               variant="outline"
-              onClick={() => router.push("/admin")}
+              onClick={() => { window.location.href = "/admin"; }}
               className="border-[#262626] text-[#A1A1AA] hover:text-white hover:bg-[#171717] rounded-lg"
             >
               Retour au dashboard
