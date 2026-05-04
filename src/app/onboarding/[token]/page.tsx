@@ -47,15 +47,6 @@ export default async function OnboardingPage({
     redirect(`/onboarding/${token}/done`);
   }
 
-  // Auto-advance past step 0 if offer is already set by admin
-  if (client.offer && client.currentStep === 0) {
-    await prisma.client.update({
-      where: { id: client.id },
-      data: { currentStep: 1 },
-    });
-    client.currentStep = 1;
-  }
-
   // Fetch config for the client's offer (if selected)
   const offerConfig = client.offer
     ? await prisma.config.findFirst({ where: { offer: client.offer } })
