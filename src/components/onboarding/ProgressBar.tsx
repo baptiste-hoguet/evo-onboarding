@@ -3,14 +3,10 @@
 import { Check, Lock } from "lucide-react";
 
 const STEPS = [
-  { label: "Offre", number: 0 },
-  { label: "Vidéo", number: 1 },
-  { label: "Infos", number: 2 },
-  { label: "Questions", number: 3 },
-  { label: "Contrat", number: 4 },
-  { label: "Paiement", number: 5 },
-  { label: "Appel", number: 6 },
-  { label: "Documents", number: 7 },
+  { label: "Infos", number: 0 },
+  { label: "Questions", number: 1 },
+  { label: "Appel", number: 2 },
+  { label: "Documents", number: 3 },
 ];
 
 interface ProgressBarProps {
@@ -20,7 +16,7 @@ interface ProgressBarProps {
 export function ProgressBar({ currentStep }: ProgressBarProps) {
   return (
     <div className="w-full px-2 py-6">
-      <div className="flex items-center justify-between max-w-3xl mx-auto">
+      <div className="flex items-center justify-between max-w-lg mx-auto">
         {STEPS.map((step, index) => {
           const isCompleted = index < currentStep;
           const isActive = index === currentStep;
@@ -48,13 +44,13 @@ export function ProgressBar({ currentStep }: ProgressBarProps) {
                   ) : isLocked ? (
                     <Lock className="w-3.5 h-3.5" />
                   ) : (
-                    step.number
+                    step.number + 1
                   )}
                 </div>
-                {/* Label: hidden on mobile, shown on desktop */}
+                {/* Label */}
                 <span
                   className={`
-                    hidden md:block text-xs mt-2 whitespace-nowrap transition-all duration-200
+                    text-xs mt-2 whitespace-nowrap transition-all duration-200
                     ${
                       isCompleted
                         ? "text-[#C9A84C]"

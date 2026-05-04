@@ -24,7 +24,7 @@ export async function POST(
     where: { id: client.id },
     data: {
       questionnaire: JSON.stringify(answers),
-      currentStep: Math.max(client.currentStep, 4),
+      currentStep: Math.max(client.currentStep, 2),
     },
   });
 

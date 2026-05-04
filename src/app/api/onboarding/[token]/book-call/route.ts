@@ -17,7 +17,7 @@ export async function POST(
     where: { id: client.id },
     data: {
       callBooked: true,
-      currentStep: Math.max(client.currentStep, 7),
+      currentStep: Math.max(client.currentStep, 3),
     },
   });
 

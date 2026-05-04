@@ -1,18 +1,14 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { ProgressBar } from "@/components/onboarding/ProgressBar";
 import { StepCard } from "@/components/onboarding/StepCard";
-import { OfferSelector } from "@/components/onboarding/OfferSelector";
-import { VideoEmbed } from "@/components/onboarding/VideoEmbed";
-import { IBANDisplay } from "@/components/onboarding/IBANDisplay";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { FileText, Download, ExternalLink } from "lucide-react";
 
 interface SerializedDocument {
@@ -69,17 +65,11 @@ interface OnboardingPortalProps {
 }
 
 const STEP_TITLES = [
-  "Choix de l'offre",
-  "Vidéo de bienvenue",
   "Informations personnelles",
   "Questionnaire",
-  "Contrat",
-  "Paiement",
   "Réservation d'appel",
   "Documents",
 ];
-
-const IBAN = "FR76 2823 3000 0159 3051 1883 723";
 
 const QUESTIONNAIRE_SECTIONS = [
   {
@@ -171,144 +161,13 @@ const QUESTIONNAIRE_SECTIONS = [
   },
 ];
 
-function getPaymentAmount(offer: string | null, config: SerializedConfig | null): string {
-  if (offer === "AGORA") return "15 000 €";
-  if (offer === "ATLAS") return "50 000 €";
-  if (offer === "NEXUS") {
-    const amount = config?.nexusAmount;
-    return amount ? `${amount.toLocaleString("fr-FR")} €` : "Montant à confirmer";
-  }
-  return "";
-}
-
-function getPaymentScheduleLabel(schedule: string | null): string {
-  switch (schedule) {
-    case "2x": return "2 fois";
-    case "3x": return "3 fois";
-    case "exceptional": return "Échelonnement exceptionnel";
-    default: return "1 fois (paiement comptant)";
-  }
-}
-
-// Signature canvas component
-function SignatureCanvas({
-  onSign,
-}: {
-  onSign: (dataUrl: string) => void;
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isDrawing = useRef(false);
-  const [hasSignature, setHasSignature] = useState(false);
-
-  const getPos = (e: MouseEvent | TouchEvent, canvas: HTMLCanvasElement) => {
-    const rect = canvas.getBoundingClientRect();
-    if ("touches" in e) {
-      return {
-        x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top,
-      };
-    }
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-  };
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    ctx.strokeStyle = "#C9A84C";
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    const startDraw = (e: MouseEvent | TouchEvent) => {
-      e.preventDefault();
-      isDrawing.current = true;
-      const pos = getPos(e, canvas);
-      ctx.beginPath();
-      ctx.moveTo(pos.x, pos.y);
-    };
-
-    const draw = (e: MouseEvent | TouchEvent) => {
-      e.preventDefault();
-      if (!isDrawing.current) return;
-      const pos = getPos(e, canvas);
-      ctx.lineTo(pos.x, pos.y);
-      ctx.stroke();
-      setHasSignature(true);
-    };
-
-    const stopDraw = () => {
-      if (isDrawing.current) {
-        isDrawing.current = false;
-        onSign(canvas.toDataURL("image/png"));
-      }
-    };
-
-    canvas.addEventListener("mousedown", startDraw);
-    canvas.addEventListener("mousemove", draw);
-    canvas.addEventListener("mouseup", stopDraw);
-    canvas.addEventListener("mouseleave", stopDraw);
-    canvas.addEventListener("touchstart", startDraw, { passive: false });
-    canvas.addEventListener("touchmove", draw, { passive: false });
-    canvas.addEventListener("touchend", stopDraw);
-
-    return () => {
-      canvas.removeEventListener("mousedown", startDraw);
-      canvas.removeEventListener("mousemove", draw);
-      canvas.removeEventListener("mouseup", stopDraw);
-      canvas.removeEventListener("mouseleave", stopDraw);
-      canvas.removeEventListener("touchstart", startDraw);
-      canvas.removeEventListener("touchmove", draw);
-      canvas.removeEventListener("touchend", stopDraw);
-    };
-  }, [onSign]);
-
-  const clear = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    setHasSignature(false);
-    onSign("");
-  };
-
-  return (
-    <div className="space-y-2">
-      <div className="relative border border-[#1E2D45] rounded-xl overflow-hidden bg-[#0A0F1E]">
-        <canvas
-          ref={canvasRef}
-          width={560}
-          height={160}
-          className="w-full touch-none cursor-crosshair"
-          style={{ display: "block" }}
-        />
-        {!hasSignature && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <p className="text-[#475569] text-sm">Signez ici avec votre souris ou votre doigt</p>
-          </div>
-        )}
-      </div>
-      <button
-        type="button"
-        onClick={clear}
-        className="text-xs text-[#94A3B8] hover:text-white transition-colors"
-      >
-        Effacer la signature
-      </button>
-    </div>
-  );
-}
-
 export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
   const params = useParams<{ token: string }>();
   const token = params.token;
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(client.currentStep);
 
-  // Step 2: Personal info
+  // Step 0: Personal info
   const [formData, setFormData] = useState({
     firstName: client.firstName ?? "",
     lastName: client.lastName ?? "",
@@ -320,7 +179,7 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
     linkedin: client.socials?.split(",")[1]?.trim() ?? "",
   });
 
-  // Step 3: Questionnaire
+  // Step 1: Questionnaire
   const [answers, setAnswers] = useState<Record<string, string>>(() => {
     try {
       return client.questionnaire ? JSON.parse(client.questionnaire) : {};
@@ -328,16 +187,6 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
       return {};
     }
   });
-
-  // Step 5: Payment
-  const [paymentChecked, setPaymentChecked] = useState(false);
-
-  // Step 4: Contract signature
-  const [signatureData, setSignatureData] = useState("");
-
-  const handleSign = useCallback((dataUrl: string) => {
-    setSignatureData(dataUrl);
-  }, []);
 
   async function apiCall(endpoint: string, body?: Record<string, unknown>) {
     setLoading(true);
@@ -368,140 +217,9 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
     return "locked" as const;
   }
 
-  async function downloadContractPdf() {
-    const { jsPDF } = await import("jspdf");
-    const doc = new jsPDF({ unit: "mm", format: "a4" });
-
-    const gold = [201, 168, 76] as [number, number, number];
-    const dark = [10, 15, 30] as [number, number, number];
-    const gray = [148, 163, 184] as [number, number, number];
-
-    // Background
-    doc.setFillColor(...dark);
-    doc.rect(0, 0, 210, 297, "F");
-
-    // Header band
-    doc.setFillColor(...gold);
-    doc.rect(0, 0, 210, 22, "F");
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.setTextColor(10, 15, 30);
-    doc.text("EVO INCUBATOR", 14, 14);
-
-    doc.setFontSize(10);
-    doc.setTextColor(...gray);
-    doc.text(`Contrat — Offre ${client.offer || ""}`, 14, 32);
-    doc.text(`Date : ${new Date().toLocaleDateString("fr-FR")}`, 14, 39);
-
-    // Separator
-    doc.setDrawColor(...gold);
-    doc.setLineWidth(0.4);
-    doc.line(14, 44, 196, 44);
-
-    let y = 52;
-    const addSection = (title: string, lines: [string, string][]) => {
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(11);
-      doc.setTextColor(...gold);
-      doc.text(title, 14, y);
-      y += 7;
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      for (const [label, value] of lines) {
-        doc.setTextColor(...gray);
-        doc.text(`${label} :`, 16, y);
-        doc.setTextColor(255, 255, 255);
-        doc.text(value || "—", 70, y);
-        y += 6;
-      }
-      y += 4;
-    };
-
-    addSection("Informations du client", [
-      ["Nom", `${client.firstName || ""} ${client.lastName || ""}`.trim()],
-      ["Email", client.email],
-      ["Téléphone", client.phone || ""],
-      ["Société", client.company || ""],
-      ["Adresse siège", client.address || ""],
-      ["SIRET", client.siret || ""],
-    ]);
-
-    addSection("Détails du contrat", [
-      ["Offre", client.offer || ""],
-      ["Montant", getPaymentAmount(client.offer, config)],
-      ["Échelonnement", getPaymentScheduleLabel(client.paymentSchedule)],
-      ["Référence", `EVO-${client.token.slice(0, 8).toUpperCase()}`],
-    ]);
-
-    // Signature
-    if (signatureData && signatureData.startsWith("data:image/png")) {
-      y += 4;
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(11);
-      doc.setTextColor(...gold);
-      doc.text("Signature du client", 14, y);
-      y += 6;
-      doc.addImage(signatureData, "PNG", 14, y, 80, 25);
-      y += 30;
-    }
-
-    // Footer
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(...gray);
-    doc.text("EVO INCUBATOR — Document généré automatiquement", 14, 287);
-
-    doc.save(`contrat-evo-${client.token.slice(0, 8)}.pdf`);
-  }
-
   function renderStepContent(stepIndex: number) {
-    // Step 0: Offer selection
+    // Step 0: Personal info
     if (stepIndex === 0) {
-      return (
-        <OfferSelector
-          onSelect={(offer) => apiCall("select-offer", { offer })}
-          loading={loading}
-        />
-      );
-    }
-
-    // Step 1: Video
-    if (stepIndex === 1) {
-      const videoUrl = config?.welcomeVideoUrl || "";
-      const watchUrl = videoUrl || "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-      return (
-        <div className="space-y-6">
-          {/* Lien direct vers la vidéo (toujours accessible) */}
-          <a
-            href={watchUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full aspect-video bg-[#111827] border border-[#1E2D45] rounded-xl hover:border-[#C9A84C]/40 transition-colors group"
-          >
-            <div className="text-center space-y-3">
-              <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto group-hover:bg-red-500 transition-colors">
-                <svg className="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-              <p className="text-white font-medium">Regarder la vidéo de bienvenue</p>
-              <p className="text-[#94A3B8] text-sm">Cliquez pour ouvrir dans YouTube</p>
-            </div>
-          </a>
-          <div className="flex justify-center relative z-10">
-            <a
-              href={`/api/onboarding/${token}/watch-video-redirect`}
-              className="inline-block bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg transition-colors"
-            >
-              J&apos;ai regardé la vidéo ✓
-            </a>
-          </div>
-        </div>
-      );
-    }
-
-    // Step 2: Personal info
-    if (stepIndex === 2) {
       return (
         <form
           onSubmit={(e) => {
@@ -626,8 +344,8 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
       );
     }
 
-    // Step 3: Questionnaire
-    if (stepIndex === 3) {
+    // Step 1: Questionnaire
+    if (stepIndex === 1) {
       let qIndex = 0;
       return (
         <div className="space-y-8">
@@ -666,145 +384,8 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
       );
     }
 
-    // Step 4: Contract
-    if (stepIndex === 4) {
-      return (
-        <div className="space-y-6">
-          {/* Contract summary */}
-          <div className="bg-[#111827] border border-[#1E2D45] rounded-xl p-5 space-y-3">
-            <h4 className="text-[#C9A84C] font-semibold text-sm uppercase tracking-wide">Récapitulatif du contrat</h4>
-            <div className="grid grid-cols-2 gap-y-2 text-sm">
-              <span className="text-[#94A3B8]">Client</span>
-              <span className="text-white">{[client.firstName, client.lastName].filter(Boolean).join(" ") || client.email}</span>
-              <span className="text-[#94A3B8]">Société</span>
-              <span className="text-white">{client.company || "—"}</span>
-              <span className="text-[#94A3B8]">SIRET</span>
-              <span className="text-white">{client.siret || "—"}</span>
-              <span className="text-[#94A3B8]">Offre</span>
-              <span className="text-white">{client.offer}</span>
-              <span className="text-[#94A3B8]">Montant</span>
-              <span className="text-white">{getPaymentAmount(client.offer, config)}</span>
-              <span className="text-[#94A3B8]">Échelonnement</span>
-              <span className="text-white">{getPaymentScheduleLabel(client.paymentSchedule)}</span>
-            </div>
-          </div>
-
-          {/* Download button */}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={downloadContractPdf}
-            className="w-full border-[#1E2D45] text-[#C9A84C] hover:bg-[#C9A84C]/10 rounded-lg flex items-center justify-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            Télécharger le contrat PDF
-          </Button>
-
-          {/* Signature */}
-          <div className="space-y-3">
-            <h4 className="text-white font-medium text-sm">Signature électronique</h4>
-            <p className="text-[#94A3B8] text-xs">
-              En signant, vous acceptez les termes et conditions du contrat EVO INCUBATOR.
-            </p>
-            <SignatureCanvas onSign={handleSign} />
-          </div>
-
-          <div className="flex flex-col items-center gap-3">
-            <Button
-              onClick={() => {
-                if (!signatureData) {
-                  toast.error("Veuillez signer le contrat avant de valider");
-                  return;
-                }
-                apiCall("sign-contract", { signatureData });
-              }}
-              disabled={loading || !signatureData}
-              className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg disabled:opacity-50"
-            >
-              {loading ? "Validation..." : "Valider et signer le contrat"}
-            </Button>
-            <button
-              onClick={() => apiCall("skip-contract")}
-              disabled={loading}
-              className="text-[#475569] hover:text-[#94A3B8] text-sm underline underline-offset-2 transition-colors"
-            >
-              Ignorer cette étape
-            </button>
-          </div>
-        </div>
-      );
-    }
-
-    // Step 5: Payment (attestation only)
-    if (stepIndex === 5) {
-      // NEXUS = paiement au pourcentage, pas de virement
-      if (client.offer === "NEXUS") {
-        return (
-          <div className="space-y-6">
-            <div className="bg-[#111827] border border-[#C9A84C]/30 rounded-xl p-6 space-y-3">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">💼</span>
-                <h4 className="text-[#C9A84C] font-semibold text-base">Offre NEXUS — Paiement au pourcentage</h4>
-              </div>
-              <p className="text-[#94A3B8] text-sm leading-relaxed">
-                Dans le cadre de l&apos;offre NEXUS, aucun virement bancaire n&apos;est requis à cette étape.
-                La rémunération d&apos;EVO INCUBATOR est calculée au pourcentage de tes résultats,
-                selon les modalités définies dans ton contrat.
-              </p>
-            </div>
-            <div className="flex justify-center">
-              <Button
-                onClick={() => apiCall("payment-sent")}
-                disabled={loading}
-                className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg"
-              >
-                {loading ? "Chargement..." : "Continuer →"}
-              </Button>
-            </div>
-          </div>
-        );
-      }
-
-      const reference = `EVO-${client.token.slice(0, 8).toUpperCase()}`;
-      return (
-        <div className="space-y-6">
-          <IBANDisplay
-            iban={IBAN}
-            amount={getPaymentAmount(client.offer, config)}
-            reference={reference}
-          />
-          {client.paymentSchedule && client.paymentSchedule !== "1x" && (
-            <div className="bg-[#111827] border border-[#1E2D45] rounded-xl p-4 text-sm">
-              <span className="text-[#94A3B8]">Échelonnement : </span>
-              <span className="text-[#C9A84C] font-medium">{getPaymentScheduleLabel(client.paymentSchedule)}</span>
-            </div>
-          )}
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="paymentCheck"
-              checked={paymentChecked}
-              onCheckedChange={(checked) => setPaymentChecked(checked === true)}
-              className="border-[#1E2D45] data-[state=checked]:bg-[#C9A84C] data-[state=checked]:border-[#C9A84C] mt-0.5"
-            />
-            <Label htmlFor="paymentCheck" className="text-white cursor-pointer">
-              J&apos;atteste avoir effectué mon virement bancaire
-            </Label>
-          </div>
-          <div className="flex justify-center">
-            <Button
-              onClick={() => apiCall("payment-sent")}
-              disabled={loading || !paymentChecked}
-              className="bg-[#C9A84C] text-[#0A0F1E] hover:bg-[#E8C97A] font-semibold px-8 py-3 rounded-lg disabled:opacity-50"
-            >
-              {loading ? "Envoi..." : "Confirmer mon virement"}
-            </Button>
-          </div>
-        </div>
-      );
-    }
-
-    // Step 6: Call booking
-    if (stepIndex === 6) {
+    // Step 2: Call booking
+    if (stepIndex === 2) {
       const calUrl = config?.calComUrl;
       return (
         <div className="space-y-6">
@@ -837,8 +418,8 @@ export function OnboardingPortal({ client, config }: OnboardingPortalProps) {
       );
     }
 
-    // Step 7: Documents
-    if (stepIndex === 7) {
+    // Step 3: Documents
+    if (stepIndex === 3) {
       const usefulLinks = config?.usefulLinks
         ? config.usefulLinks.split("\n").filter(Boolean)
         : [];

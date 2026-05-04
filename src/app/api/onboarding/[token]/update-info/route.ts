@@ -34,7 +34,7 @@ export async function POST(
       socials: socials || null,
       niche: niche || null,
       objective: objective || null,
-      currentStep: Math.max(client.currentStep, 3),
+      currentStep: Math.max(client.currentStep, 1),
     },
   });
 
