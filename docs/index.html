@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
+    <title>Virements — EVO</title>
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Virements" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAACG0lEQVR42u3SQREAEBQAUeefTSKJVNFEC1IY5nuHLbDzSkQsKUvFBAEtAS0BLQEtoCWgJaAloCWgBbQEtAS0BLQEtICWgJaAloCWgBbQEtAS0BLQEtACWgJaAloCWgJaQEtAS0BLQEtAC2g92RztSkALaKAFNNBAAy2ggRbQQAtooAU00EADLaCBFtBAC2igBTTQQAMtoIEW0EALaKAFNNBAAy2ggRbQQAtooAU00EADLaCBFtBAC2iggQYaaKCBFtBA52j0eiWggQYaaAENNNBAAw000EADDTTQQAMtoIEGGmiggQYaaKCBBhpooAU00EADDTTQQAMNNNBAAw20gAYaaKCBBhpooIEGGmiggRbQQAMNNNBAAw000EADDTTQQAMNNNBAfwz6ZTRAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000EADDTTQQAMNNNBAAw000BLQEtAS0AJaAloCWgJaAlpAS0BLQEtAS0ALaAloCWgJaAloAS0BLQEtAS0BLaAloCWgJaAloAW0BLQEtAS0gDZBQEtAS6fbWTsGaPH0dzoAAAAASUVORK5CYII=" />
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAACWUlEQVR42u3TQQ0AIRAEQd6r7RShCCs4ORegAUJCgHq0gclUiogmvVoyggCQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkACQAJAAkADQUH/N2wNAAAAgAAAQAAAIAAAEAAACAAABAIAAAEAAACAAABAAAAgAAAQAAAIAAAEAgAAAQAAAIAAAEAAACAAABAAAAgAAAQCAAABAAAAAAAAAAAAAAAAAAAAAAAAAAADOAQAAmq2Wb3sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAODEAAAgAAAQAAAIAAAEAgAAAQAAAIAAAEAAACAAABAAAAgAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANx+LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJBODgABIAEgASABIAEgASABIAEgASABIAEgASABIAEgASABIAEgASABIAEgASABIAEgASABIAEgASABIAEgASABIAEgASABIAEgASAtqwOEUnKywmv0HgAAAABJRU5ErkJggg==" />
+    <style>
+      :root {
+        --bg: #000;
+        --card: #0a0a0a;
+        --border: #262626;
+        --muted: #a1a1aa;
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --green: #34d399;
+        --red: #ef4444;
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        min-height: 100%;
+      }
+      body {
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          rgba(201, 168, 76, 0.08) 0%,
+          transparent 60%
+        );
+        padding-bottom: calc(112px + env(safe-area-inset-bottom));
+      }
+      .wrap {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 32px 16px 0;
+      }
+      .tabnum {
+        font-variant-numeric: tabular-nums;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+      header h1 {
+        font-size: 26px;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+      header p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(201, 168, 76, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 20px rgba(201, 168, 76, 0.15);
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .glow {
+        box-shadow: 0 0 20px rgba(201, 168, 76, 0.15),
+          0 0 40px rgba(201, 168, 76, 0.05);
+      }
+      .label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0;
+      }
+      .balance {
+        font-size: 38px;
+        font-weight: 700;
+        margin: 4px 0 0;
+      }
+      .balance.pos {
+        color: var(--gold);
+      }
+      .balance.neg {
+        color: var(--red);
+      }
+      .split {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .split > div {
+        flex: 1;
+        background: rgba(23, 23, 23, 0.6);
+        border-radius: 10px;
+        padding: 12px;
+      }
+      .split .k {
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .split .v {
+        font-weight: 600;
+        margin-top: 2px;
+      }
+      .green {
+        color: var(--green);
+      }
+      .red {
+        color: var(--red);
+      }
+      .gold {
+        color: var(--gold);
+      }
+      .chart {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 8px;
+        height: 160px;
+      }
+      .col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .barbox {
+        height: 112px;
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .bar {
+        width: 100%;
+        max-width: 28px;
+        border-radius: 6px 6px 0 0;
+        transition: height 0.3s ease;
+      }
+      .col span {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: capitalize;
+      }
+      .listhead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .listhead h2 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0;
+      }
+      .listhead span {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      li.row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+      }
+      .ic {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .ic.in {
+        background: rgba(52, 211, 153, 0.15);
+        color: var(--green);
+      }
+      .ic.out {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--red);
+      }
+      .row .name {
+        flex: 1;
+        min-width: 0;
+      }
+      .row .name strong {
+        display: block;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .row .name small {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .row .amt {
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .del {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .del:active {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--red);
+      }
+      .empty {
+        text-align: center;
+        padding: 32px 20px;
+        color: var(--muted);
+      }
+      .empty strong {
+        display: block;
+        color: #fff;
+        margin-bottom: 4px;
+      }
+      .fab {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: calc(24px + env(safe-area-inset-bottom));
+        height: 56px;
+        padding: 0 28px;
+        border: none;
+        border-radius: 999px;
+        background: var(--gold);
+        color: #000;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(201, 168, 76, 0.35);
+        z-index: 40;
+      }
+      .fab:active {
+        background: var(--gold-light);
+      }
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        z-index: 50;
+      }
+      .overlay.open {
+        display: flex;
+      }
+      .sheet {
+        width: 100%;
+        max-width: 480px;
+        background: #0a0a0a;
+        border: 1px solid var(--border);
+        border-radius: 20px 20px 0 0;
+        padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+      }
+      .sheet h3 {
+        margin: 0 0 16px;
+        font-size: 18px;
+      }
+      .field {
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      .field input {
+        width: 100%;
+        height: 44px;
+        background: #000;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: #fff;
+        padding: 0 12px;
+        font-size: 16px;
+      }
+      .field input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+      .type {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .type button {
+        height: 44px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(23, 23, 23, 0.4);
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .type button.act-in {
+        border-color: rgba(52, 211, 153, 0.5);
+        background: rgba(52, 211, 153, 0.15);
+        color: var(--green);
+      }
+      .type button.act-out {
+        border-color: rgba(239, 68, 68, 0.5);
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--red);
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .actions button {
+        flex: 1;
+        height: 46px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid var(--border);
+      }
+      .btn-cancel {
+        background: transparent;
+        color: #fff;
+      }
+      .btn-ok {
+        background: var(--gold);
+        color: #000;
+        border: none;
+      }
+      .toast {
+        position: fixed;
+        top: calc(16px + env(safe-area-inset-top));
+        left: 50%;
+        transform: translateX(-50%) translateY(-120%);
+        background: #0a0a0a;
+        border: 1px solid var(--border);
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-size: 14px;
+        z-index: 60;
+        transition: transform 0.25s ease;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div>
+          <h1>Virements</h1>
+          <p>Suivi des clients</p>
+        </div>
+        <div class="badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+        </div>
+      </header>
+
+      <section class="card glow">
+        <p class="label">Solde du compte</p>
+        <p class="balance pos" id="balance">0,00 €</p>
+        <div class="split">
+          <div>
+            <div class="k">↙ Entrées</div>
+            <div class="v green" id="inSum">0,00 €</div>
+          </div>
+          <div>
+            <div class="k">↗ Sorties</div>
+            <div class="v red" id="outSum">0,00 €</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <p class="label" style="margin-bottom: 16px">Par mois · 6 derniers mois</p>
+        <div class="chart" id="chart"></div>
+      </section>
+
+      <div class="listhead">
+        <h2>Historique</h2>
+        <span id="count">0 virement</span>
+      </div>
+      <ul id="list"></ul>
+      <div class="empty card" id="empty" style="display: none">
+        <strong>Aucun virement</strong>
+        Ajoutez votre premier virement client.
+      </div>
+    </div>
+
+    <button class="fab" id="fab">＋ Ajouter un virement</button>
+
+    <div class="overlay" id="overlay">
+      <form class="sheet" id="form">
+        <h3>Nouveau virement</h3>
+        <div class="field">
+          <label for="client">Client</label>
+          <input id="client" autocomplete="off" placeholder="Nom du client" />
+        </div>
+        <div class="field">
+          <label>Type</label>
+          <div class="type">
+            <button type="button" id="typeIn">↙ Entrée</button>
+            <button type="button" id="typeOut">↗ Sortie</button>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label for="amount">Montant (€)</label>
+            <input id="amount" inputmode="decimal" placeholder="0,00" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" type="date" />
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-cancel" id="cancel">Annuler</button>
+          <button type="submit" class="btn-ok">Ajouter</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      const KEY = "evo-virements-v1";
+      const MONTHS = ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc."];
+      const eur = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
+
+      let items = [];
+      let type = "in";
+
+      function load() {
+        try {
+          const raw = localStorage.getItem(KEY);
+          items = raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          items = [];
+        }
+      }
+      function save() {
+        try {
+          localStorage.setItem(KEY, JSON.stringify(items));
+        } catch (e) {}
+      }
+      function signed(v) {
+        return v.type === "out" ? -v.amount : v.amount;
+      }
+      function todayISO() {
+        const d = new Date();
+        return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+          .toISOString()
+          .slice(0, 10);
+      }
+      function toast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        clearTimeout(t._h);
+        t._h = setTimeout(() => t.classList.remove("show"), 1800);
+      }
+
+      function render() {
+        const balance = items.reduce((s, v) => s + signed(v), 0);
+        let inSum = 0, outSum = 0;
+        for (const v of items) v.type === "out" ? (outSum += v.amount) : (inSum += v.amount);
+
+        const b = document.getElementById("balance");
+        b.textContent = eur.format(balance);
+        b.className = "balance " + (balance < 0 ? "neg" : "pos");
+        document.getElementById("inSum").textContent = eur.format(inSum);
+        document.getElementById("outSum").textContent = eur.format(outSum);
+
+        // chart — last 6 months
+        const now = new Date();
+        const buckets = [];
+        for (let i = 5; i >= 0; i--) {
+          const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+          buckets.push({ key: d.getFullYear() + "-" + d.getMonth(), label: MONTHS[d.getMonth()], net: 0 });
+        }
+        const idx = {};
+        buckets.forEach((x, i) => (idx[x.key] = i));
+        for (const v of items) {
+          const d = new Date(v.date + "T00:00:00");
+          const k = d.getFullYear() + "-" + d.getMonth();
+          if (idx[k] !== undefined) buckets[idx[k]].net += signed(v);
+        }
+        const maxAbs = Math.max(1, ...buckets.map((x) => Math.abs(x.net)));
+        document.getElementById("chart").innerHTML = buckets
+          .map((m) => {
+            const h = m.net === 0 ? 3 : Math.max(6, Math.round((Math.abs(m.net) / maxAbs) * 100));
+            const color = m.net === 0 ? "#262626" : m.net >= 0 ? "#c9a84c" : "#ef4444";
+            return (
+              '<div class="col"><div class="barbox"><div class="bar" style="height:' +
+              h +
+              "%;background:" +
+              color +
+              '" title="' +
+              eur.format(m.net) +
+              '"></div></div><span>' +
+              m.label +
+              "</span></div>"
+            );
+          })
+          .join("");
+
+        // list
+        const sorted = [...items].sort((a, b) =>
+          a.date === b.date ? b.id.localeCompare(a.id) : b.date.localeCompare(a.date)
+        );
+        document.getElementById("count").textContent =
+          items.length + " virement" + (items.length > 1 ? "s" : "");
+        document.getElementById("empty").style.display = items.length ? "none" : "block";
+        document.getElementById("list").innerHTML = sorted
+          .map((v) => {
+            const out = v.type === "out";
+            const d = new Date(v.date + "T00:00:00").toLocaleDateString("fr-FR", {
+              day: "numeric", month: "short", year: "numeric",
+            });
+            return (
+              '<li class="row"><div class="ic ' +
+              (out ? "out" : "in") +
+              '">' + (out ? "↗" : "↙") + "</div>" +
+              '<div class="name"><strong>' + escapeHtml(v.client) + "</strong><small>" + d + "</small></div>" +
+              '<div class="amt ' + (out ? "red" : "green") + '">' +
+              (out ? "−" : "+") + eur.format(v.amount) + "</div>" +
+              '<button class="del" data-id="' + v.id + '" aria-label="Supprimer">🗑</button></li>'
+            );
+          })
+          .join("");
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, (c) =>
+          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+        );
+      }
+
+      // ---- events ----
+      const overlay = document.getElementById("overlay");
+      function openSheet() {
+        type = "in";
+        document.getElementById("typeIn").className = "act-in";
+        document.getElementById("typeOut").className = "";
+        document.getElementById("client").value = "";
+        document.getElementById("amount").value = "";
+        document.getElementById("date").value = todayISO();
+        overlay.classList.add("open");
+      }
+      function closeSheet() {
+        overlay.classList.remove("open");
+      }
+      document.getElementById("fab").onclick = openSheet;
+      document.getElementById("cancel").onclick = closeSheet;
+      overlay.onclick = (e) => {
+        if (e.target === overlay) closeSheet();
+      };
+      document.getElementById("typeIn").onclick = () => {
+        type = "in";
+        document.getElementById("typeIn").className = "act-in";
+        document.getElementById("typeOut").className = "";
+      };
+      document.getElementById("typeOut").onclick = () => {
+        type = "out";
+        document.getElementById("typeOut").className = "act-out";
+        document.getElementById("typeIn").className = "";
+      };
+      document.getElementById("form").onsubmit = (e) => {
+        e.preventDefault();
+        const client = document.getElementById("client").value.trim();
+        const amount = parseFloat(document.getElementById("amount").value.replace(",", "."));
+        const date = document.getElementById("date").value || todayISO();
+        if (!client) return toast("Le nom du client est requis.");
+        if (!isFinite(amount) || amount <= 0) return toast("Montant invalide.");
+        items.push({
+          id: Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8),
+          client, amount: Math.round(amount * 100) / 100, type, date,
+        });
+        save();
+        render();
+        closeSheet();
+        toast("Virement ajouté.");
+      };
+      document.getElementById("list").onclick = (e) => {
+        const btn = e.target.closest(".del");
+        if (!btn) return;
+        items = items.filter((v) => v.id !== btn.dataset.id);
+        save();
+        render();
+        toast("Virement supprimé.");
+      };
+
+      load();
+      render();
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () =>
+          navigator.serviceWorker.register("sw.js").catch(() => {})
+        );
+      }
+    </script>
+  </body>
+</html>
