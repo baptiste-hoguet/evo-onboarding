@@ -7,7 +7,7 @@ const SOUS_TRAITANTS: [string, string, string][] = [
   ["Vercel Inc.", "Hébergement du site", "États-Unis, clauses contractuelles types de la Commission européenne"],
   ["[HÉBERGEUR DE LA BASE DE DONNÉES]", "Stockage des données", "[PAYS]"],
   ["Google (Gmail)", "Envoi des emails (accès, rappels)", "Union européenne et États-Unis, clauses contractuelles types"],
-  ["[FOURNISSEUR D'IA]", "Synthèse du questionnaire pour préparer le premier call", "[PAYS ET GARANTIES]"],
+  ["Anthropic (Claude)", "Synthèse du questionnaire pour préparer le premier call, sans réutilisation pour entraîner ses modèles", "États-Unis, clauses contractuelles types"],
 ];
 
 export default function Confidentialite() {
