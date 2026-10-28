@@ -1,11 +1,11 @@
 // Politique de confidentialité d'evo-inc.fr (espace client, questionnaire, onboarding).
 // À mettre à jour à chaque nouveau traitement (ex. ouverture du SaaS « 4 métriques »).
-const MAJ = "29 octobre 2026";
+const MAJ = "28 octobre 2026";
 const CONTACT = "hogbat08@gmail.com";
 
 const SOUS_TRAITANTS: [string, string, string][] = [
-  ["Vercel Inc.", "Hébergement du site", "États-Unis, clauses contractuelles types de la Commission européenne"],
-  ["[HÉBERGEUR DE LA BASE DE DONNÉES]", "Stockage des données", "[PAYS]"],
+  ["Vercel Inc.", "Hébergement du site et des fichiers échangés (livrables)", "États-Unis, clauses contractuelles types de la Commission européenne"],
+  ["Neon Inc.", "Base de données (comptes, questionnaires, suivi du parcours)", "États-Unis (Amazon Web Services), clauses contractuelles types"],
   ["Google (Gmail)", "Envoi des emails (accès, rappels)", "Union européenne et États-Unis, clauses contractuelles types"],
   ["Anthropic (Claude)", "Synthèse du questionnaire pour préparer le premier call, sans réutilisation pour entraîner ses modèles", "États-Unis, clauses contractuelles types"],
 ];
