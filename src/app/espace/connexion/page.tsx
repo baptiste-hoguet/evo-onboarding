@@ -17,7 +17,7 @@ export default async function Connexion() {
         </div>
         <LoginForm />
         <p className="muted small">
-          EVO Incubator · Hoguet Capital · <Link href="/mentions-legales">Mentions légales</Link>
+          EVO Incubator · Baptiste Hoguet EI · <Link href="/mentions-legales">Mentions légales</Link>
         </p>
       </div>
     </main>
