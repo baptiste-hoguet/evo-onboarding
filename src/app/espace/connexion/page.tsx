@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getClientAccount } from "@/lib/client-auth";
 import { LoginForm } from "./LoginForm";
@@ -15,6 +16,9 @@ export default async function Connexion() {
           <p className="lede">Connecte-toi avec l&apos;email de ton questionnaire et le mot de passe reçu par email.</p>
         </div>
         <LoginForm />
+        <p className="muted small">
+          EVO Incubator · Hoguet Capital · <Link href="/mentions-legales">Mentions légales</Link>
+        </p>
       </div>
     </main>
   );
