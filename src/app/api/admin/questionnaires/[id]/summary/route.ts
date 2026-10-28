@@ -4,7 +4,7 @@ import { generateQuestionnaireSummary } from "@/lib/questionnaire-summary";
 
 export const maxDuration = 120;
 
-// (Re)génère la synthèse IA — réservé à l'équipe connectée (consomme des tokens DeepSeek)
+// (Re)génère la synthèse IA — réservé à l'équipe connectée (consomme des tokens Claude)
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session) return Response.json({ error: "Non autorisé" }, { status: 401 });
