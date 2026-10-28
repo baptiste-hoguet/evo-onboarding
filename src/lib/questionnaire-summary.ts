@@ -1,0 +1,110 @@
+import { prisma } from "@/lib/prisma";
+
+export type Reponse = { n: number; numero: number; section: number; sectionTitre: string; question: string; reponse: string };
+export type Readable = { reponses: Reponse[]; chiffres: [string, string][] };
+export type Summary = {
+  resume: string;
+  profil: string[];
+  offre: string[];
+  avatar: string[];
+  acquisition: string[];
+  vente: string[];
+  objectifs: string[];
+  forces: string[];
+  vigilance: string[];
+  priorites: string[];
+  questions: string[];
+};
+
+const LISTS = ["profil", "offre", "avatar", "acquisition", "vente", "objectifs", "forces", "vigilance", "priorites", "questions"] as const;
+
+export function parseReadable(raw: string | null): Readable {
+  try {
+    const r = JSON.parse(raw || "");
+    return { reponses: Array.isArray(r?.reponses) ? r.reponses : [], chiffres: Array.isArray(r?.chiffres) ? r.chiffres : [] };
+  } catch {
+    return { reponses: [], chiffres: [] };
+  }
+}
+
+export function parseSummary(raw: string | null): Summary | null {
+  try {
+    const s = JSON.parse(raw || "");
+    if (!s || typeof s.resume !== "string") return null;
+    const out = { resume: s.resume } as Summary;
+    for (const k of LISTS) out[k] = Array.isArray(s[k]) ? s[k].filter((x: unknown) => typeof x === "string" && x.trim()) : [];
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+const SYSTEM_PROMPT = `Tu es consultant senior chez EVO, un incubateur qui accompagne des coachs et infopreneurs (offre, contenu, publicité, setting, closing).
+Un nouveau client vient de remplir son questionnaire d'onboarding. Tu rédiges pour l'équipe EVO une synthèse interne, en français, claire et factuelle, qui tient sur 1 à 2 pages A4.
+
+Règles :
+- Appuie-toi uniquement sur les réponses fournies. N'invente aucun chiffre. Si une information manque, dis-le brièvement ("non renseigné").
+- Parle du client à la 3e personne en utilisant son prénom. N'emploie jamais de pronom genré (il, elle) : répète le prénom ou tourne la phrase autrement.
+- Puces courtes : 25 mots maximum chacune.
+- Sois concret et utile pour un coach qui prépare le premier call.
+
+Réponds uniquement avec un objet JSON de cette forme :
+{"resume": "3 à 4 phrases qui résument la situation, l'offre et l'ambition",
+ "profil": ["2 à 4 puces"], "offre": ["2 à 4 puces"], "avatar": ["2 à 3 puces"],
+ "acquisition": ["2 à 4 puces sur contenu et leads"], "vente": ["2 à 4 puces sur pub, setting, closing"],
+ "objectifs": ["2 à 4 puces sur objectifs, engagement, préférences de feedback"],
+ "forces": ["2 à 4 puces"], "vigilance": ["2 à 4 puces : risques, incohérences, blocages"],
+ "priorites": ["3 priorités recommandées pour le premier mois, dans l'ordre"],
+ "questions": ["3 à 5 questions à creuser lors du premier call"]}`;
+
+// Génère (ou régénère) la synthèse IA d'un questionnaire envoyé et l'enregistre
+export async function generateQuestionnaireSummary(id: string): Promise<Summary> {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey) throw new Error("Clé API DeepSeek manquante (DEEPSEEK_API_KEY).");
+
+  const r = await prisma.questionnaireResponse.findUnique({ where: { id } });
+  if (!r) throw new Error("Questionnaire introuvable");
+  if (r.status !== "submitted") throw new Error("Le questionnaire n'a pas encore été envoyé.");
+
+  const { reponses } = parseReadable(r.readable);
+  const bySection = new Map<string, Reponse[]>();
+  for (const x of reponses) {
+    const key = `${x.section}. ${x.sectionTitre}`;
+    bySection.set(key, [...(bySection.get(key) || []), x]);
+  }
+  const body = [...bySection]
+    .map(([t, xs]) => `## ${t}\n` + xs.map((x) => `- ${x.question} : ${x.reponse.replace(/\n/g, " ; ") || "(pas de réponse)"}`).join("\n"))
+    .join("\n\n");
+  const name = [r.firstName, r.lastName].filter(Boolean).join(" ") || "Client";
+
+  const res = await fetch("https://api.deepseek.com/chat/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      model: "deepseek-chat",
+      max_tokens: 3000,
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        {
+          role: "user",
+          content: `Client : ${name}${r.brand ? " — " + r.brand : ""}\nParcours déterminé par le questionnaire : ${r.route || "non déterminé"}\n\n<reponses>\n${body}\n</reponses>`,
+        },
+      ],
+    }),
+  });
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`Erreur DeepSeek (${res.status}). ${res.status === 401 ? "Clé API invalide." : detail.slice(0, 200)}`);
+  }
+
+  const data = await res.json();
+  const summary = parseSummary((data?.choices?.[0]?.message?.content || "").trim());
+  if (!summary) throw new Error("La réponse de l'IA est incomplète. Relance la génération.");
+
+  await prisma.questionnaireResponse.update({
+    where: { id },
+    data: { summary: JSON.stringify(summary), summaryAt: new Date() },
+  });
+  return summary;
+}

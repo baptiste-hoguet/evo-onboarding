@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Page statique de confirmation de réservation (fichier fourni tel quel) servie sur /confirmation
+  async rewrites() {
+    return [{ source: "/confirmation", destination: "/confirmation.html" }];
+  },
 };
 
 export default nextConfig;

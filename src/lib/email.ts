@@ -11,9 +11,9 @@ function getTransporter() {
 }
 
 const FROM_EMAIL = `EVO INCUBATOR <${process.env.GMAIL_USER || "baptiste@evo-incubateur.fr"}>`;
-const ADMIN_EMAIL = process.env.GMAIL_USER || "baptiste@evo-incubateur.fr";
+export const ADMIN_EMAIL = process.env.GMAIL_USER || "baptiste@evo-incubateur.fr";
 
-function baseTemplate(content: string) {
+export function baseTemplate(content: string) {
   return `
 <!DOCTYPE html>
 <html>
@@ -38,13 +38,13 @@ function baseTemplate(content: string) {
 </html>`;
 }
 
-function goldButton(text: string, url: string) {
+export function goldButton(text: string, url: string) {
   return `<div style="text-align:center;margin:24px 0;">
     <a href="${url}" style="display:inline-block;background-color:#C9A84C;color:#000000;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:8px;font-size:14px;">${text}</a>
   </div>`;
 }
 
-async function sendMail(options: { to: string; subject: string; html: string }) {
+export async function sendMail(options: { to: string; subject: string; html: string }) {
   const transporter = getTransporter();
   await transporter.sendMail({
     from: FROM_EMAIL,

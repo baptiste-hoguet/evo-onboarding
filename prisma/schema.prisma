@@ -68,10 +68,155 @@ model Config {
   slackInviteUrl  String?
 }
 
+// Questionnaire public (lien /questionnaire) — réponses brutes + version lisible à l'envoi
+model QuestionnaireResponse {
+  id          String    @id @default(cuid())
+  status      String    @default("draft") // draft | submitted
+  answers     String    @default("{}") // JSON des réponses brutes ("21.v": …)
+  readable    String? // JSON [{n, numero, section, question, reponse}] figé à l'envoi
+  section     Int       @default(0)
+  firstName   String?
+  lastName    String?
+  email       String?
+  brand       String?
+  route       String? // parcours déduit de Q49
+  summary     String? // synthèse IA (phase coach)
+  summaryAt   DateTime?
+  submittedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([email])
+}
+
 model AdminUser {
   id        String   @id @default(cuid())
   email     String   @unique
   username  String?  @unique
   password  String
   createdAt DateTime @default(now())
+}
+
+// ───────────── Espace client (parcours, livrables) ─────────────
+// Les parcours sont des données : modèle → étapes → blocs → éléments (config JSON modifiable côté coach)
+
+model JourneyTemplate {
+  id        String          @id @default(cuid())
+  key       String          @unique
+  name      String
+  createdAt DateTime        @default(now())
+  steps     JourneyStep[]
+  accounts  ClientAccount[]
+}
+
+model JourneyStep {
+  id          String          @id @default(cuid())
+  templateId  String
+  template    JourneyTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  order       Int
+  key         String
+  title       String
+  subtitle    String?
+  blocks      StepBlock[]
+  clientSteps ClientStep[]
+
+  @@unique([templateId, key])
+}
+
+model StepBlock {
+  id          String      @id @default(cuid())
+  stepId      String
+  step        JourneyStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  order       Int
+  key         String
+  title       String
+  description String?
+  items       BlockItem[]
+
+  @@unique([stepId, key])
+}
+
+model BlockItem {
+  id           String         @id @default(cuid())
+  blockId      String
+  block        StepBlock      @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  order        Int
+  key          String
+  type         String // link | checkbox | deliverable | booking | validation
+  label        String
+  config       String         @default("{}") // JSON (url, catégorie, « à quoi ça sert », modèle, Calendly…)
+  progress     ItemProgress[]
+  deliverables Deliverable[]
+
+  @@unique([blockId, key])
+}
+
+model ClientAccount {
+  id              String          @id @default(cuid())
+  email           String          @unique
+  passwordHash    String
+  firstName       String?
+  lastName        String?
+  brand           String?
+  questionnaireId String?         @unique
+  templateId      String
+  template        JourneyTemplate @relation(fields: [templateId], references: [id])
+  sessionVersion  Int             @default(0) // incrémenté au changement de mot de passe → déconnecte les autres sessions
+  lastLoginAt     DateTime?
+  createdAt       DateTime        @default(now())
+  steps           ClientStep[]
+  progress        ItemProgress[]
+  deliverables    Deliverable[]
+}
+
+model ClientStep {
+  id          String        @id @default(cuid())
+  accountId   String
+  account     ClientAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  stepId      String
+  step        JourneyStep   @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  completedAt DateTime?
+
+  @@unique([accountId, stepId])
+}
+
+model ItemProgress {
+  id        String        @id @default(cuid())
+  accountId String
+  account   ClientAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  itemId    String
+  item      BlockItem     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  doneAt    DateTime?
+  data      String        @default("{}") // JSON (ex. validations cochées par le coach)
+  updatedAt DateTime      @updatedAt
+
+  @@unique([accountId, itemId])
+}
+
+model Deliverable {
+  id           String               @id @default(cuid())
+  accountId    String
+  account      ClientAccount        @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  itemId       String
+  item         BlockItem            @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  status       String               @default("a_faire") // a_faire | deposee | en_revue | validee | a_corriger
+  coachComment String?
+  reviewedAt   DateTime?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  versions     DeliverableVersion[]
+
+  @@unique([accountId, itemId])
+}
+
+model DeliverableVersion {
+  id            String      @id @default(cuid())
+  deliverableId String
+  deliverable   Deliverable @relation(fields: [deliverableId], references: [id], onDelete: Cascade)
+  number        Int
+  pathname      String // chemin dans le stockage privé Vercel Blob
+  fileName      String
+  size          Int
+  uploadedAt    DateTime    @default(now())
 }

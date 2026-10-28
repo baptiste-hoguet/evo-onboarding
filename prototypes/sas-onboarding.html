@@ -1,0 +1,1191 @@
+<title>Onboarding EVO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one calm column (max 680px), sticky top bar with hairline progress, sticky thumb-reach action bar at the bottom. */
+:root {
+  --ink-top: #0d1836;
+  --ink-mid: #081024;
+  --ink-low: #03050b;
+  --glow: #1b3170;
+  --fg: #eef1f8;
+  --fg-2: #a9b3ca;
+  --fg-3: #6e7894;
+  --line: rgba(170, 188, 232, 0.12);
+  --line-strong: rgba(170, 188, 232, 0.26);
+  --surface: rgba(150, 172, 235, 0.045);
+  --surface-2: rgba(150, 172, 235, 0.085);
+  --gold: #c9a84c;
+  --gold-hi: #e3c77f;
+  --gold-ink: #15110a;
+  --gold-soft: rgba(201, 168, 76, 0.13);
+  --gold-ring: rgba(201, 168, 76, 0.32);
+  --danger: #f2948a;
+  --danger-soft: rgba(242, 148, 138, 0.12);
+  --bar-bg: rgba(5, 9, 20, 0.72);
+
+  --f-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --f-body: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --r: 12px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--fg);
+  background-color: var(--ink-low);
+  background-image:
+    radial-gradient(1100px 620px at 88% -8%, var(--glow) 0%, transparent 62%),
+    radial-gradient(900px 600px at -10% 110%, rgba(27, 49, 112, 0.35) 0%, transparent 60%),
+    linear-gradient(180deg, var(--ink-top) 0%, var(--ink-mid) 48%, var(--ink-low) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ---------- top bar ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--bar-bg);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.top-in {
+  max-width: 680px; margin: 0 auto; padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand b { font-weight: 700; letter-spacing: 0.32em; font-size: 15px; }
+.brand span { color: var(--fg-3); font-size: 13px; letter-spacing: 0.04em; }
+.status { font-size: 12.5px; color: var(--fg-3); display: flex; align-items: center; gap: 8px; text-align: right; }
+.status .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fg-3); flex: none; }
+.status.saved .dot { background: var(--gold); }
+.prog { height: 2px; background: var(--line); }
+.prog i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #8b6f2e, var(--gold-hi)); transition: width .4s ease; }
+
+/* ---------- page ---------- */
+.wrap { max-width: 680px; margin: 0 auto; padding-inline: 20px; padding-block: 48px 140px; }
+.eyebrow {
+  font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-3);
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.eyebrow em { font-style: normal; color: var(--gold); }
+h1 {
+  font-family: var(--f-display); font-weight: 400;
+  font-size: clamp(40px, 8vw, 58px); line-height: 1.02; letter-spacing: -0.01em;
+  margin: 14px 0 16px; text-wrap: balance;
+}
+h1 i { color: var(--gold-hi); }
+.lede { color: var(--fg-2); font-size: 17px; max-width: 34em; margin: 0; }
+
+/* welcome */
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 28px 0 0; padding: 0; list-style: none; color: var(--fg-2); font-size: 14px; }
+.facts li { display: flex; gap: 8px; align-items: baseline; }
+.facts strong { color: var(--fg); font-weight: 600; }
+.toc { margin: 44px 0 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; }
+.toc div { display: flex; gap: 14px; align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 15px; min-width: 0; }
+.toc div span { color: var(--fg-3); font-size: 12.5px; width: 20px; flex: none; }
+.toc div.done span { color: var(--gold); }
+.promise { margin: 32px 0 0; display: grid; gap: 10px; color: var(--fg-2); font-size: 14.5px; }
+.promise p { margin: 0; padding-left: 18px; position: relative; }
+.promise p::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 8px; height: 1px; background: var(--gold); }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 40px; }
+
+/* buttons */
+.btn {
+  appearance: none; border: 1px solid transparent; border-radius: 999px; cursor: pointer;
+  min-height: 52px; padding: 0 26px; font-weight: 600; font-size: 15.5px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  transition: background .2s, border-color .2s, color .2s, transform .1s;
+}
+.btn:active { transform: translateY(1px); }
+.btn-gold { background: var(--gold); color: var(--gold-ink); }
+.btn-gold:hover { background: var(--gold-hi); }
+.btn-ghost { background: transparent; border-color: var(--line-strong); color: var(--fg); }
+.btn-ghost:hover { background: var(--surface-2); }
+.btn-text { background: none; border: 0; color: var(--fg-2); padding: 0 6px; min-height: 44px; font-weight: 500; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-strong); }
+.btn-text:hover { color: var(--fg); }
+.btn-text.warn { color: var(--danger); }
+.arrow { font-size: 18px; line-height: 1; }
+
+/* ---------- questions ---------- */
+.sec-head { margin-bottom: 18px; }
+.q { padding: 34px 0; border-top: 1px solid var(--line); scroll-margin-top: 90px; }
+.q:first-of-type { border-top: 0; }
+.q-head { display: flex; gap: 14px; align-items: baseline; margin-bottom: 16px; }
+.q-num { color: var(--fg-3); font-size: 13px; width: 24px; flex: none; }
+.q-title { font-size: 17.5px; font-weight: 600; line-height: 1.4; margin: 0; text-wrap: pretty; min-width: 0; }
+.tag { display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-3); border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; vertical-align: 2px; }
+.tag.gold { color: var(--gold); border-color: var(--gold-ring); }
+.q-body { padding-left: 38px; display: grid; gap: 16px; min-width: 0; }
+.help { color: var(--fg-3); font-size: 14px; margin: -8px 0 0; }
+.part { display: grid; gap: 8px; min-width: 0; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.sub { font-size: 13.5px; color: var(--fg-2); font-weight: 500; }
+
+.in, select.in, textarea.in {
+  width: 100%; min-height: 52px; padding: 13px 16px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+  font-size: 16px; color: var(--fg); transition: border-color .2s, box-shadow .2s, background .2s;
+}
+textarea.in { min-height: 120px; resize: vertical; line-height: 1.55; }
+.in::placeholder { color: var(--fg-3); }
+.in:hover { border-color: var(--line-strong); }
+.in:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft); background: var(--surface-2); }
+select.in { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--fg-2) 50%), linear-gradient(135deg, var(--fg-2) 50%, transparent 50%); background-position: calc(100% - 22px) 23px, calc(100% - 17px) 23px; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 44px; }
+select.in option { background: #0a1226; color: var(--fg); }
+.bad .in { border-color: var(--danger); }
+.affix { position: relative; }
+.affix .in { padding-right: 44px; }
+.affix span { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--fg-3); pointer-events: none; }
+.tel { display: grid; grid-template-columns: 104px 1fr; gap: 8px; }
+.count { font-size: 12.5px; color: var(--fg-3); text-align: right; }
+.count.over { color: var(--danger); }
+.err { color: var(--danger); font-size: 13.5px; min-height: 0; }
+.err:empty { display: none; }
+
+/* choices */
+.choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); gap: 8px; }
+.choices.two { grid-template-columns: 1fr 1fr; max-width: 360px; }
+.choice {
+  appearance: none; cursor: pointer; text-align: left;
+  min-height: 50px; padding: 12px 14px 12px 42px; position: relative;
+  border: 1px solid var(--line); border-radius: var(--r); background: var(--surface);
+  font-size: 15px; line-height: 1.3; color: var(--fg); transition: border-color .15s, background .15s;
+}
+.choice::before {
+  content: ""; position: absolute; left: 14px; top: 50%; width: 16px; height: 16px; margin-top: -8px;
+  border: 1.5px solid var(--line-strong); border-radius: 50%; transition: all .15s;
+}
+.choice.box::before { border-radius: 5px; }
+.choice:hover { border-color: var(--line-strong); background: var(--surface-2); }
+.choice[aria-pressed="true"] { border-color: var(--gold); background: var(--gold-soft); }
+.choice[aria-pressed="true"]::before { border-color: var(--gold); background: var(--gold); box-shadow: inset 0 0 0 3px #0b1430; }
+.choice.box[aria-pressed="true"]::before { box-shadow: none; background: var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.5L12 5.5' fill='none' stroke='%2315110a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat; }
+.choice.sm { min-height: 44px; padding: 9px 14px; font-size: 14px; text-align: center; }
+.choice.sm::before { display: none; }
+
+/* grid questions */
+.gq { display: grid; gap: 4px; }
+.grow { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.grow:last-child { border-bottom: 0; }
+.glabel { font-size: 14.5px; color: var(--fg-2); }
+.gchips { display: flex; flex-wrap: wrap; gap: 6px; }
+.gchips .choice { flex: 1 1 auto; }
+
+/* scale */
+.scale { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+.scale .choice { padding: 0; text-align: center; min-height: 48px; font-weight: 600; }
+.scale .choice::before { display: none; }
+.ends { display: flex; justify-content: space-between; gap: 16px; font-size: 13px; color: var(--fg-3); }
+
+/* slider */
+.slider { position: relative; padding-top: 40px; }
+.bubble {
+  position: absolute; top: 0; transform: translateX(calc(var(--p) * -1));
+  left: calc(var(--p) + (14px - var(--p) * 0.28));
+  background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: 8px;
+  padding: 3px 10px; font-weight: 600; font-size: 14.5px; white-space: nowrap;
+}
+.slider.idle .bubble { color: var(--fg-3); font-weight: 500; }
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 32px; background: transparent; margin: 0; cursor: pointer; --p: 0%; }
+input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(to right, var(--gold) var(--p), var(--line-strong) var(--p)); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -11px; border-radius: 50%; background: var(--fg); border: 7px solid var(--gold); box-shadow: 0 2px 10px rgba(0,0,0,.45); }
+input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--line-strong); }
+input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--gold); }
+input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--fg); border: 7px solid var(--gold); box-shadow: 0 2px 10px rgba(0,0,0,.45); }
+.slider.idle input[type="range"]::-webkit-slider-thumb { background: var(--ink-mid); border-color: var(--fg-3); }
+.slider.idle input[type="range"]::-moz-range-thumb { background: var(--ink-mid); border-color: var(--fg-3); }
+.slider.off { opacity: .35; pointer-events: none; }
+
+.dual { position: relative; height: 32px; }
+.dual .track { position: absolute; left: 14px; right: 14px; top: 13px; height: 6px; border-radius: 3px; background: var(--line-strong); }
+.dual .track i { position: absolute; top: 0; bottom: 0; background: var(--gold); border-radius: 3px; }
+.dual input { position: absolute; inset: 0; pointer-events: none; }
+.dual input::-webkit-slider-runnable-track { background: transparent; }
+.dual input::-moz-range-track, .dual input::-moz-range-progress { background: transparent; }
+.dual input::-webkit-slider-thumb { pointer-events: auto; }
+.dual input::-moz-range-thumb { pointer-events: auto; }
+.dual-val { font-weight: 600; }
+
+.check { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 15px; color: var(--fg-2); }
+.check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--gold); flex: none; }
+.consent { padding: 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--fg); }
+.consent small { display: block; color: var(--fg-3); margin-top: 4px; font-size: 13px; }
+
+/* links / repeat */
+.links { display: grid; gap: 8px; }
+.link-row { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: center; }
+.link-row label { font-size: 14px; color: var(--fg-2); }
+.rep-row { display: grid; grid-template-columns: 1fr 44px; gap: 8px; }
+.icon-btn { appearance: none; border: 1px solid var(--line); background: transparent; color: var(--fg-3); border-radius: var(--r); cursor: pointer; font-size: 18px; }
+.icon-btn:hover { color: var(--fg); border-color: var(--line-strong); }
+.add { justify-self: start; }
+
+/* files */
+.drop { display: grid; gap: 4px; place-items: center; text-align: center; padding: 22px 16px; border: 1px dashed var(--line-strong); border-radius: var(--r); background: var(--surface); cursor: pointer; color: var(--fg-2); font-size: 14.5px; transition: border-color .2s, background .2s; }
+.drop:hover, .drop.over { border-color: var(--gold); background: var(--gold-soft); }
+.drop u { color: var(--fg); text-decoration-color: var(--gold); text-underline-offset: 3px; }
+.drop small { color: var(--fg-3); font-size: 12.5px; }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.files { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.files li { display: flex; justify-content: space-between; gap: 10px; align-items: center; font-size: 14px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; min-width: 0; }
+.files li span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.files li small { color: var(--fg-3); }
+.note { font-size: 14px; color: var(--fg-3); }
+
+.route { display: flex; gap: 10px; align-items: baseline; padding: 12px 14px; border: 1px solid var(--gold-ring); border-radius: var(--r); background: var(--gold-soft); font-size: 14px; color: var(--fg-2); }
+.route b { color: var(--gold-hi); font-weight: 600; }
+
+/* ---------- bottom bar ---------- */
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--bar-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.bar-in { max-width: 680px; margin: 0 auto; padding: 12px 20px; display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+.bar-msg { font-size: 13.5px; color: var(--danger); flex: 1; min-width: 0; }
+.bar-msg:empty { display: none; }
+.bar .btn-gold { flex: 0 0 auto; }
+
+/* ---------- recap ---------- */
+.rc-sec { margin-top: 36px; }
+.rc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--line-strong); }
+.rc-head h2 { font-family: var(--f-display); font-weight: 400; font-size: 28px; margin: 0; }
+.rc-head h2 span { font-family: var(--f-body); font-size: 13px; color: var(--fg-3); margin-right: 10px; vertical-align: 5px; }
+.rc-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+.rc-q { color: var(--fg-3); }
+.rc-a { color: var(--fg); white-space: pre-wrap; overflow-wrap: anywhere; }
+.rc-a.empty { color: var(--fg-3); font-style: italic; }
+.done-box { margin-top: 36px; display: grid; gap: 14px; }
+.json { width: 100%; min-height: 160px; font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+.team { margin-top: 48px; padding: 24px; border: 1px solid var(--line-strong); border-radius: 16px; background: var(--surface); display: grid; gap: 16px; }
+.team h2 { font-family: var(--f-display); font-weight: 400; font-size: 30px; margin: 0; line-height: 1.1; }
+.team .lede { font-size: 15px; }
+.sum-status { font-size: 14px; color: var(--fg-2); display: flex; gap: 10px; align-items: center; }
+.sum-status.err { color: var(--danger); }
+.spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line-strong); border-top-color: var(--gold); animation: spin 0.9s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.sum { display: grid; gap: 18px; padding-top: 4px; }
+.sum p { margin: 0; color: var(--fg); font-size: 15px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr)); gap: 8px; }
+.kpi { padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+.kpi small { display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.kpi b { font-size: 15px; font-weight: 600; }
+.sum h3 { margin: 0 0 6px; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+.sum ul, .sum ol { margin: 0; padding-left: 20px; color: var(--fg-2); font-size: 14.5px; display: grid; gap: 4px; }
+.proto { margin-top: 56px; font-size: 12.5px; color: var(--fg-3); border-top: 1px solid var(--line); padding-top: 14px; }
+
+.fade { animation: fade .45s ease both; }
+@keyframes fade { from { opacity: .001; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .fade { animation: none; } .prog i { transition: none; } }
+
+@media (max-width: 560px) {
+  .wrap { padding-block: 32px 140px; }
+  .q-body { padding-left: 0; }
+  .q-num { width: auto; }
+  .toc { grid-template-columns: 1fr; }
+  .row2 { grid-template-columns: 1fr; }
+  .grow { grid-template-columns: 1fr; gap: 8px; }
+  .scale { grid-template-columns: repeat(5, 1fr); }
+  .rc-row { grid-template-columns: 1fr; gap: 4px; }
+  .brand span { display: none; }
+  .bar .btn { padding: 0 20px; }
+}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><b>EVO</b><span>Onboarding</span></div>
+    <div class="status" id="status"><span class="dot"></span><span id="status-t">Sauvegarde automatique</span></div>
+  </div>
+  <div class="prog"><i id="prog"></i></div>
+</header>
+
+<main class="wrap" id="app"></main>
+<nav class="bar" id="bar" hidden><div class="bar-in" id="bar-in"></div></nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ======================= DATA ======================= */
+const DAYS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+const NETS = ["Instagram","TikTok","YouTube","LinkedIn"];
+const ROUTES = { "Oui, régulièrement": "Ads directement", "Parfois": "Ads + contenu en simultané", "Non": "Contenu d'abord" };
+
+const SECTIONS = [
+{ t: "Identité et logistique", d: "Les bases pour qu'on puisse bien travailler ensemble.", qs: [
+  { n:1, l:"Nom, prénom", row:true, p:[{k:"prenom",t:"text",label:"Prénom"},{k:"nom",t:"text",label:"Nom"}] },
+  { n:2, l:"Nom de ta marque ou de ton business", p:[{k:"v",t:"text",ph:"ex. Coaching Ascension"}] },
+  { n:3, l:"Email et numéro WhatsApp", p:[{k:"email",t:"email",label:"Email",ph:"toi@exemple.com"},{k:"tel",t:"tel",label:"WhatsApp"}] },
+  { n:4, l:"Ville et fuseau horaire", row:true, p:[{k:"ville",t:"text",label:"Ville",ph:"ex. Lyon"},{k:"tz",t:"select",label:"Fuseau horaire",opts:"TZ",def:"Europe/Paris"}] },
+  { n:5, l:"Statut juridique", p:[{k:"v",t:"single",opts:["Micro-entreprise","SASU","EURL","SAS","SARL","Pas encore de structure","Autre"],others:{"Autre":"Précise ton statut"}}] },
+  { n:6, l:"Liens de tes réseaux et de ton site", h:"Au moins un lien. Laisse vide ce que tu n'as pas.", p:[{k:"links",t:"links",fields:["Instagram","TikTok","YouTube","LinkedIn","Site"]}] },
+  { n:7, l:"Tes disponibilités pour les calls", h:"Coche tous les créneaux qui te conviennent.", p:[{k:"v",t:"grid",multi:true,rows:DAYS,cols:["Matin","Midi","Après-midi","Soir"]}] },
+  { n:8, l:"Canal préféré pour te joindre", p:[{k:"v",t:"single",opts:["WhatsApp","Email","Appel","Instagram DM"]}] },
+  { n:9, l:"Comment as-tu connu EVO ?", p:[{k:"v",t:"single",opts:["Instagram","YouTube","LinkedIn","Publicité","Recommandation","Événement","Autre"],others:{"Autre":"Précise"}}] },
+  { n:10, l:"Qui d'autre travaille sur ton business ?", p:[
+    {k:"v",t:"multi",opts:["Personne","Associé","Assistant","Monteur","Setter","Closer","Autre"],excl:["Personne"]},
+    {k:"who",t:"text",label:"Prénom et rôle de chacun",ph:"ex. Léa — monteuse, Karim — setter",when:q=>(get(10,"v")||[]).some(x=>x!=="Personne")}] },
+]},
+{ t: "Ton business aujourd'hui", d: "Une photo honnête de là où tu en es. Il n'y a pas de bonne ou de mauvaise réponse.", qs: [
+  { n:11, l:"En 3 phrases : ce que tu fais et pour qui", p:[{k:"v",t:"textarea",max:600}] },
+  { n:12, l:"Depuis quand tu coaches ou vends en ligne ?", p:[{k:"v",t:"single",opts:["Moins de 6 mois","6 à 12 mois","1 à 2 ans","2 à 4 ans","4 ans et plus"]}] },
+  { n:13, l:"Ton parcours avant, et pourquoi tu t'es lancé", p:[{k:"v",t:"textarea",max:1500}] },
+  { n:14, l:"Ton CA mensuel moyen sur les 6 derniers mois", p:[{k:"v",t:"slider",min:0,max:30000,step:500,unit:"€",plus:true}] },
+  { n:15, l:"Ton meilleur mois : montant, et ce qui l'a provoqué", p:[{k:"amt",t:"number",eur:true,label:"Montant"},{k:"why",t:"textarea",label:"Qu'est-ce qui l'a provoqué ?"}] },
+  { n:16, l:"Nombre de clients accompagnés", row:true, p:[{k:"total",t:"number",min:0,label:"Total depuis le début"},{k:"now",t:"number",min:0,label:"En cours aujourd'hui"}] },
+  { n:17, l:"Temps consacré au business chaque semaine", p:[{k:"v",t:"slider",min:0,max:70,step:5,unit:"h"}] },
+  { n:18, l:"As-tu une activité à côté ?", p:[{k:"v",t:"single",opts:["Non, 100 % sur mon business","Salarié temps plein","Salarié temps partiel","Études","Autre business"]}] },
+  { n:19, l:"As-tu déjà suivi un accompagnement ou une formation ?", p:[{k:"v",t:"yesno",follow:[{k:"det",t:"textarea",label:"Lesquels ? Ce qui a marché, ce qui n'a pas marché"}]}] },
+  { n:20, l:"Ton plus gros blocage aujourd'hui, selon toi", p:[{k:"v",t:"textarea",max:800}] },
+]},
+{ t: "Ton offre", d: "Ton offre telle qu'elle est aujourd'hui, en quelques mots. On la retravaillera ensemble dans le module Offre.", qs: [
+  { n:21, l:"Nom de ton offre principale", p:[{k:"v",t:"text"}] },
+  { n:22, l:"Ta promesse en une phrase (résultat et délai)", h:"Telle que tu la formules aujourd'hui, même si elle n'est pas parfaite.", p:[{k:"v",t:"text",ph:"J'aide X à obtenir Y en Z semaines"}] },
+  { n:23, l:"Prix et modalités de paiement", p:[{k:"prix",t:"number",eur:true,label:"Prix"},{k:"mod",t:"multi",label:"Modalités",opts:["1×","2×","3×","4× et plus","Mensuel","Financement externe"]}] },
+  { n:24, l:"Durée et format", p:[{k:"duree",t:"select",label:"Durée",opts:["1 mois","2 mois","3 mois","6 mois","12 mois","Autre"],others:{"Autre":"Précise la durée"}},{k:"fmt",t:"multi",label:"Format",opts:["1:1","Groupe","Vidéo","Hybride","Présentiel"]}] },
+  { n:25, l:"Ce que contient ton offre", p:[{k:"v",t:"multi",opts:["Calls 1:1","Calls de groupe","Modules vidéo","Support WhatsApp","Communauté","Templates","Autre"],others:{"Autre":"Précise"}}] },
+  { n:26, l:"Un ou deux résultats obtenus par tes clients", p:[{k:"v",t:"textarea",max:500,ph:"Prénom — situation avant → résultat chiffré"}] },
+  { n:27, l:"Combien de témoignages as-tu ?", p:[{k:"nb",t:"number",min:0},{k:"files",t:"file",opt:true,label:"Ajoute-les si tu veux (facultatif)",accept:"image/*,application/pdf,video/*",maxMB:50,fmtNote:"Images, PDF ou vidéo · 50 Mo max"}] },
+  { n:28, l:"As-tu eu des remboursements ou des clients insatisfaits ?", p:[{k:"v",t:"yesno",follow:[{k:"det",t:"text",label:"Combien et pourquoi ?"}]}] },
+  { n:29, l:"Tes autres offres", req:false, p:[{k:"v",t:"multi",opts:["Aucune","Low ticket","Upsell","Renouvellement","Communauté payante"],excl:["Aucune"]},{k:"prix",t:"text",label:"Prix de chacune",ph:"ex. Low ticket 47 €, renouvellement 1 500 €",when:()=>(get(29,"v")||[]).some(x=>x!=="Aucune")}] },
+  { n:32, l:"Proposes-tu une garantie ?", p:[{k:"v",t:"yesno",follow:[{k:"det",t:"text",label:"Laquelle ?"}]}] },
+  { n:33, l:"Nombre maximum de clients en parallèle", p:[{k:"v",t:"number",min:1}] },
+]},
+{ t: "Marché et avatar", d: "Une première esquisse de ton client idéal. On la précisera ensemble dans le module Avatar.", qs: [
+  { n:34, l:"Ta niche en une phrase", p:[{k:"v",t:"text"}] },
+  { n:35, l:"Ton client idéal", p:[{k:"age",t:"range2",label:"Tranche d'âge",min:18,max:65,def:[25,45]},{k:"sexe",t:"single",label:"Sexe",opts:["Homme","Femme","Mixte"]},{k:"pro",t:"text",label:"Situation pro",ph:"ex. salarié cadre qui veut se lancer"},{k:"rev",t:"select",label:"Revenus mensuels",opts:["Moins de 1 500 €","1 500 – 3 000 €","3 000 – 5 000 €","5 000 € et plus"]}] },
+  { n:36, l:"En quelques lignes : son problème, ce qu'il a déjà essayé, et le résultat qu'il veut", h:"Écris spontanément, sans chercher la formule parfaite.", p:[{k:"v",t:"textarea",max:600}] },
+  { n:40, l:"Où il passe son temps en ligne", p:[{k:"v",t:"multi",opts:["Instagram","TikTok","YouTube","LinkedIn","Facebook","Snapchat","Podcasts","Autre"],others:{"Autre":"Précise"}}] },
+  { n:43, l:"Comptes concurrents ou de référence", h:"Entre 1 et 5 liens.", p:[{k:"v",t:"repeat",min:1,max:5}] },
+  { n:45, l:"Capacité de paiement réelle de ton audience", p:[{k:"v",t:"single",opts:["Moins de 500 €","500 – 1 500 €","1 500 – 3 000 €","3 000 – 5 000 €","5 000 € et plus","Je ne sais pas"]}] },
+]},
+{ t: "Contenu et audience", d: "Ce que tu publies, et ce que ça te ramène.", qs: [
+  { n:46, l:"Tes abonnés par réseau, et ta plateforme principale", dyn:followersParts },
+  { n:47, l:"Ta fréquence de publication", p:[{k:"v",t:"grid",rows:["Reels","Stories","Posts","Vidéos longues"],cols:["Jamais","< 1×/sem","1-3×/sem","4-6×/sem","Quotidien"]}] },
+  { n:48, l:"Tes 3 meilleurs contenus, et pourquoi ils ont marché", p:[1,2,3].flatMap(i=>[{k:"u"+i,t:"url",label:"Contenu "+i},{k:"w"+i,t:"text",ph:"Pourquoi il a marché"}]) },
+  { n:49, l:"Ton contenu t'amène-t-il des prospects qualifiés ?", route:true, p:[{k:"v",t:"single",opts:["Oui, régulièrement","Parfois","Non"]}] },
+  { n:50, l:"Leads ou DM entrants par semaine", p:[{k:"v",t:"slider",min:0,max:50,step:1,unit:"",plus:true}] },
+  { n:51, l:"Part de tes leads qui vient du contenu", p:[{k:"v",t:"slider",min:0,max:100,step:10,unit:"%"}] },
+  { n:52, l:"Ton aisance face caméra", p:[{k:"v",t:"scale",lo:"Je bloque",hi:"Je suis dans mon élément"}] },
+  { n:53, l:"Qui écrit, tourne et monte ton contenu ?", p:[{k:"v",t:"grid",rows:["Écriture","Tournage","Montage"],cols:["Moi","Équipe","Freelance","Personne"]}] },
+  { n:54, l:"Ton matériel disponible", p:[{k:"v",t:"multi",opts:["Smartphone","Caméra","Micro","Lumière","Trépied","Rien"],excl:["Rien"]}] },
+  { n:55, l:"Temps disponible pour tourner chaque semaine", p:[{k:"v",t:"slider",min:0,max:15,step:1,unit:"h"}] },
+  { n:56, l:"As-tu un lead magnet ou un freebie ?", p:[{k:"v",t:"yesno",follow:[{k:"url",t:"url",label:"Lien"}]}] },
+  { n:57, l:"Taille de ta liste email, Telegram ou communauté", req:false, row:true, p:[{k:"email",t:"number",min:0,label:"Liste email",opt:true},{k:"tg",t:"number",min:0,label:"Telegram",opt:true},{k:"com",t:"number",min:0,label:"Communauté",opt:true}] },
+  { n:58, l:"Sujets ou limites d'image que tu refuses", req:false, p:[{k:"v",t:"textarea"}] },
+]},
+{ t: "Publicité", d: "Ton historique et ta situation côté ads.", qs: [
+  { n:59, l:"Ton expérience de la pub", p:[{k:"v",t:"single",opts:["Jamais","Quelques boosts","Campagnes Meta","Autres plateformes"]}] },
+  { n:60, l:"Budget dépensé, résultats et coût par lead", when:()=>adsXp(), row:true, p:[{k:"budget",t:"number",eur:true,label:"Budget total"},{k:"cpl",t:"number",eur:true,label:"Coût par lead moyen"},{k:"res",t:"textarea",label:"Résultats",full:true}] },
+  { n:61, l:"As-tu un Business Manager, un compte pub, un pixel ?", p:[{k:"v",t:"grid",rows:["Business Manager","Compte publicitaire","Pixel"],cols:["Oui","Non","Je ne sais pas"]}] },
+  { n:62, l:"Es-tu admin de ta page Facebook et de ton compte Instagram pro ?", p:[{k:"v",t:"grid",rows:["Page Facebook","Compte Instagram pro"],cols:["Oui","Non","Je ne sais pas"]}] },
+  { n:63, l:"As-tu une carte bancaire pro pour les ads ?", p:[{k:"v",t:"yesno"}] },
+  { n:64, l:"Budget ads mensuel envisageable après les 300 € de départ", p:[{k:"v",t:"slider",min:0,max:5000,step:100,unit:"€",plus:true}] },
+  { n:65, l:"Ton compte a-t-il déjà été restreint ou banni ?", when:()=>adsXp(), p:[{k:"v",t:"yesno",follow:[{k:"det",t:"text",label:"Quand et pourquoi ?"}]}] },
+  { n:66, l:"Tes freins vis-à-vis de la pub", p:[{k:"v",t:"multi",opts:["Budget","Peur de perdre de l'argent","Technique","Pas le temps","Aucun","Autre"],excl:["Aucun"],others:{"Autre":"Précise"}}] },
+]},
+{ t: "Setting et sales", d: "Comment un prospect devient client chez toi.", qs: [
+  { n:67, l:"Ton process de vente actuel", p:[{k:"v",t:"textarea",ph:"DM → appel découverte → call de vente → paiement"}] },
+  { n:68, l:"Qui gère les DM et le setting ?", p:[{k:"v",t:"single",opts:["Moi","Setter interne","Setter freelance","Personne"]}] },
+  { n:69, l:"Calls de vente par mois", p:[{k:"v",t:"slider",min:0,max:60,step:1,unit:""}] },
+  { n:70, l:"Ton taux de closing estimé", p:[{k:"v",t:"slider",min:0,max:100,step:5,unit:"%",dunno:true}] },
+  { n:71, l:"As-tu un script de vente ?", p:[{k:"v",t:"yesno",follow:[{k:"file",t:"file",opt:true,label:"Ajoute-le si tu veux (facultatif)",accept:".pdf,.docx,application/pdf",maxMB:20,fmtNote:"PDF ou DOCX"}]}] },
+  { n:72, l:"Les 3 objections que tu entends le plus", p:[1,2,3].map(i=>({k:"o"+i,t:"text",ph:"Objection "+i})) },
+  { n:73, l:"Ton outil de prise de rendez-vous", p:[{k:"v",t:"single",opts:["Calendly","iClosed","Google Agenda","Aucun","Autre"],others:{"Autre":"Lequel ?"}}] },
+  { n:74, l:"Ton moyen d'encaissement", p:[{k:"v",t:"multi",opts:["Stripe","PayPal","Virement","SumUp","Financement (Alma, Klarna…)","Autre"],others:{"Autre":"Précise"}}] },
+  { n:75, l:"Enregistres-tu tes calls ?", p:[{k:"v",t:"yesno"}] },
+]},
+{ t: "Outils et accès", d: "Ce que tu utilises déjà. On ne te demandera jamais de mot de passe.", qs: [
+  { n:76, l:"Les outils que tu utilises", p:[{k:"v",t:"multi",opts:["Notion","Google Drive","Canva","CapCut","CRM","Systeme.io","Kajabi","Skool","Insyder","Reep.it","Autre"],others:{"CRM":"Quel CRM ?","Autre":"Précise"}}] },
+  { n:77, l:"As-tu une page de vente, un site ou un tunnel ?", p:[{k:"v",t:"yesno",follow:[{k:"url",t:"url",label:"Lien"}]}] },
+  { n:78, l:"Accès à tes statistiques Instagram et Meta", p:[{k:"v",t:"consent",text:"J'accepte de partager mes statistiques avec l'équipe EVO.",small:"On t'enverra une invitation d'accès. Aucun mot de passe ne te sera jamais demandé."}] },
+  { n:79, l:"Adresse Gmail pour le partage Drive", h:"Pré-remplie avec ton email, modifie-la si besoin.", p:[{k:"v",t:"email",ph:"toi@gmail.com"}] },
+]},
+{ t: "Objectifs", d: "Où tu veux aller, et pourquoi.", qs: [
+  { n:80, l:"Le CA mensuel que tu vises", check:goalsCheck, p:[["m3","Dans 3 mois"],["m6","Dans 6 mois"],["m12","Dans 12 mois"]].map(([k,l])=>({k,t:"slider",label:l,min:0,max:50000,step:1000,unit:"€"})) },
+  { n:81, l:"Nombre de clients visé par mois", p:[{k:"v",t:"number",min:1}] },
+  { n:82, l:"Ce qui ferait de l'accompagnement un succès", p:[{k:"v",t:"textarea"}] },
+  { n:83, l:"Ce qui te ferait dire que c'est un échec", p:[{k:"v",t:"textarea"}] },
+  { n:84, l:"Ce que ce CA va changer dans ta vie", p:[{k:"v",t:"textarea"}] },
+  { n:85, l:"As-tu une échéance personnelle ?", req:false, p:[{k:"v",t:"yesno",follow:[{k:"date",t:"date",label:"Date"},{k:"det",t:"text",label:"De quoi s'agit-il ?"}]}] },
+]},
+{ t: "Mindset et fonctionnement", d: "Pour qu'on t'accompagne de la bonne façon.", qs: [
+  { n:86, l:"Ton niveau d'engagement", p:[{k:"v",t:"scale",lo:"Faible",hi:"Total"},{k:"risk",t:"text",label:"Qu'est-ce qui pourrait le faire baisser ?"}] },
+  { n:87, l:"Comment tu réagis quand ça ne marche pas", p:[{k:"v",t:"textarea"}] },
+  { n:88, l:"Tu préfères un feedback…", p:[{k:"v",t:"single",opts:["Direct, sans filtre","Progressif","Les deux selon le sujet"]}] },
+  { n:89, l:"Des contraintes perso à connaître ?", req:false, h:"Uniquement ce que tu souhaites partager.", p:[{k:"v",t:"textarea"}] },
+  { n:90, l:"Autre chose qu'on devrait savoir ?", req:false, p:[{k:"v",t:"textarea"}] },
+]},
+];
+
+/* flatten yes/no follow-ups into conditional parts */
+const QMAP = {};
+let QCOUNT = 0;
+SECTIONS.forEach((s, si) => s.qs.forEach(q => {
+  q.si = si; q.req = q.req !== false; q.num = ++QCOUNT; QMAP[q.n] = q;
+  if (q.p) q.p = q.p.flatMap(p => p.follow ? [p, ...p.follow.map(f => ({ ...f, force: true, when: () => get(q.n, p.k) === "Oui" }))] : [p]);
+}));
+
+function followersParts() {
+  const filled = NETS.filter(x => !blank(get(6, "links")?.[x]));
+  const list = filled.length ? filled : NETS;
+  const parts = filled.map(x => ({ k: "f_" + x, t: "number", min: 0, label: "Abonnés " + x }));
+  parts.push({ k: "main", t: "single", label: "Plateforme principale", opts: list });
+  return parts;
+}
+function adsXp() { const v = get(59, "v"); return !!v && v !== "Jamais"; }
+function goalsCheck() {
+  const a = get(80, "m3"), b = get(80, "m6"), c = get(80, "m12");
+  if (a == null || b == null || c == null) return null;
+  return (c >= b && b >= a) ? null : "Ton objectif à 12 mois doit être au moins égal à celui à 6 mois, lui-même au moins égal à celui à 3 mois.";
+}
+
+/* ======================= STATE ======================= */
+const KEY = "evo-onboarding-v1";
+/* Aperçu : aucune réponse obligatoire tant que la maquette sert à la relecture.
+   Passer à false pour réactiver la validation section par section. */
+const PREVIEW = true;
+let S = { a: {}, touched: {}, screen: "welcome", sec: 0, fromRecap: false, sentAt: null };
+try { const raw = localStorage.getItem(KEY); if (raw) S = { ...S, ...JSON.parse(raw) }; } catch (e) {}
+const shown = new Set(); // questions whose errors are visible
+
+function get(n, k) { return S.a[n + "." + k]; }
+function set(n, k, v) { S.a[n + "." + k] = v; }
+function blank(v) { return v == null || v === "" || (Array.isArray(v) && !v.length); }
+let saveT;
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+  const st = document.getElementById("status"), t = document.getElementById("status-t");
+  st.classList.add("saved");
+  const d = new Date();
+  t.textContent = "Enregistré à " + String(d.getHours()).padStart(2, "0") + "h" + String(d.getMinutes()).padStart(2, "0");
+}
+
+/* ======================= HELPERS ======================= */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const nb = v => String(v).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const slug = s => s.normalize("NFD").replace(/[^\w]/g, "").toLowerCase();
+const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const reUrl = /^(https?:\/\/)?([\w-]+\.)+[a-z]{2,}(\/\S*)?$/i;
+const okUrl = v => reUrl.test(String(v).trim());
+let TZ;
+function tzList() {
+  if (TZ) return TZ;
+  try { TZ = Intl.supportedValuesOf("timeZone"); } catch (e) { TZ = null; }
+  if (!TZ || !TZ.length) TZ = ["Europe/Paris","Europe/Brussels","Europe/Zurich","Europe/London","Europe/Madrid","Europe/Lisbon","Africa/Casablanca","Africa/Algiers","Africa/Tunis","Africa/Dakar","Africa/Abidjan","America/Montreal","America/New_York","America/Martinique","America/Guadeloupe","Indian/Reunion","Pacific/Tahiti","Asia/Dubai","Asia/Bangkok"];
+  if (!TZ.includes("Europe/Paris")) TZ = ["Europe/Paris", ...TZ];
+  return TZ;
+}
+const partsOf = q => q.dyn ? q.dyn() : q.p;
+const visQ = q => !q.when || q.when();
+const visP = p => !p.when || p.when();
+const isReq = (q, p) => !p.opt && (q.req || p.force);
+function sliderText(p, v) {
+  if (v == null) return "Fais glisser";
+  const s = p.unit === "€" ? nb(v) + " €" : p.unit === "%" ? v + " %" : p.unit === "h" ? v + " h" : nb(v);
+  return p.plus && v >= p.max ? s + " +" : s;
+}
+function othersFor(p) { return p.others || {}; }
+
+/* ======================= VALIDATION ======================= */
+function partErr(q, p) {
+  const v = get(q.n, p.k), req = isReq(q, p), R = "Ce champ est obligatoire.";
+  const othersMissing = sel => sel.filter(o => othersFor(p)[o] && blank(get(q.n, p.k + "__" + slug(o)))).length;
+  switch (p.t) {
+    case "text": case "textarea": case "date":
+      if (req && blank(v)) return R;
+      if (p.max && v && v.length > p.max) return `Maximum ${nb(p.max)} caractères.`;
+      return null;
+    case "number":
+      if (req && blank(v)) return R;
+      if (!blank(v) && p.min != null && +v < p.min) return `Le minimum est ${p.min}.`;
+      return null;
+    case "select":
+      if (req && blank(v)) return "Choisis une option.";
+      if (v && othersMissing([v])) return "Précise ta réponse.";
+      return null;
+    case "email":
+      if (blank(v)) return req ? R : null;
+      return reEmail.test(v.trim()) ? null : "Cette adresse email n'est pas valide.";
+    case "url":
+      if (blank(v)) return req ? R : null;
+      return okUrl(v) ? null : "Ce lien n'est pas valide (ex. instagram.com/ton-compte).";
+    case "tel":
+      if (blank(v)) return req ? R : null;
+      return v.replace(/\D/g, "").length >= 6 ? null : "Ce numéro semble incomplet.";
+    case "single": case "yesno":
+      if (req && blank(v)) return p.t === "yesno" ? "Réponds par Oui ou Non." : "Choisis une réponse.";
+      if (v && othersMissing([v])) return "Précise ta réponse.";
+      return null;
+    case "multi":
+      if (req && blank(v)) return "Coche au moins une réponse.";
+      if (v && othersMissing(v)) return "Précise ta réponse dans le champ ouvert.";
+      return null;
+    case "slider":
+      if (p.dunno && get(q.n, p.k + "__nsp")) return null;
+      return req && v == null ? "Fais glisser le curseur pour répondre." : null;
+    case "scale":
+      return req && v == null ? "Choisis une note de 1 à 10." : null;
+    case "grid": {
+      const g = v || {};
+      if (!req) return null;
+      if (p.multi) return Object.values(g).some(a => a && a.length) ? null : "Coche au moins un créneau.";
+      return p.rows.every(r => g[r]) ? null : "Réponds pour chaque ligne.";
+    }
+    case "consent": return req && !v ? "Coche la case pour continuer." : null;
+    case "links": {
+      const L = v || {}, filled = p.fields.filter(f => !blank(L[f]));
+      if (req && !filled.length) return "Renseigne au moins un lien.";
+      const bad = filled.filter(f => !okUrl(L[f]));
+      return bad.length ? `Lien non valide : ${bad.join(", ")}.` : null;
+    }
+    case "repeat": {
+      const L = (v || []).filter(x => !blank(x));
+      if (L.some(x => !okUrl(x))) return "Un des liens n'est pas valide.";
+      return req && L.length < p.min ? `Ajoute au moins ${p.min} liens.` : null;
+    }
+    default: return null;
+  }
+}
+function qErrors(q) {
+  const e = {};
+  if (!visQ(q)) return e;
+  partsOf(q).forEach(p => { if (visP(p)) { const m = partErr(q, p); if (m) e[p.k] = m; } });
+  if (q.check) { const m = q.check(); if (m) e._q = m; }
+  return e;
+}
+const qOk = q => !Object.keys(qErrors(q)).length;
+
+/* ======================= RENDER: parts ======================= */
+function fid(n, k) { return `f-${n}-${k}`; }
+function renderPart(q, p) {
+  const n = q.n, v = get(n, p.k), id = fid(n, p.k);
+  const lab = p.label ? `<label class="sub" for="${id}">${esc(p.label)}</label>` : "";
+  const da = `data-n="${n}" data-k="${p.k}"`;
+  let h = "";
+  switch (p.t) {
+    case "text": h = `<input class="in" id="${id}" type="text" maxlength="150" ${da} placeholder="${esc(p.ph || "")}" value="${esc(v)}">`; break;
+    case "email": h = `<input class="in" id="${id}" type="email" inputmode="email" autocomplete="email" ${da} placeholder="${esc(p.ph || "")}" value="${esc(v)}">`; break;
+    case "url": h = `<input class="in" id="${id}" type="url" inputmode="url" ${da} placeholder="${esc(p.ph || "https://")}" value="${esc(v)}">`; break;
+    case "date": h = `<input class="in" id="${id}" type="date" ${da} value="${esc(v)}">`; break;
+    case "number":
+      h = `<div class="affix"><input class="in" id="${id}" type="text" inputmode="numeric" data-kind="num" ${da} placeholder="0" value="${blank(v) ? "" : nb(v)}">${p.eur ? "<span>€</span>" : ""}</div>`; break;
+    case "tel": {
+      const cc = get(n, p.k + "__cc") || "+33";
+      const codes = ["+33","+32","+41","+352","+377","+1","+44","+34","+351","+39","+49","+212","+213","+216","+221","+225","+237","+262","+590","+596","+971"];
+      h = `<div class="tel"><select class="in" aria-label="Indicatif pays" data-n="${n}" data-k="${p.k}__cc">${codes.map(c => `<option${c === cc ? " selected" : ""}>${c}</option>`).join("")}</select><input class="in" id="${id}" type="tel" inputmode="tel" autocomplete="tel-national" ${da} placeholder="6 12 34 56 78" value="${esc(v)}"></div>`; break;
+    }
+    case "textarea": {
+      const len = (v || "").length;
+      h = `<textarea class="in" id="${id}" ${da} rows="4" placeholder="${esc(p.ph || "")}">${esc(v)}</textarea>` +
+        (p.max ? `<div class="count${len > p.max ? " over" : ""}" id="${id}-c">${nb(len)} / ${nb(p.max)}</div>` : ""); break;
+    }
+    case "select": {
+      const opts = p.opts === "TZ" ? tzList() : p.opts;
+      h = `<select class="in" id="${id}" ${da} data-re="1"><option value="">Choisir…</option>${opts.map(o => `<option value="${esc(o)}"${o === v ? " selected" : ""}>${esc(p.opts === "TZ" ? o.replace(/_/g, " ") : o)}</option>`).join("")}</select>` + othersHtml(q, p, v ? [v] : []); break;
+    }
+    case "single": case "multi": case "yesno": {
+      const opts = p.t === "yesno" ? ["Oui", "Non"] : p.opts, multi = p.t === "multi";
+      const sel = multi ? (v || []) : (v ? [v] : []);
+      h = `<div class="choices${p.t === "yesno" ? " two" : ""}" role="${multi ? "group" : "radiogroup"}" ${p.label ? `aria-label="${esc(p.label)}"` : ""} id="${id}">` +
+        opts.map(o => `<button type="button" class="choice${multi ? " box" : ""}" data-act="pick" ${da} data-v="${esc(o)}" aria-pressed="${sel.includes(o)}">${esc(o)}</button>`).join("") + `</div>` + othersHtml(q, p, sel);
+      if (q.route && v) h += `<div class="route">Ton parcours démarre par <b>${esc(ROUTES[v])}</b>. On l'ajuste ensemble au premier call.</div>`;
+      if (p.label) h = `<span class="sub">${esc(p.label)}</span>` + h;
+      return wrapPart(q, p, h, true);
+    }
+    case "scale":
+      h = `<div class="scale" role="radiogroup" id="${id}">${Array.from({ length: 10 }, (_, i) => i + 1).map(i => `<button type="button" class="choice" data-act="pick" ${da} data-v="${i}" aria-pressed="${v === i}">${i}</button>`).join("")}</div><div class="ends"><span>1 · ${esc(p.lo)}</span><span>10 · ${esc(p.hi)}</span></div>`; break;
+    case "slider": {
+      const nsp = p.dunno && get(n, p.k + "__nsp");
+      const val = v ?? p.min, pct = ((val - p.min) / (p.max - p.min)) * 100;
+      h = `<div class="slider${v == null ? " idle" : ""}${nsp ? " off" : ""}" style="--p:${pct}%"><output class="bubble" id="${id}-o">${sliderText(p, v)}</output><input id="${id}" type="range" min="${p.min}" max="${p.max}" step="${p.step}" value="${val}" data-kind="range" ${da} style="--p:${pct}%" aria-valuetext="${esc(sliderText(p, v))}"></div>` +
+        `<div class="ends"><span>${sliderText(p, p.min)}</span><span>${sliderText(p, p.max)}</span></div>` +
+        (p.dunno ? `<label class="check"><input type="checkbox" data-n="${n}" data-k="${p.k}__nsp" data-re="1"${nsp ? " checked" : ""}> Je ne sais pas</label>` : ""); break;
+    }
+    case "range2": {
+      const [a, b] = v || p.def, w = p.max - p.min;
+      h = `<div class="sub" id="${id}-l">${esc(p.label)} · <span class="dual-val" id="${id}-o">${a} – ${b} ans</span></div><div class="dual" id="${id}"><div class="track"><i id="${id}-t" style="left:${(a - p.min) / w * 100}%;right:${100 - (b - p.min) / w * 100}%"></i></div>` +
+        `<input type="range" aria-label="Âge minimum" min="${p.min}" max="${p.max}" value="${a}" data-kind="r2" data-i="0" ${da}><input type="range" aria-label="Âge maximum" min="${p.min}" max="${p.max}" value="${b}" data-kind="r2" data-i="1" ${da}></div><div class="ends"><span>${p.min} ans</span><span>${p.max} ans</span></div>`;
+      return wrapPart(q, p, h, true);
+    }
+    case "grid": {
+      const g = v || {};
+      h = `<div class="gq" id="${id}">${p.rows.map(r => `<div class="grow"><div class="glabel">${esc(r)}</div><div class="gchips" role="${p.multi ? "group" : "radiogroup"}" aria-label="${esc(r)}">${p.cols.map(c => {
+        const on = p.multi ? (g[r] || []).includes(c) : g[r] === c;
+        return `<button type="button" class="choice sm" data-act="grid" ${da} data-r="${esc(r)}" data-c="${esc(c)}" aria-pressed="${on}">${esc(c)}</button>`;
+      }).join("")}</div></div>`).join("")}</div>`; break;
+    }
+    case "consent":
+      h = `<label class="check consent"><input type="checkbox" id="${id}" ${da} data-re="1"${v ? " checked" : ""}><span>${esc(p.text)}<small>${esc(p.small)}</small></span></label>`;
+      return wrapPart(q, p, h, true);
+    case "links": {
+      const L = v || {};
+      h = `<div class="links" id="${id}">${p.fields.map(f => `<div class="link-row"><label for="${id}-${slug(f)}">${f}</label><input class="in" id="${id}-${slug(f)}" type="url" inputmode="url" data-kind="obj" data-f="${f}" ${da} placeholder="${f === "Site" ? "tonsite.fr" : f.toLowerCase() + ".com/…"}" value="${esc(L[f])}"></div>`).join("")}</div>`; break;
+    }
+    case "repeat": {
+      const L = v && v.length ? v : Array(p.min).fill("");
+      h = `<div class="links" id="${id}">${L.map((x, i) => `<div class="rep-row"><input class="in" type="url" inputmode="url" aria-label="Lien ${i + 1}" data-kind="arr" data-i="${i}" ${da} placeholder="instagram.com/compte-de-reference" value="${esc(x)}"><button type="button" class="icon-btn" data-act="rm" ${da} data-i="${i}" aria-label="Retirer le lien ${i + 1}"${L.length <= 1 ? " disabled" : ""}>×</button></div>`).join("")}</div>` +
+        (L.length < p.max ? `<button type="button" class="btn btn-ghost add" data-act="add" ${da}>+ Ajouter un lien</button>` : ""); break;
+    }
+    case "file": {
+      const F = v || [];
+      h = `<label class="drop" data-drop="1" ${da}><input type="file" id="${id}" multiple accept="${p.accept}" ${da} data-kind="file"><span>Glisse tes fichiers ici ou <u>parcours ton appareil</u></span><small>${esc(p.fmtNote)}</small></label>` +
+        (F.length ? `<ul class="files">${F.map((f, i) => `<li><span>${esc(f.name)}</span><small>${(f.size / 1048576).toFixed(1)} Mo</small><button type="button" class="btn-text" data-act="rmfile" ${da} data-i="${i}">Retirer</button></li>`).join("")}</ul>` : ""); break;
+    }
+  }
+  return wrapPart(q, p, lab + h);
+}
+function othersHtml(q, p, sel) {
+  const O = othersFor(p);
+  return sel.filter(o => O[o]).map(o => {
+    const k = p.k + "__" + slug(o), id = fid(q.n, k);
+    return `<input class="in" id="${id}" type="text" maxlength="150" data-n="${q.n}" data-k="${k}" aria-label="${esc(O[o])}" placeholder="${esc(O[o])}" value="${esc(get(q.n, k))}">`;
+  }).join("");
+}
+function wrapPart(q, p, inner) {
+  return `<div class="part" data-part="${p.k}"${p.full ? ' style="grid-column:1/-1"' : ""}>${inner}<div class="err" id="e-${q.n}-${p.k}"></div></div>`;
+}
+function renderQ(q) {
+  if (!visQ(q)) return `<div class="q" data-q="${q.n}" hidden></div>`;
+  const parts = partsOf(q).filter(visP);
+  const note = q.n === 46 && !NETS.some(x => !blank(get(6, "links")?.[x])) ? `<p class="note">Tu n'as pas renseigné de réseau social en section 1. Indique simplement ta plateforme principale.</p>` : "";
+  return `<section class="q" data-q="${q.n}">
+    <div class="q-head"><span class="q-num">${q.num}</span><h3 class="q-title">${esc(q.l)}${q.req ? "" : '<span class="tag">Facultatif</span>'}${q.route ? '<span class="tag gold">Oriente ton parcours</span>' : ""}</h3></div>
+    <div class="q-body">${q.h ? `<p class="help">${esc(q.h)}</p>` : ""}${note}
+      <div class="${q.row ? "row2" : "part"}" style="${q.row ? "" : "gap:16px"}">${parts.map(p => renderPart(q, p)).join("")}</div>
+      <div class="err" id="e-${q.n}-_q"></div>
+    </div></section>`;
+}
+function paintErrors(q) {
+  const e = shown.has(q.n) ? qErrors(q) : {};
+  const el = document.querySelector(`.q[data-q="${q.n}"]`);
+  if (!el) return;
+  el.querySelectorAll(".part").forEach(pe => {
+    const k = pe.dataset.part, m = e[k] || "";
+    pe.classList.toggle("bad", !!m);
+    const er = document.getElementById(`e-${q.n}-${k}`); if (er) er.textContent = m;
+  });
+  const qe = document.getElementById(`e-${q.n}-_q`); if (qe) qe.textContent = e._q || "";
+}
+function rerenderQ(n) {
+  const q = QMAP[n], el = document.querySelector(`.q[data-q="${n}"]`);
+  if (!el) return;
+  el.outerHTML = renderQ(q);
+  paintErrors(q);
+}
+
+/* ======================= PROGRESS ======================= */
+function progress() {
+  let tot = 0, ok = 0;
+  SECTIONS.forEach(s => s.qs.forEach(q => { if (q.req && visQ(q)) { tot++; if (qOk(q)) ok++; } }));
+  return tot ? Math.round(ok / tot * 100) : 0;
+}
+function paintProgress() {
+  const pc = S.screen === "done" ? 100 : progress();
+  document.getElementById("prog").style.width = pc + "%";
+  const lab = document.getElementById("sec-pc");
+  if (lab) lab.textContent = pc + " %";
+}
+const secOk = si => SECTIONS[si].qs.every(qOk);
+
+/* ======================= SCREENS ======================= */
+const app = document.getElementById("app"), bar = document.getElementById("bar"), barIn = document.getElementById("bar-in");
+
+function applyDefaults(si) {
+  SECTIONS[si].qs.forEach(q => (q.p || []).forEach(p => {
+    if (p.def != null && get(q.n, p.k) == null) set(q.n, p.k, p.def);
+  }));
+  if (si === 7 && get(79, "v") == null && get(3, "email")) set(79, "v", get(3, "email"));
+}
+
+function render() {
+  shown.clear();
+  window.scrollTo(0, 0);
+  ({ welcome: viewWelcome, section: viewSection, recap: viewRecap, done: viewDone })[S.screen]();
+  paintProgress();
+}
+
+function viewWelcome() {
+  const started = Object.keys(S.a).length > 0;
+  const prenom = get(1, "prenom");
+  bar.hidden = true;
+  app.innerHTML = `<div class="fade">
+    <div class="eyebrow"><em>Incubateur EVO</em><span>·</span><span>Questionnaire d'onboarding</span></div>
+    <h1>${started && prenom ? `Content de te revoir, <i>${esc(prenom)}</i>.` : `Bienvenue chez <i>EVO</i>.`}</h1>
+    <p class="lede">${started
+      ? "Tes réponses sont enregistrées. Reprends là où tu t'étais arrêté, rien n'est perdu."
+      : "Ce questionnaire pose les fondations de ton accompagnement. Plus tu es précis, plus on pourra construire un plan qui te ressemble dès le premier call."}</p>
+    <ul class="facts">
+      <li><strong>≈ 35 min</strong> environ</li>
+      <li><strong>10</strong> sections</li>
+      <li><strong>${QCOUNT}</strong> questions</li>
+      <li><strong>Sauvegarde</strong> automatique</li>
+    </ul>
+    <div class="toc">${SECTIONS.map((s, i) => `<div class="${started && secOk(i) ? "done" : ""}"><span>${String(i + 1).padStart(2, "0")}</span>${esc(s.t)}</div>`).join("")}</div>
+    <div class="promise">
+      <p>Tu peux quitter à tout moment et reprendre plus tard avec ton lien.</p>
+      <p>Tu relis et modifies tout avant l'envoi final.</p>
+      <p>On ne te demandera jamais de mot de passe ni d'identifiant.</p>
+    </div>
+    <div class="cta-row">
+      <button class="btn btn-gold" data-act="start">${started ? `Reprendre · section ${S.sec + 1}` : "Commencer"} <span class="arrow">→</span></button>
+      ${started ? `<button class="btn-text" data-act="reset" id="reset">Recommencer à zéro</button>` : ""}
+    </div>
+  </div>`;
+}
+
+function viewSection() {
+  const si = S.sec, s = SECTIONS[si];
+  applyDefaults(si);
+  app.innerHTML = `<div class="fade">
+    <div class="sec-head">
+      <div class="eyebrow"><em>Section ${si + 1}/10</em><span>·</span><span id="sec-pc"></span><span>complété</span></div>
+      <h1>${esc(s.t)}</h1>
+      <p class="lede">${esc(s.d)}</p>
+    </div>
+    ${s.qs.map(renderQ).join("")}
+  </div>`;
+  bar.hidden = false;
+  const last = si === SECTIONS.length - 1;
+  barIn.innerHTML = `
+    ${si > 0 && !S.fromRecap ? `<button class="btn btn-ghost" data-act="prev"><span class="arrow">←</span> Précédent</button>` : S.fromRecap ? "" : `<button class="btn btn-ghost" data-act="home"><span class="arrow">←</span> Accueil</button>`}
+    <div class="bar-msg" id="bar-msg" role="status"></div>
+    <button class="btn btn-gold" data-act="next">${S.fromRecap ? "Retour au récapitulatif" : last ? "Relire mes réponses" : "Continuer"} <span class="arrow">→</span></button>`;
+  save();
+}
+
+function answerText(q, p) {
+  const n = q.n, v = get(n, p.k), O = othersFor(p);
+  const withOther = o => O[o] && get(n, p.k + "__" + slug(o)) ? `${o} (${get(n, p.k + "__" + slug(o))})` : o;
+  switch (p.t) {
+    case "number": return blank(v) ? "" : nb(v) + (p.eur ? " €" : "");
+    case "tel": return blank(v) ? "" : (get(n, p.k + "__cc") || "+33") + " " + v;
+    case "select": case "single": case "yesno": return blank(v) ? "" : withOther(v);
+    case "multi": return blank(v) ? "" : v.map(withOther).join(", ");
+    case "slider": return p.dunno && get(n, p.k + "__nsp") ? "Je ne sais pas" : v == null ? "" : sliderText(p, v);
+    case "range2": return v ? `${v[0]} – ${v[1]} ans` : "";
+    case "scale": return v == null ? "" : v + " / 10";
+    case "grid": {
+      const g = v || {};
+      return p.rows.map(r => { const x = g[r]; return x && x.length ? `${r} : ${Array.isArray(x) ? x.join(", ") : x}` : null; }).filter(Boolean).join("\n");
+    }
+    case "consent": return v ? "Accepté" : "";
+    case "links": return p.fields.filter(f => !blank((v || {})[f])).map(f => `${f} : ${v[f]}`).join("\n");
+    case "repeat": return (v || []).filter(x => !blank(x)).join("\n");
+    case "file": return (v || []).map(f => f.name).join(", ");
+    case "date": return v ? new Date(v + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
+    default: return v || "";
+  }
+}
+function qAnswer(q) {
+  return partsOf(q).filter(visP).map(p => { const t = answerText(q, p); return t ? (p.label && partsOf(q).length > 1 ? `${p.label} : ${t}` : t) : null; }).filter(Boolean).join("\n");
+}
+
+function viewRecap() {
+  const route = ROUTES[get(49, "v")];
+  app.innerHTML = `<div class="fade">
+    <div class="eyebrow"><em>Dernière étape</em><span>·</span><span>Récapitulatif</span></div>
+    <h1>Relis, ajuste, <i>envoie</i>.</h1>
+    <p class="lede">Voici toutes tes réponses. Tu peux modifier chaque section avant l'envoi. Une fois envoyées, elles arrivent directement à l'équipe EVO.</p>
+    ${route ? `<div class="route" style="margin-top:24px">Parcours prévu : <b>${esc(route)}</b></div>` : ""}
+    ${SECTIONS.map((s, si) => `<section class="rc-sec">
+      <div class="rc-head"><h2><span>${String(si + 1).padStart(2, "0")}</span>${esc(s.t)}</h2><button class="btn-text" data-act="edit" data-s="${si}">Modifier</button></div>
+      ${s.qs.filter(visQ).map(q => { const a = qAnswer(q); return `<div class="rc-row"><div class="rc-q">${q.num}. ${esc(q.l)}</div><div class="rc-a${a ? "" : " empty"}">${a ? esc(a) : "Pas de réponse"}</div></div>`; }).join("")}
+    </section>`).join("")}
+  </div>`;
+  bar.hidden = false;
+  const missing = PREVIEW ? [] : SECTIONS.map((s, i) => secOk(i) ? null : i + 1).filter(Boolean);
+  barIn.innerHTML = `<button class="btn btn-ghost" data-act="back-last"><span class="arrow">←</span> Retour</button>
+    <div class="bar-msg" id="bar-msg" role="status">${missing.length ? `Il manque des réponses en section ${missing.join(", ")}.` : ""}</div>
+    <button class="btn btn-gold" data-act="send"${missing.length ? " disabled style='opacity:.45;cursor:not-allowed'" : ""}>Envoyer <span class="arrow">→</span></button>`;
+  save();
+}
+
+function exportJSON() {
+  return JSON.stringify({
+    envoyeLe: S.sentAt,
+    client: { prenom: get(1, "prenom"), nom: get(1, "nom"), email: get(3, "email"), marque: get(2, "v") },
+    parcours: ROUTES[get(49, "v")] || null,
+    reponses: SECTIONS.flatMap((s, si) => s.qs.filter(visQ).map(q => ({ n: q.n, numero: q.num, section: si + 1, question: q.l, reponse: qAnswer(q) }))),
+    brut: S.a,
+  }, null, 2);
+}
+
+function viewDone() {
+  bar.hidden = true;
+  const prenom = get(1, "prenom");
+  app.innerHTML = `<div class="fade">
+    <div class="eyebrow"><em>Envoyé</em><span>·</span><span>${new Date(S.sentAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</span></div>
+    <h1>Merci${prenom ? " " + esc(prenom) : ""}, <i>c'est parti</i>.</h1>
+    <p class="lede">Tes réponses sont entre les mains de l'équipe EVO. On les étudie avant ton premier call pour arriver avec un plan concret, adapté à ta situation.</p>
+    ${ROUTES[get(49, "v")] ? `<div class="route" style="margin-top:24px">Ton parcours démarre par <b>${esc(ROUTES[get(49, "v")])}</b>.</div>` : ""}
+    <div class="done-box">
+      <div class="cta-row" style="margin-top:8px">
+        <button class="btn btn-ghost" data-act="copy">Copier mes réponses</button>
+        <button class="btn-text" data-act="reset" id="reset">Recommencer le questionnaire</button>
+      </div>
+      <textarea class="in json" id="json" readonly hidden></textarea>
+    </div>
+    <section class="team" aria-labelledby="team-h">
+      <div class="eyebrow"><em>Espace équipe</em><span>·</span><span>Usage interne</span></div>
+      <h2 id="team-h">Synthèse IA de l'onboarding</h2>
+      <p class="lede">Un résumé de 1 à 2 pages de toutes les réponses, en PDF, à transmettre à l'équipe avant le premier call.</p>
+      <div id="sum-box"></div>
+    </section>
+    <p class="proto">Maquette : rien n'est réellement envoyé depuis cette page. Dans l'application, l'envoi notifie l'équipe et génère la synthèse automatiquement.</p>
+  </div>`;
+  paintSummary();
+}
+
+/* ======================= SYNTHÈSE IA + PDF ======================= */
+let SAMPLE = null, DL = null, sumBusy = false, sumMsg = null;
+(async () => {
+  if (!window.claude || !window.claude.use) return;
+  [SAMPLE, DL] = await Promise.all([claude.use("sample"), claude.use("downloads")]);
+  if (S.screen === "done") paintSummary();
+})();
+
+const SUM_BLOCKS = [
+  ["profil", "Profil et business"], ["offre", "Offre"], ["avatar", "Marché et avatar"],
+  ["acquisition", "Contenu et acquisition"], ["vente", "Publicité et vente"], ["objectifs", "Objectifs et mindset"],
+  ["forces", "Forces"], ["vigilance", "Points de vigilance"],
+];
+function keyFigures() {
+  const t = (n, k) => { const q = QMAP[n], p = partsOf(q).find(x => x.k === k); return answerText(q, p) || "—"; };
+  const tot = get(16, "total"), now = get(16, "now");
+  return [
+    ["CA mensuel moyen", t(14, "v")], ["Meilleur mois", t(15, "amt")],
+    ["Clients (total / en cours)", blank(tot) && blank(now) ? "—" : `${blank(tot) ? "—" : nb(tot)} / ${blank(now) ? "—" : nb(now)}`],
+    ["Prix de l'offre", t(23, "prix")], ["Leads par semaine", t(50, "v")], ["Taux de closing", t(70, "v")],
+    ["Budget ads envisagé", t(64, "v")], ["Objectif CA à 12 mois", t(80, "m12")],
+  ];
+}
+function clientName() { return [get(1, "prenom"), get(1, "nom")].filter(x => !blank(x)).join(" ") || "Client"; }
+
+function summaryPrompt() {
+  const body = SECTIONS.map((s, si) => `## ${si + 1}. ${s.t}\n` + s.qs.filter(visQ).map(q => `- ${q.l} : ${qAnswer(q).replace(/\n/g, " ; ") || "(pas de réponse)"}`).join("\n")).join("\n\n");
+  return `Tu es consultant senior chez EVO, un incubateur qui accompagne des coachs et infopreneurs (offre, contenu, publicité, setting, closing).
+Un nouveau client vient de remplir son questionnaire d'onboarding. Rédige pour l'équipe EVO une synthèse interne, en français, claire et factuelle, qui tient sur 1 à 2 pages A4.
+
+Règles :
+- Appuie-toi uniquement sur les réponses ci-dessous. N'invente aucun chiffre. Si une information manque, dis-le brièvement ("non renseigné").
+- Parle du client à la 3e personne en utilisant son prénom.
+- Puces courtes : 25 mots maximum chacune.
+- Sois concret et utile pour un coach qui prépare le premier call.
+
+Réponds uniquement avec un objet JSON de cette forme :
+{"resume": "3 à 4 phrases qui résument la situation, l'offre et l'ambition",
+ "profil": ["2 à 4 puces"], "offre": ["2 à 4 puces"], "avatar": ["2 à 3 puces"],
+ "acquisition": ["2 à 4 puces sur contenu et leads"], "vente": ["2 à 4 puces sur pub, setting, closing"],
+ "objectifs": ["2 à 4 puces sur objectifs, engagement, préférences de feedback"],
+ "forces": ["2 à 4 puces"], "vigilance": ["2 à 4 puces : risques, incohérences, blocages"],
+ "priorites": ["3 priorités recommandées pour le premier mois, dans l'ordre"],
+ "questions": ["3 à 5 questions à creuser lors du premier call"]}
+
+Client : ${clientName()}${get(2, "v") ? " — " + get(2, "v") : ""}
+Parcours déterminé par le questionnaire : ${ROUTES[get(49, "v")] || "non déterminé"}
+
+Réponses :
+${body}`;
+}
+
+async function generateSummary() {
+  if (!SAMPLE || sumBusy) return;
+  sumBusy = true; sumMsg = null; paintSummary();
+  try {
+    const r = await SAMPLE.json(summaryPrompt(), { modelTier: "default" });
+    if (!r || typeof r.resume !== "string") throw { code: "invalid_json" };
+    S.summary = { ...r, at: new Date().toISOString() };
+    save();
+  } catch (e) {
+    sumMsg = ({
+      not_granted: "L'accès à Claude a été refusé. Recharge la page pour réessayer.",
+      rate_limited: "Trop de demandes d'affilée. Réessaie dans une minute.",
+      invalid_json: "La synthèse reçue était incomplète. Relance la génération.",
+      prompt_too_large: "Les réponses sont trop longues pour une seule synthèse.",
+    })[e && e.code] || "La synthèse n'a pas pu être générée. Relance la génération.";
+  }
+  sumBusy = false; paintSummary();
+}
+
+function list(a) { return Array.isArray(a) ? a.filter(x => typeof x === "string" && x.trim()) : []; }
+function paintSummary() {
+  const box = document.getElementById("sum-box");
+  if (!box) return;
+  const sm = S.summary;
+  if (sumBusy) { box.innerHTML = `<div class="sum-status" role="status"><span class="spin"></span>Claude analyse les réponses. Ça prend généralement 30 secondes à 1 minute.</div>`; return; }
+  const err = sumMsg ? `<div class="sum-status err" role="alert">${esc(sumMsg)}</div>` : "";
+  if (!sm) {
+    box.innerHTML = SAMPLE
+      ? `${err}<div class="cta-row" style="margin-top:0"><button class="btn btn-gold" data-act="sum-gen">Générer la synthèse IA</button></div>`
+      : `<div class="sum-status">La synthèse IA fonctionne quand cette page est ouverte depuis Claude.</div>`;
+    return;
+  }
+  const route = ROUTES[get(49, "v")];
+  box.innerHTML = `${err}<div class="sum">
+      <p>${esc(sm.resume)}</p>
+      ${route ? `<div class="route">Parcours : <b>${esc(route)}</b></div>` : ""}
+      <div class="kpis">${keyFigures().map(([l, v]) => `<div class="kpi"><small>${esc(l)}</small><b>${esc(v)}</b></div>`).join("")}</div>
+      ${SUM_BLOCKS.map(([k, l]) => list(sm[k]).length ? `<div><h3>${l}</h3><ul>${list(sm[k]).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "").join("")}
+      ${list(sm.priorites).length ? `<div><h3>Priorités du premier mois</h3><ol>${list(sm.priorites).map(x => `<li>${esc(x)}</li>`).join("")}</ol></div>` : ""}
+      ${list(sm.questions).length ? `<div><h3>À creuser au premier call</h3><ul>${list(sm.questions).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+    </div>
+    <div class="cta-row" style="margin-top:4px">
+      <button class="btn btn-gold" data-act="sum-pdf">Télécharger le PDF</button>
+      ${SAMPLE ? `<button class="btn-text" data-act="sum-gen">Régénérer</button>` : ""}
+    </div>`;
+}
+
+/* PDF : Helvetica standard (WinAnsi) — on normalise les caractères hors jeu */
+function pdfText(s) {
+  return String(s ?? "").replace(/[  ]/g, " ").replace(/→/g, "->").replace(/≈/g, "~").replace(/×/g, "x")
+    .replace(/[‘’]/g, "'").replace(/[“”«»]/g, '"').replace(/[–—]/g, "-").replace(/…/g, "...").replace(/•/g, "-")
+    .replace(/[^\x00-\xFF€]/g, "");
+}
+function buildPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const sm = S.summary, M = 18, W = 210 - 2 * M, BOTTOM = 280;
+  const NAVY = [11, 20, 48], GOLD = [184, 148, 58], INK = [28, 32, 46], MUTED = [112, 120, 140], LINE = [222, 226, 235];
+  let y;
+  const ensure = h => { if (y + h > BOTTOM) { doc.addPage(); y = 20; } };
+  const para = (txt, size, color, lh, x = M, w = W) => {
+    doc.setFontSize(size); doc.setTextColor(...color);
+    doc.splitTextToSize(pdfText(txt), w).forEach(line => { ensure(lh); doc.text(line, x, y); y += lh; });
+  };
+  const heading = t => {
+    ensure(14); y += 3;
+    doc.setFont("helvetica", "bold"); doc.setFontSize(10.5); doc.setTextColor(...NAVY);
+    doc.text(pdfText(t).toUpperCase(), M, y, { charSpace: 0.4 });
+    doc.setDrawColor(...GOLD); doc.setLineWidth(0.6); doc.line(M, y + 1.8, M + 12, y + 1.8);
+    y += 7; doc.setFont("helvetica", "normal");
+  };
+  const bullets = (arr, numbered) => list(arr).forEach((b, i) => {
+    doc.setFontSize(9.5);
+    const lines = doc.splitTextToSize(pdfText(b), W - 6);
+    ensure(lines.length * 4.4 + 1);
+    doc.setTextColor(...GOLD); doc.text(numbered ? `${i + 1}.` : "-", M + 0.5, y);
+    doc.setTextColor(...INK); lines.forEach(l => { doc.text(l, M + 6, y); y += 4.4; });
+    y += 1;
+  });
+
+  // En-tête
+  doc.setFillColor(...NAVY); doc.rect(0, 0, 210, 40, "F");
+  doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(255, 255, 255);
+  doc.text("EVO", M, 14, { charSpace: 2.2 });
+  doc.setFont("helvetica", "normal"); doc.setFontSize(7.5); doc.setTextColor(201, 168, 76);
+  doc.text("SYNTHÈSE D'ONBOARDING", M + 17, 14, { charSpace: 0.8 });
+  doc.setFontSize(19); doc.setTextColor(255, 255, 255);
+  doc.text(pdfText(clientName()), M, 28);
+  doc.setFontSize(9); doc.setTextColor(170, 180, 205);
+  if (get(2, "v")) doc.text(pdfText(get(2, "v")), M, 34);
+  const dt = new Date(S.sentAt || Date.now()).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  doc.text(pdfText("Questionnaire envoyé le " + dt), 192, 28, { align: "right" });
+  const route = ROUTES[get(49, "v")];
+  if (route) { doc.setTextColor(201, 168, 76); doc.text(pdfText("Parcours : " + route), 192, 34, { align: "right" }); }
+  y = 50;
+
+  // Résumé
+  para(sm.resume, 10.5, INK, 5.2);
+  y += 4;
+
+  // Chiffres clés
+  const figs = keyFigures(), cw = (W - 3 * 3) / 4, ch = 14;
+  ensure(2 * ch + 8);
+  figs.forEach(([l, v], i) => {
+    const cx = M + (i % 4) * (cw + 3), cy = y + Math.floor(i / 4) * (ch + 3);
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.roundedRect(cx, cy, cw, ch, 1.5, 1.5, "S");
+    doc.setFontSize(6.5); doc.setTextColor(...MUTED); doc.text(pdfText(l).toUpperCase(), cx + 3, cy + 5, { charSpace: 0.2 });
+    doc.setFont("helvetica", "bold"); doc.setFontSize(10.5); doc.setTextColor(...INK);
+    doc.text(doc.splitTextToSize(pdfText(v), cw - 6)[0], cx + 3, cy + 10.8);
+    doc.setFont("helvetica", "normal");
+  });
+  y += 2 * ch + 3 + 6;
+
+  SUM_BLOCKS.forEach(([k, l]) => { if (list(sm[k]).length) { heading(l); bullets(sm[k]); } });
+  if (list(sm.priorites).length) { heading("Priorités du premier mois"); bullets(sm.priorites, true); }
+  if (list(sm.questions).length) { heading("À creuser au premier call"); bullets(sm.questions); }
+
+  // Pied de page
+  const pages = doc.getNumberOfPages();
+  for (let i = 1; i <= pages; i++) {
+    doc.setPage(i);
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.3); doc.line(M, 285, 210 - M, 285);
+    doc.setFontSize(7.5); doc.setTextColor(...MUTED);
+    doc.text(pdfText("Confidentiel · usage interne EVO · synthèse générée par IA à partir des réponses du client, à vérifier"), M, 290);
+    doc.text(`${i} / ${pages}`, 210 - M, 290, { align: "right" });
+  }
+  return doc;
+}
+async function downloadPDF(btn) {
+  if (!window.jspdf || !S.summary) { sumMsg = "Le module PDF n'a pas pu se charger. Recharge la page."; paintSummary(); return; }
+  const doc = buildPDF();
+  const filename = `Synthese-onboarding-${slug(clientName()) || "client"}.pdf`;
+  if (!DL) { doc.save(filename); return; }
+  btn.disabled = true;
+  try {
+    await DL.save({ filename, data: doc.output("blob") });
+    sumMsg = null;
+  } catch (e) {
+    if (e && e.code !== "declined") sumMsg = e.code === "rate_limited" ? "Un téléchargement est déjà en cours." : "Le téléchargement n'est pas disponible ici.";
+  }
+  paintSummary();
+}
+
+/* ======================= EVENTS ======================= */
+function touchedChange(n, rerender) {
+  if (rerender) rerenderQ(n);
+  if (n === 59) { rerenderQ(60); rerenderQ(65); }
+  if (shown.has(n)) paintErrors(QMAP[n]);
+  save(); paintProgress();
+  const m = document.getElementById("bar-msg"); if (m && S.screen === "section") m.textContent = "";
+}
+
+app.addEventListener("input", e => {
+  const el = e.target, n = +el.dataset.n, k = el.dataset.k;
+  if (!k || el.type === "file") return;
+  const kind = el.dataset.kind;
+  if (kind === "num") {
+    const d = el.value.replace(/\D/g, "").slice(0, 9);
+    set(n, k, d === "" ? "" : +d); el.value = d === "" ? "" : nb(+d);
+  } else if (kind === "range") {
+    const q = QMAP[n], p = partsOf(q).find(x => x.k === k), v = +el.value, pct = ((v - p.min) / (p.max - p.min)) * 100;
+    set(n, k, v);
+    const box = el.parentElement; box.classList.remove("idle"); box.style.setProperty("--p", pct + "%"); el.style.setProperty("--p", pct + "%");
+    document.getElementById(el.id + "-o").textContent = sliderText(p, v); el.setAttribute("aria-valuetext", sliderText(p, v));
+  } else if (kind === "r2") {
+    const q = QMAP[n], p = q.p.find(x => x.k === k), cur = [...(get(n, k) || p.def)], i = +el.dataset.i;
+    cur[i] = +el.value;
+    if (cur[0] > cur[1]) { cur[i] = cur[1 - i]; el.value = cur[i]; }
+    set(n, k, cur);
+    const id = fid(n, k), w = p.max - p.min;
+    document.getElementById(id + "-o").textContent = `${cur[0]} – ${cur[1]} ans`;
+    const t = document.getElementById(id + "-t"); t.style.left = (cur[0] - p.min) / w * 100 + "%"; t.style.right = 100 - (cur[1] - p.min) / w * 100 + "%";
+  } else if (kind === "obj") {
+    set(n, k, { ...(get(n, k) || {}), [el.dataset.f]: el.value });
+  } else if (kind === "arr") {
+    const p = QMAP[n].p.find(x => x.k === k), L = [...(get(n, k) || Array(p.min).fill(""))];
+    L[+el.dataset.i] = el.value; set(n, k, L);
+  } else if (el.type !== "checkbox" && el.tagName !== "SELECT") {
+    set(n, k, el.value);
+    const c = document.getElementById(el.id + "-c");
+    if (c) { const p = partsOf(QMAP[n]).find(x => x.k === k); c.textContent = `${nb(el.value.length)} / ${nb(p.max)}`; c.classList.toggle("over", el.value.length > p.max); }
+  } else return;
+  touchedChange(n, false);
+});
+
+app.addEventListener("change", e => {
+  const el = e.target, n = +el.dataset.n, k = el.dataset.k;
+  if (!k) return;
+  if (el.type === "file") { addFiles(n, k, el.files); return; }
+  if (el.type === "checkbox") { set(n, k, el.checked); touchedChange(n, true); return; }
+  if (el.tagName === "SELECT") { set(n, k, el.value); touchedChange(n, !!el.dataset.re); return; }
+});
+
+app.addEventListener("pointerdown", e => {
+  const el = e.target;
+  if (el.dataset && el.dataset.kind === "range" && get(+el.dataset.n, el.dataset.k) == null) {
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+});
+app.addEventListener("keydown", e => {
+  const el = e.target;
+  if (el.dataset && el.dataset.kind === "range" && get(+el.dataset.n, el.dataset.k) == null && /Arrow|Home|End|Page/.test(e.key)) {
+    requestAnimationFrame(() => el.dispatchEvent(new Event("input", { bubbles: true })));
+  }
+});
+
+function addFiles(n, k, list) {
+  const p = partsOf(QMAP[n]).find(x => x.k === k), cur = [...(get(n, k) || [])], tooBig = [];
+  [...list].forEach(f => { if (f.size > p.maxMB * 1048576) tooBig.push(f.name); else cur.push({ name: f.name, size: f.size, type: f.type }); });
+  set(n, k, cur); touchedChange(n, true);
+  if (tooBig.length) { const er = document.getElementById(`e-${n}-${k}`); if (er) er.textContent = `Fichier trop lourd (${p.maxMB} Mo max) : ${tooBig.join(", ")}.`; }
+}
+app.addEventListener("dragover", e => { const d = e.target.closest("[data-drop]"); if (d) { e.preventDefault(); d.classList.add("over"); } });
+app.addEventListener("dragleave", e => { const d = e.target.closest("[data-drop]"); if (d) d.classList.remove("over"); });
+app.addEventListener("drop", e => { const d = e.target.closest("[data-drop]"); if (!d) return; e.preventDefault(); addFiles(+d.dataset.n, d.dataset.k, e.dataTransfer.files); });
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]");
+  if (!b) return;
+  const act = b.dataset.act, n = +b.dataset.n, k = b.dataset.k;
+  const q = QMAP[n], p = q && partsOf(q).find(x => x.k === k);
+  switch (act) {
+    case "pick": {
+      let v = b.dataset.v;
+      if (p.t === "scale") v = +v;
+      if (p.t === "multi") {
+        let cur = [...(get(n, k) || [])];
+        if (cur.includes(v)) cur = cur.filter(x => x !== v);
+        else if ((p.excl || []).includes(v)) cur = [v];
+        else cur = [...cur.filter(x => !(p.excl || []).includes(x)), v];
+        set(n, k, cur);
+      } else set(n, k, get(n, k) === v && p.t !== "scale" && !q.req ? undefined : v);
+      touchedChange(n, true);
+      const again = document.querySelector(`[data-act="pick"][data-n="${n}"][data-k="${k}"][data-v="${CSS.escape(b.dataset.v)}"]`);
+      if (again) again.focus({ preventScroll: true });
+      break;
+    }
+    case "grid": {
+      const g = { ...(get(n, k) || {}) }, r = b.dataset.r, c = b.dataset.c;
+      if (p.multi) { const a = g[r] || []; g[r] = a.includes(c) ? a.filter(x => x !== c) : [...a, c]; }
+      else g[r] = g[r] === c ? undefined : c;
+      set(n, k, g); touchedChange(n, true);
+      break;
+    }
+    case "add": { const L = [...(get(n, k) || Array(p.min).fill(""))]; L.push(""); set(n, k, L); touchedChange(n, true);
+      const ins = document.querySelectorAll(`.q[data-q="${n}"] [data-kind="arr"]`); ins[ins.length - 1]?.focus(); break; }
+    case "rm": { const L = [...(get(n, k) || [])]; L.splice(+b.dataset.i, 1); set(n, k, L); touchedChange(n, true); break; }
+    case "rmfile": { const L = [...(get(n, k) || [])]; L.splice(+b.dataset.i, 1); set(n, k, L); touchedChange(n, true); break; }
+    case "start": S.screen = "section"; render(); break;
+    case "home": S.screen = "welcome"; render(); break;
+    case "prev": S.sec--; render(); break;
+    case "next": {
+      const s = SECTIONS[S.sec], bad = s.qs.filter(q => !qOk(q));
+      if (bad.length && !PREVIEW) {
+        bad.forEach(q => { shown.add(q.n); paintErrors(q); });
+        const first = document.querySelector(`.q[data-q="${bad[0].n}"]`);
+        first?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+        document.getElementById("bar-msg").textContent = bad.length === 1 ? "1 question à compléter." : `${bad.length} questions à compléter.`;
+        return;
+      }
+      if (S.fromRecap || S.sec === SECTIONS.length - 1) { S.fromRecap = false; S.screen = "recap"; }
+      else S.sec++;
+      render(); break;
+    }
+    case "edit": S.sec = +b.dataset.s; S.fromRecap = true; S.screen = "section"; render(); break;
+    case "back-last": S.sec = SECTIONS.length - 1; S.screen = "section"; render(); break;
+    case "send": if (PREVIEW || SECTIONS.every((_, i) => secOk(i))) { S.sentAt = new Date().toISOString(); S.summary = null; S.screen = "done"; save(); render(); } break;
+    case "copy": {
+      const txt = exportJSON(), ta = document.getElementById("json");
+      const fallback = () => { ta.hidden = false; ta.value = txt; ta.select(); b.textContent = "Sélectionné, copie avec ⌘C"; };
+      try { navigator.clipboard.writeText(txt).then(() => { b.textContent = "Copié ✓"; }, fallback); } catch (err) { fallback(); }
+      break;
+    }
+    case "sum-gen": generateSummary(); break;
+    case "sum-pdf": downloadPDF(b); break;
+    case "reset":
+      b.textContent = "Confirmer : tout effacer"; b.classList.add("warn"); b.dataset.act = "reset-ok"; break;
+    case "reset-ok":
+      S = { a: {}, touched: {}, screen: "welcome", sec: 0, fromRecap: false, sentAt: null };
+      try { localStorage.removeItem(KEY); } catch (err) {}
+      document.getElementById("status").classList.remove("saved");
+      document.getElementById("status-t").textContent = "Sauvegarde automatique";
+      render(); break;
+  }
+});
+
+if (PREVIEW) document.querySelector(".brand span").textContent = "Onboarding · Mode aperçu";
+render();
+</script>
