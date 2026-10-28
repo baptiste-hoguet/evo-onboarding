@@ -1,3 +1,4 @@
+import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "@/lib/prisma";
 
 export type Reponse = { n: number; numero: number; section: number; sectionTitre: string; question: string; reponse: string };
@@ -17,6 +18,17 @@ export type Summary = {
 };
 
 const LISTS = ["profil", "offre", "avatar", "acquisition", "vente", "objectifs", "forces", "vigilance", "priorites", "questions"] as const;
+
+// Format imposé à la réponse de Claude (sorties structurées) : correspond au type Summary.
+const SUMMARY_SCHEMA = {
+  type: "object",
+  properties: {
+    resume: { type: "string" },
+    ...Object.fromEntries(LISTS.map((k) => [k, { type: "array", items: { type: "string" } }])),
+  },
+  required: ["resume", ...LISTS],
+  additionalProperties: false,
+};
 
 export function parseReadable(raw: string | null): Readable {
   try {
@@ -59,8 +71,7 @@ Réponds uniquement avec un objet JSON de cette forme :
 
 // Génère (ou régénère) la synthèse IA d'un questionnaire envoyé et l'enregistre
 export async function generateQuestionnaireSummary(id: string): Promise<Summary> {
-  const apiKey = process.env.DEEPSEEK_API_KEY;
-  if (!apiKey) throw new Error("Clé API DeepSeek manquante (DEEPSEEK_API_KEY).");
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error("Clé API Claude manquante (ANTHROPIC_API_KEY).");
 
   const r = await prisma.questionnaireResponse.findUnique({ where: { id } });
   if (!r) throw new Error("Questionnaire introuvable");
@@ -77,29 +88,34 @@ export async function generateQuestionnaireSummary(id: string): Promise<Summary>
     .join("\n\n");
   const name = [r.firstName, r.lastName].filter(Boolean).join(" ") || "Client";
 
-  const res = await fetch("https://api.deepseek.com/chat/completions", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-    body: JSON.stringify({
-      model: "deepseek-chat",
-      max_tokens: 3000,
-      response_format: { type: "json_object" },
+  const client = new Anthropic();
+  let response: Anthropic.Beta.BetaMessage;
+  try {
+    response = await client.beta.messages.create({
+      model: "claude-opus-5-5",
+      max_tokens: 16000,
+      // Si Claude refuse la requête, l'API la relance sur le modèle de repli recommandé par Anthropic.
+      betas: ["server-side-fallback-2026-07-01"],
+      fallbacks: "default",
+      output_config: { effort: "medium", format: { type: "json_schema", schema: SUMMARY_SCHEMA } },
+      system: SYSTEM_PROMPT,
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
         {
           role: "user",
           content: `Client : ${name}${r.brand ? " — " + r.brand : ""}\nParcours déterminé par le questionnaire : ${r.route || "non déterminé"}\n\n<reponses>\n${body}\n</reponses>`,
         },
       ],
-    }),
-  });
-  if (!res.ok) {
-    const detail = await res.text().catch(() => "");
-    throw new Error(`Erreur DeepSeek (${res.status}). ${res.status === 401 ? "Clé API invalide." : detail.slice(0, 200)}`);
+    });
+  } catch (e) {
+    if (e instanceof Anthropic.AuthenticationError) throw new Error("Clé API Claude invalide.");
+    if (e instanceof Anthropic.RateLimitError) throw new Error("Claude est momentanément saturé. Réessaie dans une minute.");
+    if (e instanceof Anthropic.APIError) throw new Error(`Erreur Claude (${e.status ?? "réseau"}). ${e.message.slice(0, 200)}`);
+    throw e;
   }
 
-  const data = await res.json();
-  const summary = parseSummary((data?.choices?.[0]?.message?.content || "").trim());
+  if (response.stop_reason === "refusal") throw new Error("Claude a refusé de générer la synthèse. Relance la génération.");
+  const text = response.content.map((b) => (b.type === "text" ? b.text : "")).join("").trim();
+  const summary = parseSummary(text);
   if (!summary) throw new Error("La réponse de l'IA est incomplète. Relance la génération.");
 
   await prisma.questionnaireResponse.update({

@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     title: "Virements",
   },
   icons: {
+    icon: [{ url: "/evo-icon.svg", type: "image/svg+xml" }, { url: "/evo-icon-96.png", sizes: "96x96", type: "image/png" }],
     apple: "/apple-icon.png",
   },
 };
