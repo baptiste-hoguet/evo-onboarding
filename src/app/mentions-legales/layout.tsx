@@ -7,7 +7,7 @@ const body = Manrope({ variable: "--q-body", subsets: ["latin"], weight: ["400",
 
 export const metadata: Metadata = {
   title: "Mentions légales · EVO Incubator",
-  description: "Mentions légales du site evo-inc.fr, édité par Baptiste Hoguet (EI).",
+  description: "Mentions légales du site evo-inc.fr, édité par Hoguet Capital.",
 };
 
 export default function MentionsLegalesLayout({ children }: { children: React.ReactNode }) {
