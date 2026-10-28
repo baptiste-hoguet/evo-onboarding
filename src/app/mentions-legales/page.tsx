@@ -50,7 +50,7 @@ export default function MentionsLegales() {
         <h2>Données personnelles</h2>
         <p className="lede">
           Pour toute question sur vos données ou pour exercer vos droits (accès, rectification, suppression),
-          écrivez à {EDITEUR.email}.
+          écrivez à {EDITEUR.email}. Détails dans la <a href="/confidentialite"><u>politique de confidentialité</u></a>.
         </p>
       </section>
     </main>
