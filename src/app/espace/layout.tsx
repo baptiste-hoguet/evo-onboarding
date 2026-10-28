@@ -6,7 +6,7 @@ const display = Instrument_Serif({ variable: "--q-display", subsets: ["latin"], 
 const body = Manrope({ variable: "--q-body", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export const metadata: Metadata = {
-  icons: { icon: "/favicon.ico", apple: "/evo-apple-icon.png" },
+  icons: { icon: [{ url: "/evo-icon.svg", type: "image/svg+xml" }, { url: "/evo-icon-96.png", sizes: "96x96", type: "image/png" }], apple: "/evo-apple-icon.png" },
   title: "Mon espace EVO",
   description: "Ton parcours d'accompagnement EVO : progression, livrables et calls.",
   robots: { index: false, follow: false },
