@@ -129,8 +129,8 @@ export function ResultView({ result, leadId, firstName, email }: { result: Diagn
             <p className="muted small" style={{ margin: 0 }}>Tes chiffres des 7 derniers jours face aux seuils EVO.</p>
           </div>
           <ul className="funnel">
-            {result.stages.map((s) => (
-              <li key={s.key} className={s.key === result.constraint ? "is-key" : undefined}>
+            {result.stages.map((s, i) => (
+              <li key={`${s.key}-${i}`} className={s.key === result.constraint ? "is-key" : undefined}>
                 <div className="f-label">
                   <small>{PILLARS[s.pillar] ?? s.pillar}</small>
                   {s.label}
