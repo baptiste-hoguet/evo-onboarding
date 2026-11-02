@@ -1,0 +1,118 @@
+/* Diagnostic express — complète espace.css (tokens .evos). Une colonne (max 640px), mobile d'abord. */
+.evos .dg { max-width: 640px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 56px; display: grid; gap: 28px; }
+.evos .dg-top .top-in { max-width: 640px; padding: 12px 16px; }
+.evos .dg-top .brand span { letter-spacing: 0.12em; }
+.evos .dg-top .step-count { font-size: 12.5px; color: var(--fg-3); white-space: nowrap; }
+.evos .dg-prog { height: 3px; background: var(--line); }
+.evos .dg-prog i { display: block; height: 100%; background: linear-gradient(90deg, #8b6f2e, var(--gold-hi)); transition: width .4s ease; }
+
+.evos .dg h1 { font-size: clamp(36px, 10vw, 52px); }
+.evos .dg .lede { font-size: 16px; }
+.evos .dg-facts { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 18px 0 0; padding: 0; list-style: none; color: var(--fg-2); font-size: 14px; }
+.evos .dg-facts li { display: flex; gap: 8px; align-items: baseline; }
+.evos .dg-facts li::before { content: ""; width: 8px; height: 1px; background: var(--gold); flex: none; transform: translateY(-4px); }
+
+/* étapes */
+.evos .dg-step { display: grid; gap: 22px; }
+.evos .dg-step h2 { font-size: 30px; outline: none; }
+.evos .dg-step .sub { color: var(--fg-2); margin: 6px 0 0; font-size: 15px; }
+.evos .dg-q { display: grid; gap: 8px; min-width: 0; border: 0; margin: 0; padding: 0; }
+.evos .dg-q > label:not(.consent), .evos .dg-q > legend { font-size: 15px; color: var(--fg); font-weight: 600; padding: 0; line-height: 1.35; }
+.evos .dg-q .opt { font-weight: 500; color: var(--fg-3); font-size: 13px; margin-left: 6px; }
+.evos .dg-q .hint { color: var(--fg-3); font-size: 13px; margin: 0; }
+.evos .dg-q legend + .choices, .evos .dg-q legend + .hint { margin-top: 8px; }
+.evos .dg-in { width: 100%; height: 52px; padding: 0 16px; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); font-size: 16px; color: var(--fg); transition: border-color .2s, box-shadow .2s; }
+.evos .dg-in::placeholder { color: var(--fg-3); }
+.evos .dg-in:hover { border-color: var(--line-strong); }
+.evos .dg-in:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft); background: var(--surface-2); }
+.evos .dg-q.bad .dg-in { border-color: var(--danger); }
+.evos .dg-affix { position: relative; }
+.evos .dg-affix .dg-in { padding-right: 44px; }
+.evos .dg-affix > span { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--fg-3); pointer-events: none; }
+.evos .dg-affix.pre .dg-in { padding-left: 34px; padding-right: 16px; }
+.evos .dg-affix.pre > span { left: 16px; right: auto; }
+.evos .dg-q .err { font-size: 13px; }
+.evos .dg-grid { display: grid; gap: 22px; }
+
+/* choix */
+.evos .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.evos .choices.one { grid-template-columns: 1fr; }
+.evos .choice { appearance: none; cursor: pointer; text-align: left; min-height: 48px; padding: 10px 12px 10px 38px; position: relative; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); font-size: 14.5px; line-height: 1.3; color: var(--fg); transition: border-color .15s, background .15s; }
+.evos .choice::before { content: ""; position: absolute; left: 13px; top: 50%; width: 15px; height: 15px; margin-top: -7.5px; border: 1.5px solid var(--line-strong); border-radius: 50%; transition: all .15s; }
+.evos .choice:hover { border-color: var(--line-strong); background: var(--surface-2); }
+.evos .choice[aria-checked="true"] { border-color: var(--gold); background: var(--gold-soft); }
+.evos .choice[aria-checked="true"]::before { border-color: var(--gold); background: var(--gold); box-shadow: inset 0 0 0 3px #0b1430; }
+.evos .dg-q.bad .choice { border-color: rgba(242, 148, 138, 0.45); }
+
+/* consentements */
+.evos .consent { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); cursor: pointer; font-size: 14.5px; line-height: 1.45; }
+.evos .consent input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--gold); flex: none; }
+.evos .consent a { color: var(--gold-hi); text-decoration: underline; text-underline-offset: 3px; }
+.evos .consent small { display: block; color: var(--fg-3); font-size: 12.5px; margin-top: 4px; }
+.evos .consent.bad { border-color: rgba(242, 148, 138, 0.5); }
+.evos .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+.evos .dg-nav { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding-top: 6px; }
+.evos .dg-nav .btn-gold { flex: 1 1 auto; max-width: 320px; margin-left: auto; }
+.evos .dg-nav .btn-ghost { flex: 0 0 auto; }
+.evos .form-err { border-left: 3px solid var(--danger); background: var(--danger-soft); border-radius: 0 10px 10px 0; padding: 10px 14px; font-size: 14px; margin: 0; }
+
+/* résultat */
+.evos .res-card { border: 1px solid var(--gold-ring); background: linear-gradient(160deg, var(--gold-soft), transparent 65%); border-radius: 18px; padding: 22px 18px; display: grid; gap: 16px; }
+.evos .res-card .kicker { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin: 0; }
+.evos .res-card h2 { font-size: clamp(28px, 8vw, 38px); line-height: 1.08; text-wrap: balance; }
+.evos .res-card .msg { margin: 0; color: var(--fg); font-size: 16px; white-space: pre-line; }
+.evos .key-num { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line-strong); border-radius: 14px; overflow: hidden; }
+.evos .key-num > div { padding: 12px 14px; display: grid; gap: 2px; }
+.evos .key-num > div + div { border-left: 1px solid var(--line-strong); }
+.evos .key-num small { font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.evos .key-num b { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+.evos .key-num .bad-v { color: var(--danger); }
+.evos .key-num .ok-v { color: var(--ok); }
+.evos .key-num .label { grid-column: 1 / -1; border-top: 1px solid var(--line-strong); border-left: 0 !important; font-size: 13px; color: var(--fg-2); padding: 8px 14px; }
+.evos .res-list { display: grid; gap: 0; margin: 0; }
+.evos .res-list > div { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid var(--line); }
+.evos .res-list dt { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3); font-weight: 600; }
+.evos .res-list dd { margin: 0; font-size: 15px; color: var(--fg); }
+.evos .res-list .action dd { font-weight: 600; color: var(--gold-hi); }
+
+.evos .notice { border: 1px solid rgba(157, 180, 240, 0.35); background: var(--info-soft); border-radius: var(--r); padding: 12px 14px; font-size: 14px; color: var(--fg-2); margin: 0; }
+.evos .notice b { color: var(--info); }
+
+.evos .funnel { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.evos .funnel li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 12px 2px; border-bottom: 1px solid var(--line); }
+.evos .funnel .f-label { font-size: 14.5px; min-width: 0; }
+.evos .funnel .f-label small { display: block; color: var(--fg-3); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+.evos .funnel .f-val { text-align: right; font-size: 14.5px; font-weight: 600; }
+.evos .funnel .f-val small { display: block; color: var(--fg-3); font-size: 12px; font-weight: 500; }
+.evos .funnel li.is-key { background: var(--gold-soft); border-radius: 10px; padding-inline: 10px; }
+.evos .pill.st-ok { color: var(--ok); border-color: rgba(127, 200, 169, 0.35); background: var(--ok-soft); }
+.evos .pill.st-alerte { color: var(--danger); border-color: rgba(242, 148, 138, 0.4); background: var(--danger-soft); }
+.evos .pill.st-insuffisant { color: var(--fg-3); border-color: var(--line-strong); background: transparent; }
+.evos .f-status { grid-column: 1 / -1; display: flex; }
+
+.evos .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px; }
+.evos .stat { padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); display: grid; gap: 2px; }
+.evos .stat small { font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); }
+.evos .stat b { font-size: 22px; font-weight: 600; }
+.evos .stat span { font-size: 13px; color: var(--fg-2); }
+
+.evos .cta-card { border: 1px solid var(--line-strong); border-radius: 16px; background: var(--surface); padding: 20px 18px; display: grid; gap: 12px; }
+.evos .cta-card .btn { width: 100%; }
+.evos .cta-row { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+
+.evos .dg-foot { border-top: 1px solid var(--line); padding-top: 18px; font-size: 13px; color: var(--fg-3); display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.evos .dg-foot a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+
+.evos .fade { animation: dgfade .4s ease both; }
+@keyframes dgfade { from { opacity: .001; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+@media (min-width: 640px) {
+  .evos .dg { padding-inline: 20px; padding-block: 44px 72px; gap: 34px; }
+  .evos .dg-grid.two { grid-template-columns: 1fr 1fr; gap: 22px 16px; }
+  .evos .choices { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .evos .res-card { padding: 28px 26px; }
+}
+@media (prefers-reduced-motion: reduce) { .evos .fade { animation: none; } .evos .dg-prog i { transition: none; } }
+.evos .dg-nav.start .btn-gold { margin-left: 0; max-width: none; }
+@media (min-width: 640px) { .evos .dg-nav.start .btn-gold { flex: 0 0 auto; min-width: 240px; } }
