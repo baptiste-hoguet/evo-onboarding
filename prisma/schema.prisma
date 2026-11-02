@@ -220,3 +220,35 @@ model DeliverableVersion {
   size          Int
   uploadedAt    DateTime    @default(now())
 }
+
+// Diagnostic express (lead magnet public, evo-inc.fr/diagnostic).
+// Données minimales : uniquement les chiffres agrégés déclarés par le coach,
+// jamais d'information sur ses prospects.
+model DiagnosticLead {
+  id               String    @id @default(cuid())
+  firstName        String
+  email            String
+  phone            String? // facultatif (minimisation RGPD)
+  instagram        String? // @ normalisé : minuscules, sans @
+  activity         String // coach | freelance | infopreneur | agence | autre
+  revenueRange     String // tranche de CA mensuel actuel
+  goalRange        String // tranche d'objectif de CA à 6 mois
+  input            String // JSON DiagnosticInput (chiffres déclarés)
+  result           String // JSON DiagnosticResult (figé au moment du diagnostic)
+  constraintKey    String // clé de la contrainte n°1, pour filtrer dans l'admin
+  score            Int       @default(0) // scoring interne, questionnaire uniquement
+  consentCgu       Boolean   @default(false)
+  consentRecontact Boolean   @default(false)
+  consentLabels    String? // JSON {cgu, recontact} : libellés exacts affichés
+  consentAt        DateTime?
+  utmSource        String?
+  utmMedium        String?
+  utmCampaign      String?
+  calendlyClickAt  DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([email])
+  @@index([constraintKey])
+  @@index([createdAt])
+}
