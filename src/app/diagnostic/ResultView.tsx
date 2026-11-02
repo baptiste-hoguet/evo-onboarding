@@ -41,12 +41,18 @@ export function ResultView({ result, leadId, firstName, email }: { result: Diagn
   const href = calendlyHref(firstName, email, result.constraint);
 
   return (
+    <>
     <div className="dg-step fade">
       <div>
         <div className="eyebrow"><em>EVO</em><span>·</span><span>Ton diagnostic express</span></div>
         <h1>{firstName}, voici ta <i>contrainte n°1</i>.</h1>
         <p className="lede">Une seule chose à débloquer en premier. Le reste attendra.</p>
       </div>
+
+      <section className="cta-top">
+        <p>On relit ce diagnostic avec toi et on choisit quoi attaquer en premier.</p>
+        <CalendlyButton href={href} leadId={leadId} className="btn btn-gold">Réserver mon appel découverte</CalendlyButton>
+      </section>
 
       {result.lowConfidence && (
         <p className="notice">
@@ -93,15 +99,13 @@ export function ResultView({ result, leadId, firstName, email }: { result: Diagn
         </dl>
       </section>
 
-      {result.showCallOffer && (
-        <section className="cta-card">
-          <h3>Tu veux un deuxième regard sur tes chiffres&nbsp;?</h3>
-          <p className="muted" style={{ margin: 0 }}>
-            Réserve un appel découverte avec EVO. On relit ton diagnostic ensemble et on choisit quoi attaquer en premier.
-          </p>
-          <CalendlyButton href={href} leadId={leadId} className="btn btn-gold">Réserver mon appel découverte</CalendlyButton>
-        </section>
-      )}
+      <section className="cta-card">
+        <h3>Tu veux un deuxième regard sur tes chiffres&nbsp;?</h3>
+        <p className="muted" style={{ margin: 0 }}>
+          Réserve un appel découverte avec EVO. On relit ton diagnostic ensemble et on choisit quoi attaquer en premier.
+        </p>
+        <CalendlyButton href={href} leadId={leadId} className="btn btn-gold">Réserver mon appel découverte</CalendlyButton>
+      </section>
 
       {(result.dmPrice !== null || result.weeklyCallsNeeded !== null) && (
         <div className="stat-row">
@@ -149,12 +153,15 @@ export function ResultView({ result, leadId, firstName, email }: { result: Diagn
       )}
 
       <div className="cta-row">
-        {!result.showCallOffer && (
-          <CalendlyButton href={href} leadId={leadId} className="btn btn-ghost">Réserver un appel découverte</CalendlyButton>
-        )}
         <Link href="/diagnostic" className="linkbtn">Refaire le diagnostic</Link>
       </div>
       <p className="muted small" style={{ margin: 0 }}>Garde l&apos;adresse de cette page : elle te permet de retrouver ton diagnostic.</p>
     </div>
+
+    {/* Hors de .fade : son animation de transform casserait position: fixed. */}
+    <div className="cta-sticky">
+      <CalendlyButton href={href} leadId={leadId} className="btn btn-gold">Réserver mon appel découverte</CalendlyButton>
+    </div>
+    </>
   );
 }
