@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import type { DiagnosticResult, InstagramSummary } from "@/lib/diagnostic/types";
 import {
@@ -154,7 +154,21 @@ async function fetchSnapshot(id: string): Promise<IgSnapshot | null> {
 
 const nf = (n: number) => n.toLocaleString("fr-FR");
 
-export function DiagnosticForm({ instagramEnabled = false }: { instagramEnabled?: boolean }) {
+// Bêta testeurs (avant validation de l'app par Meta) : ?beta=instagram, mémorisé pour l'onglet.
+const BETA_KEY = "evo-diag-ig-beta";
+const noopSubscribe = () => () => {};
+function readBeta(): boolean {
+  try {
+    if (new URLSearchParams(window.location.search).get("beta") === "instagram") return true;
+    return sessionStorage.getItem(BETA_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function DiagnosticForm({ instagramEnabled = false, instagramPublic = false }: { instagramEnabled?: boolean; instagramPublic?: boolean }) {
+  const igBeta = useSyncExternalStore(noopSubscribe, readBeta, () => false);
+  const showInstagram = instagramEnabled && (instagramPublic || igBeta);
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(EMPTY);
   const [tried, setTried] = useState<Record<number, boolean>>({});
@@ -171,6 +185,15 @@ export function DiagnosticForm({ instagramEnabled = false }: { instagramEnabled?
   useEffect(() => {
     startedAt.current = Date.now();
   }, []);
+
+  useEffect(() => {
+    if (!igBeta) return;
+    try {
+      sessionStorage.setItem(BETA_KEY, "1");
+    } catch {
+      // stockage indisponible : le paramètre d'URL reste conservé par le retour Instagram.
+    }
+  }, [igBeta]);
 
   // Retour de la connexion Instagram (?ig=<snapshot> ou ?ig_error=…) : on restaure le formulaire puis on pré-remplit.
   useEffect(() => {
@@ -212,7 +235,7 @@ export function DiagnosticForm({ instagramEnabled = false }: { instagramEnabled?
     } catch {
       // stockage indisponible : on repartira de l'étape 0, les chiffres Instagram resteront pré-remplis.
     }
-    window.location.assign("/api/instagram/start");
+    window.location.assign(igBeta ? "/api/instagram/start?beta=instagram" : "/api/instagram/start");
   }
 
   useEffect(() => {
@@ -401,7 +424,7 @@ export function DiagnosticForm({ instagramEnabled = false }: { instagramEnabled?
         </div>
       );
     }
-    if (!instagramEnabled) return null;
+    if (!showInstagram) return null;
     return (
       <section className="ig-card" aria-labelledby="ig-title">
         <p className="ig-tag">Facultatif · 20 secondes</p>

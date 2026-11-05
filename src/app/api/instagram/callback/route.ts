@@ -1,7 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { baseUrl } from "@/lib/base-url";
-import { STATE_COOKIE, instagramConfig, redirectUri } from "@/lib/instagram/config";
+import { BETA_COOKIE, STATE_COOKIE, instagramConfig, redirectUri } from "@/lib/instagram/config";
 import { InstagramError, exchangeCode, readAccount } from "@/lib/instagram/api";
 import { createSnapshot, purgeUnlinkedSnapshots } from "@/lib/instagram/store";
 
@@ -18,9 +18,11 @@ function sameState(a: string | undefined, b: string | null): boolean {
 // sans jeton, puis le jeton est abandonné (jamais stocké, jamais journalisé).
 export async function GET(request: NextRequest) {
   const base = await baseUrl();
+  const beta = request.cookies.get(BETA_COOKIE)?.value === "1" ? "&beta=instagram" : "";
   const back = (q: string) => {
-    const res = NextResponse.redirect(`${base}/diagnostic?${q}`, 303);
+    const res = NextResponse.redirect(`${base}/diagnostic?${q}${beta}`, 303);
     res.cookies.set(STATE_COOKIE, "", { path: "/api/instagram", maxAge: 0 });
+    res.cookies.set(BETA_COOKIE, "", { path: "/api/instagram", maxAge: 0 });
     res.headers.set("Cache-Control", "no-store");
     return res;
   };

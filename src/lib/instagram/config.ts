@@ -14,6 +14,7 @@ export const GRAPH_HOST = "graph.facebook.com";
 export const TOKEN_URL = `https://${GRAPH_HOST}/${GRAPH_VERSION}/oauth/access_token`;
 
 export const STATE_COOKIE = "evo_ig_state";
+export const BETA_COOKIE = "evo_ig_beta";
 export const STATE_MAX_AGE_S = 10 * 60;
 
 // Un snapshot n'est servi au formulaire que pendant 2 h ; non relié à un lead, il est supprimé après 24 h.
@@ -37,6 +38,11 @@ export function instagramConfig(): MetaConfig | null {
 
 export function instagramEnabled(): boolean {
   return instagramConfig() !== null;
+}
+
+/** Carte visible par tous seulement après validation de l'app par Meta (sinon : testeurs via ?beta=instagram). */
+export function instagramPublic(): boolean {
+  return process.env.META_INSTAGRAM_PUBLIC?.trim() === "1";
 }
 
 export function redirectUri(base: string): string {

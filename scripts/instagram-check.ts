@@ -8,7 +8,7 @@ import { createHmac } from "node:crypto";
 import { parseSignedRequest, signRequestForTest } from "../src/lib/instagram/signed-request";
 import { computeNumbers, isReel, readMetric, type RawMedia } from "../src/lib/instagram/compute";
 import { parseInstagramSummary } from "../src/lib/instagram/summary";
-import { authorizeUrl } from "../src/lib/instagram/config";
+import { authorizeUrl, instagramPublic } from "../src/lib/instagram/config";
 
 let passed = 0;
 function check(name: string, fn: () => void) {
@@ -163,6 +163,17 @@ check("URL de connexion : paramètres du tableau de bord Meta, sans scope ni pop
   assert.equal(u.searchParams.has("scope"), false);
   assert.equal(u.searchParams.has("display"), false);
   assert.equal(u.searchParams.has("client_secret"), false);
+});
+
+check("carte publique seulement avec META_INSTAGRAM_PUBLIC=1", () => {
+  const prev = process.env.META_INSTAGRAM_PUBLIC;
+  for (const [v, expected] of [[undefined, false], ["", false], ["0", false], ["true", false], ["1", true], [" 1 ", true]] as const) {
+    if (v === undefined) delete process.env.META_INSTAGRAM_PUBLIC;
+    else process.env.META_INSTAGRAM_PUBLIC = v;
+    assert.equal(instagramPublic(), expected, `META_INSTAGRAM_PUBLIC=${String(v)}`);
+  }
+  if (prev === undefined) delete process.env.META_INSTAGRAM_PUBLIC;
+  else process.env.META_INSTAGRAM_PUBLIC = prev;
 });
 
 console.log(`\n${passed} vérifications OK`);
