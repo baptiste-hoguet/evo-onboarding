@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { runDiagnostic } from "@/lib/diagnostic/engine";
 import { CONSENT_LABELS, computeScore, validatePayload } from "@/lib/diagnostic/form";
+import { findFreshSnapshot, toSummary } from "@/lib/instagram/store";
 
 const MAX_BYTES = 20_000;
 
@@ -20,6 +21,16 @@ export async function POST(request: Request) {
   const v = validatePayload(body);
   if (!v.ok) return Response.json({ error: v.error }, { status: v.spam ? 429 : 400 });
   const { lead } = v;
+
+  // Lecture Instagram facultative : rattachée au lead et recopiée dans input.instagram (ignorée par le moteur).
+  let snapshotId: string | null = null;
+  if (lead.instagramSnapshotId) {
+    const snap = await findFreshSnapshot(lead.instagramSnapshotId).catch(() => null);
+    if (snap) {
+      snapshotId = snap.id;
+      lead.input = { ...lead.input, instagram: toSummary(snap) };
+    }
+  }
 
   let result;
   try {
@@ -51,6 +62,7 @@ export async function POST(request: Request) {
         utmSource: lead.utmSource,
         utmMedium: lead.utmMedium,
         utmCampaign: lead.utmCampaign,
+        ...(snapshotId ? { instagramSnapshots: { connect: { id: snapshotId } } } : {}),
       },
       select: { id: true },
     });

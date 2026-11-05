@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && node scripts/ensure-diagnostic-table.mjs && next build",
+    "build": "prisma generate && node scripts/ensure-diagnostic-table.mjs && node scripts/ensure-instagram-tables.mjs && next build",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",

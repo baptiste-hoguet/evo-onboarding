@@ -1,6 +1,7 @@
 import Link from "next/link";
-import type { DiagnosticResult, Pillar, StageReading, StageStatus } from "@/lib/diagnostic/types";
+import type { DiagnosticResult, InstagramSummary, Pillar, StageReading, StageStatus } from "@/lib/diagnostic/types";
 import { calendlyHref } from "@/lib/diagnostic/form";
+import { VIRAL_REEL_VIEWS } from "@/lib/instagram/compute";
 import { CalendlyButton } from "./CalendlyButton";
 
 const PILLARS: Record<Pillar, string> = {
@@ -36,7 +37,65 @@ function isLink(s: string) {
   return /^(https?:\/\/|\/)/.test(s);
 }
 
-export function ResultView({ result, leadId, firstName, email }: { result: DiagnosticResult; leadId: string; firstName: string; email: string }) {
+/** Bloc « Tes reels » : chiffres lus via Instagram, avec la règle EVO des 10 variantes. */
+function ReelsBlock({ ig }: { ig: InstagramSummary }) {
+  const top = ig.topReelViews;
+  return (
+    <section className="block ig-reels" aria-labelledby="ig-reels-title">
+      <div className="block-head">
+        <h2 id="ig-reels-title">Tes reels</h2>
+        <p className="muted small" style={{ margin: 0 }}>
+          {`Lu sur @${ig.username} via l'API officielle Meta, sur les 7 derniers jours.`}
+        </p>
+      </div>
+      {ig.reels7d === 0 ? (
+        <p className="muted" style={{ margin: 0 }}>Aucun reel publié sur les 7 derniers jours.</p>
+      ) : ig.reelViewsAvg === null ? (
+        <p className="muted" style={{ margin: 0 }}>
+          {ig.reels7d} reel{ig.reels7d > 1 ? "s" : ""} publié{ig.reels7d > 1 ? "s" : ""}. Les vues ne sont pas encore disponibles côté Instagram.
+        </p>
+      ) : (
+        <>
+          <div className="stat-row">
+            <div className="stat">
+              <small>Vues moyennes par reel</small>
+              <b>{nf(ig.reelViewsAvg)}</b>
+              <span>Sur {ig.reels7d} reel{ig.reels7d > 1 ? "s" : ""} publié{ig.reels7d > 1 ? "s" : ""}.</span>
+            </div>
+            {top !== null && (
+              <div className="stat">
+                <small>Ton meilleur reel</small>
+                <b>{nf(top)} vues</b>
+                {ig.topReelPermalink ? (
+                  <a href={ig.topReelPermalink} target="_blank" rel="noopener noreferrer" className="ig-link">Voir ce reel</a>
+                ) : (
+                  <span>Sur les 7 derniers jours.</span>
+                )}
+              </div>
+            )}
+          </div>
+          {top !== null && top > VIRAL_REEL_VIEWS && (
+            <p className="ig-rule">Ce reel a dépassé 10 000 vues : refais-le en 10 variantes.</p>
+          )}
+        </>
+      )}
+    </section>
+  );
+}
+
+export function ResultView({
+  result,
+  leadId,
+  firstName,
+  email,
+  instagram = null,
+}: {
+  result: DiagnosticResult;
+  leadId: string;
+  firstName: string;
+  email: string;
+  instagram?: InstagramSummary | null;
+}) {
   const key = result.stages.find((s) => s.key === result.constraint);
   const href = calendlyHref(firstName, email, result.constraint);
 
@@ -125,6 +184,8 @@ export function ResultView({ result, leadId, firstName, email }: { result: Diagn
           )}
         </div>
       )}
+
+      {instagram && <ReelsBlock ig={instagram} />}
 
       {result.stages.length > 0 && (
         <section className="block" aria-labelledby="funnel-title">

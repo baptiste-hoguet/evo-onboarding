@@ -19,6 +19,8 @@ import {
   parseResult,
   rangeLabel,
 } from "@/lib/diagnostic-admin";
+import { instagramFromInputJson } from "@/lib/instagram/summary";
+import { VIRAL_REEL_VIEWS } from "@/lib/instagram/compute";
 
 export const dynamic = "force-dynamic";
 
@@ -114,6 +116,8 @@ export default async function DiagnosticDetail({ params }: { params: Promise<{ i
     ["Campagne", lead.utmCampaign],
   ] as const;
   const lessonIsLink = result?.lesson ? /^(https?:\/\/|\/)/.test(result.lesson) : false;
+  const ig = instagramFromInputJson(lead.input);
+  const igCount = (v: number | null) => (v === null ? <Empty text="Indisponible" /> : <span className="tabular-nums">{fmtNumber(v)}</span>);
 
   return (
     <div className="space-y-8 max-w-4xl">
@@ -295,6 +299,40 @@ export default async function DiagnosticDetail({ params }: { params: Promise<{ i
           <div className="grid gap-4">
             <FieldList title="Profil et offre" fields={PROFILE_FIELDS} input={input} />
             <FieldList title="Les 7 derniers jours" fields={WEEK_FIELDS} input={input} />
+            {ig && (
+              <div className="evo-card">
+                <h3 className="px-5 pt-4 text-sm font-semibold uppercase tracking-wider text-[#C9A84C]">Instagram (API officielle Meta)</h3>
+                <dl className="px-5 pb-2 divide-y divide-[#262626]">
+                  <Row label="Compte">
+                    <a
+                      href={`https://www.instagram.com/${encodeURIComponent(ig.username)}/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-[#E8C97A] underline-offset-4 hover:underline"
+                    >
+                      @{ig.username}
+                    </a>
+                    {ig.accountType && <span className="ml-2 text-xs text-[#A1A1AA]">{ig.accountType === "MEDIA_CREATOR" ? "Créateur" : ig.accountType === "BUSINESS" ? "Entreprise" : ig.accountType}</span>}
+                  </Row>
+                  <Row label="Abonnés">{igCount(ig.followers)}</Row>
+                  <Row label="Reels (7 jours)">{igCount(ig.reels7d)}</Row>
+                  <Row label="Autres publications (7 jours)">{igCount(ig.feed7d)}</Row>
+                  <Row label="Stories en ligne à la lecture">{igCount(ig.storiesLive)}</Row>
+                  <Row label="Vues des reels (total)">{igCount(ig.reelViewsTotal)}</Row>
+                  <Row label="Vues moyennes par reel">{igCount(ig.reelViewsAvg)}</Row>
+                  <Row label="Meilleur reel">
+                    {igCount(ig.topReelViews)}
+                    {ig.topReelPermalink && (
+                      <a href={ig.topReelPermalink} target="_blank" rel="noopener noreferrer" className="ml-2 text-[#E8C97A] underline-offset-4 hover:underline">Voir ce reel ↗</a>
+                    )}
+                    {ig.topReelViews !== null && ig.topReelViews > VIRAL_REEL_VIEWS && (
+                      <span className="ml-2 text-xs px-2 py-0.5 rounded-full border border-emerald-500/30 text-emerald-400">+10 000 vues : 10 variantes</span>
+                    )}
+                  </Row>
+                  <Row label="Lu le">{ig.fetchedAt && !Number.isNaN(Date.parse(ig.fetchedAt)) ? fmtDateTime(new Date(ig.fetchedAt)) : <Empty />}</Row>
+                </dl>
+              </div>
+            )}
             {extraInputKeys.length > 0 && (
               <div className="evo-card">
                 <h3 className="px-5 pt-4 text-sm font-semibold uppercase tracking-wider text-[#A1A1AA]">Autres champs</h3>

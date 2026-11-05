@@ -248,7 +248,45 @@ model DiagnosticLead {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
+  instagramSnapshots InstagramSnapshot[]
+
   @@index([email])
   @@index([constraintKey])
   @@index([createdAt])
+}
+
+// Chiffres Instagram lus une fois via l'API officielle Meta (Diagnostic express).
+// AUCUN jeton d'accès n'est stocké. Non rattaché à un lead : supprimé après 24 h.
+// Rattaché : suit la durée de conservation du lead (suppression en cascade).
+// Table créée par scripts/ensure-instagram-tables.mjs (pas de prisma migrate).
+model InstagramSnapshot {
+  id               String          @id @default(cuid())
+  igUserId         String // ID du compte professionnel Instagram (me/assigned_instagram_accounts)
+  igScopedId       String? // id app-scoped renvoyé par /me, comparé au user_id des signed_request
+  username         String
+  accountType      String? // BUSINESS | MEDIA_CREATOR si connu (non fourni par Unified Login)
+  followers        Int?
+  reels7d          Int
+  feed7d           Int
+  storiesLive      Int? // stories en ligne au moment de la lecture
+  reelViewsTotal   Int?
+  reelViewsAvg     Int?
+  topReelViews     Int?
+  topReelPermalink String?
+  fetchedAt        DateTime
+  createdAt        DateTime        @default(now())
+  leadId           String?
+  lead             DiagnosticLead? @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([igUserId])
+  @@index([igScopedId])
+  @@index([leadId])
+  @@index([createdAt])
+}
+
+// Demandes de suppression reçues de Meta : un code de confirmation, sans donnée personnelle.
+model InstagramDeletion {
+  id               String   @id // confirmation_code
+  snapshotsDeleted Int      @default(0)
+  createdAt        DateTime @default(now())
 }

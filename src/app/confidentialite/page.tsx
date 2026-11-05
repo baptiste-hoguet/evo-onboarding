@@ -1,6 +1,7 @@
 // Politique de confidentialité d'evo-inc.fr (espace client, questionnaire, onboarding).
 // À mettre à jour à chaque nouveau traitement (ex. ouverture du SaaS « 4 métriques »).
-const MAJ = "28 octobre 2026";
+const MAJ = "5 novembre 2026";
+const SITE = "https://evo-inc.fr";
 const CONTACT = "hogbat08@gmail.com";
 
 const SOUS_TRAITANTS: [string, string, string][] = [
@@ -68,8 +69,27 @@ export default function Confidentialite() {
       </section>
 
       <section>
+        <h2>Connexion Instagram (Diagnostic express)</h2>
+        <p className="lede">
+          Sur le Diagnostic express, vous pouvez, si vous le souhaitez, connecter votre compte Instagram professionnel pour pré-remplir vos chiffres.
+          La connexion passe uniquement par l’API officielle de Meta (« Instagram API with Unified Login », via Facebook Login for Business) : vous vous identifiez chez Meta,
+          avec Instagram ou Facebook, jamais sur notre site, et nous ne voyons jamais votre mot de passe.
+        </p>
+        <ul className="lede">
+          <li><b>Ce que nous lisons, une seule fois</b> : votre nom d’utilisateur, le type de compte, le nombre d’abonnés, le nombre de reels et de publications des 7 derniers jours, le nombre de stories en ligne au moment de la connexion, et les vues de vos reels (total, moyenne, meilleur reel et son lien).</li>
+          <li><b>Aucun accès conservé</b> : le jeton d’accès fourni par Meta sert à cette lecture puis est abandonné. Il n’est ni enregistré ni journalisé. Nous ne publions rien et ne lisons pas vos messages.</li>
+          <li><b>Durée de conservation</b> : si vous envoyez le diagnostic, ces chiffres sont rattachés à votre diagnostic et suivent sa durée de conservation. Sinon, ils sont supprimés au bout de 24 heures.</li>
+          <li><b>Retirer l’autorisation</b> : Meta peut laisser l’application EVO listée dans vos autorisations même si nous ne gardons aucun jeton. Vous pouvez la retirer dans Instagram (Paramètres › Apps et sites web), dans Facebook (Paramètres › Intégrations professionnelles) ou dans les paramètres de votre portefeuille business Meta. Le retrait nous est notifié par Meta et supprime les chiffres Instagram liés à votre compte.</li>
+          <li><b>Demander la suppression</b> : par Meta (paramètres de l’app dans Instagram), ou en nous écrivant à {CONTACT}. Le suivi d’une demande reçue de Meta se consulte sur {SITE}/confidentialite/suppression.</li>
+        </ul>
+      </section>
+
+      <section>
         <h2>Cookies</h2>
-        <p className="lede">Le site utilise uniquement un cookie de session, indispensable pour rester connecté à l’espace client. Aucun cookie publicitaire ni de mesure d’audience.</p>
+        <p className="lede">
+          Le site utilise uniquement un cookie de session, indispensable pour rester connecté à l’espace client, et, si vous connectez Instagram au Diagnostic express,
+          un cookie technique de sécurité valable 10 minutes le temps de la connexion. Aucun cookie publicitaire ni de mesure d’audience.
+        </p>
       </section>
 
       <section>

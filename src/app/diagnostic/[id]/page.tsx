@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import type { DiagnosticResult } from "@/lib/diagnostic/types";
+import { instagramFromInputJson } from "@/lib/instagram/summary";
 import { DiagnosticFooter, DiagnosticTop } from "../Chrome";
 import { ResultView } from "../ResultView";
 
@@ -19,7 +20,7 @@ export default async function DiagnosticResultPage({ params }: { params: Promise
 
   const lead = await prisma.diagnosticLead.findUnique({
     where: { id },
-    select: { id: true, firstName: true, email: true, result: true },
+    select: { id: true, firstName: true, email: true, result: true, input: true },
   });
   if (!lead) notFound();
 
@@ -34,7 +35,7 @@ export default async function DiagnosticResultPage({ params }: { params: Promise
     <>
       <DiagnosticTop />
       <main className="dg">
-        <ResultView result={result} leadId={lead.id} firstName={lead.firstName} email={lead.email} />
+        <ResultView result={result} leadId={lead.id} firstName={lead.firstName} email={lead.email} instagram={instagramFromInputJson(lead.input)} />
         <DiagnosticFooter />
       </main>
     </>

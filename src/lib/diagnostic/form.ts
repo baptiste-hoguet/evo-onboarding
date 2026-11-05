@@ -81,6 +81,7 @@ export interface DiagnosticPayload {
   website?: string; // pot de miel : doit rester vide
   elapsedMs: number; // temps passé sur le formulaire
   numbers: Record<NumericKey, number>;
+  instagramSnapshotId?: string; // lecture Instagram à rattacher (facultatif)
 }
 
 export interface ValidLead {
@@ -95,6 +96,7 @@ export interface ValidLead {
   utmSource: string | null;
   utmMedium: string | null;
   utmCampaign: string | null;
+  instagramSnapshotId: string | null;
   input: DiagnosticInput;
 }
 
@@ -234,6 +236,8 @@ export function validatePayload(body: unknown): Validation {
       utmSource: str(b.utmSource, 100),
       utmMedium: str(b.utmMedium, 100),
       utmCampaign: str(b.utmCampaign, 100),
+      instagramSnapshotId:
+        typeof b.instagramSnapshotId === "string" && /^[a-z0-9]{10,40}$/i.test(b.instagramSnapshotId) ? b.instagramSnapshotId : null,
       input,
     },
   };

@@ -27,6 +27,23 @@ export interface DiagnosticInput {
   sales: number;
   cashCollected: number; // € encaissés
   founderSaturated: boolean; // Équipe : le fondateur fait tout lui-même
+  // Facultatif : chiffres lus une fois via la connexion Instagram (API officielle Meta). Ignoré par le moteur.
+  instagram?: InstagramSummary;
+}
+
+/** Chiffres Instagram lus via l'API officielle Meta (lecture unique, aucun jeton conservé). */
+export interface InstagramSummary {
+  username: string;
+  accountType: string | null; // BUSINESS | MEDIA_CREATOR si connu (non fourni par Unified Login)
+  followers: number | null;
+  reels7d: number; // reels publiés sur les 7 derniers jours
+  feed7d: number; // autres publications du feed sur les 7 derniers jours
+  storiesLive: number | null; // stories encore en ligne au moment de la lecture (l'API ne donne pas les expirées)
+  reelViewsTotal: number | null; // vues cumulées des reels des 7 jours (null si statistiques indisponibles)
+  reelViewsAvg: number | null;
+  topReelViews: number | null;
+  topReelPermalink: string | null;
+  fetchedAt: string; // ISO
 }
 
 export type Pillar = "valeur" | "acquisition" | "conversion" | "delivrer" | "equipe";
