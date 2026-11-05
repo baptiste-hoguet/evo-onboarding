@@ -30,6 +30,8 @@ export function DiagnosticFooter() {
       <Link href="/mentions-legales">Mentions légales</Link>
       <span aria-hidden="true">·</span>
       <Link href="/confidentialite">Confidentialité</Link>
+      <span aria-hidden="true">·</span>
+      <Link href="/cgu">CGU</Link>
     </footer>
   );
 }

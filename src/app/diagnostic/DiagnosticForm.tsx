@@ -6,6 +6,7 @@ import type { DiagnosticResult, InstagramSummary } from "@/lib/diagnostic/types"
 import {
   ACTIVITIES,
   CLIENTS_WITH_RESULT,
+  CONSENT_CGU,
   CONSENT_LABELS,
   MAX_NUMBER,
   NUMERIC_KEYS,
@@ -548,8 +549,10 @@ export function DiagnosticForm({ instagramEnabled = false, instagramPublic = fal
                     aria-describedby={shown.consentCgu ? "h-consentCgu" : undefined}
                   />
                   <span>
-                    J&apos;accepte les <Link href="/mentions-legales" target="_blank">conditions d&apos;utilisation</Link> et la{" "}
-                    <Link href="/confidentialite" target="_blank">politique de confidentialité</Link>
+                    {CONSENT_CGU.before}
+                    <Link href={CONSENT_CGU.terms.href} target="_blank">{CONSENT_CGU.terms.text}</Link>
+                    {CONSENT_CGU.between}
+                    <Link href={CONSENT_CGU.privacy.href} target="_blank">{CONSENT_CGU.privacy.text}</Link>
                     <small>Obligatoire. Tes réponses servent à calculer ton diagnostic.</small>
                   </span>
                 </label>

@@ -1,17 +1,6 @@
-// Informations légales de l'éditeur. À tenir à jour (ex. création de la SAS EVO Incubator).
-const EDITEUR = {
-  denomination: "HOGUET CAPITAL",
-  forme: "Société par actions simplifiée",
-  capital: "100 €",
-  adresse: "20 rue Milton, 75009 Paris, France",
-  siren: "106 886 682",
-  rcs: "RCS Paris 106 886 682",
-  tva: "FR77106886682",
-  telephone: "+33 6 19 16 07 40",
-  email: "hogbat08@gmail.com",
-  directeur: "Baptiste Hoguet, Président",
-  marque: "EVO Incubator",
-};
+import Link from "next/link";
+// Informations légales de l'éditeur (partagées avec les CGU). À tenir à jour dans src/lib/legal.ts.
+import { EDITEUR } from "@/lib/legal";
 
 const HEBERGEUR = "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis (vercel.com)";
 
@@ -53,6 +42,10 @@ export default function MentionsLegales() {
           écrivez à {EDITEUR.email}. Détails dans la <a href="/confidentialite"><u>politique de confidentialité</u></a>.
         </p>
       </section>
+
+      <p className="muted small">
+        EVO Incubator · Hoguet Capital · <Link href="/confidentialite">Confidentialité</Link> · <Link href="/cgu">CGU</Link>
+      </p>
     </main>
   );
 }

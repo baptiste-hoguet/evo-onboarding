@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // Politique de confidentialité d'evo-inc.fr (espace client, questionnaire, onboarding).
 // À mettre à jour à chaque nouveau traitement (ex. ouverture du SaaS « 4 métriques »).
 const MAJ = "5 novembre 2026";
@@ -99,6 +101,10 @@ export default function Confidentialite() {
           en écrivant à {CONTACT}. Nous répondons sous un mois. Vous pouvez aussi saisir la CNIL (cnil.fr).
         </p>
       </section>
+
+      <p className="muted small">
+        EVO Incubator · Hoguet Capital · <Link href="/mentions-legales">Mentions légales</Link> · <Link href="/cgu">CGU</Link>
+      </p>
     </main>
   );
 }

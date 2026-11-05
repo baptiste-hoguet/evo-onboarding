@@ -1,4 +1,7 @@
+import { after } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { baseUrl } from "@/lib/base-url";
+import { sendDiagnosticAlert } from "@/lib/diagnostic-email";
 import { runDiagnostic } from "@/lib/diagnostic/engine";
 import { CONSENT_LABELS, computeScore, validatePayload } from "@/lib/diagnostic/form";
 import { findFreshSnapshot, toSummary } from "@/lib/instagram/store";
@@ -42,6 +45,7 @@ export async function POST(request: Request) {
 
   try {
     const now = new Date();
+    const score = computeScore(lead);
     const row = await prisma.diagnosticLead.create({
       data: {
         firstName: lead.firstName,
@@ -54,7 +58,7 @@ export async function POST(request: Request) {
         input: JSON.stringify(lead.input),
         result: JSON.stringify(result),
         constraintKey: result.constraint,
-        score: computeScore(lead),
+        score,
         consentCgu: true,
         consentRecontact: lead.consentRecontact,
         consentLabels: JSON.stringify({ cgu: CONSENT_LABELS.cgu, recontact: CONSENT_LABELS.recontact }),
@@ -66,6 +70,37 @@ export async function POST(request: Request) {
       },
       select: { id: true },
     });
+
+    // Alerte admin après l'envoi de la réponse : un échec d'email ne retarde ni ne casse le diagnostic.
+    // Seul un code d'erreur court est journalisé, jamais de donnée personnelle.
+    after(async () => {
+      try {
+        await sendDiagnosticAlert(
+          {
+            id: row.id,
+            firstName: lead.firstName,
+            email: lead.email,
+            instagram: lead.instagram,
+            activity: lead.activity,
+            revenueRange: lead.revenueRange,
+            goalRange: lead.goalRange,
+            constraint: result.constraint,
+            title: result.title,
+            score,
+            consentRecontact: lead.consentRecontact,
+            utmSource: lead.utmSource,
+            utmMedium: lead.utmMedium,
+            utmCampaign: lead.utmCampaign,
+            instagramConnected: snapshotId !== null,
+          },
+          await baseUrl(),
+        );
+      } catch (err) {
+        const code = err && typeof err === "object" && "code" in err ? String((err as { code: unknown }).code) : "unknown";
+        console.error("diagnostic: alerte email impossible", code.slice(0, 40));
+      }
+    });
+
     return Response.json({ id: row.id, result });
   } catch (err) {
     const code = err && typeof err === "object" && "code" in err ? String((err as { code: unknown }).code) : "unknown";

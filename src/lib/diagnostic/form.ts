@@ -37,9 +37,18 @@ export const CLIENTS_WITH_RESULT: { value: ClientsWithResult; label: string }[] 
   { value: "no_clients", label: "Pas encore de clients" },
 ];
 
+// Case CGU : texte découpé autour des deux liens. Le formulaire l'affiche morceau par morceau
+// et CONSENT_LABELS.cgu en est la concaténation exacte : texte affiché et texte enregistré restent identiques.
+export const CONSENT_CGU = {
+  before: "J'accepte les ",
+  terms: { text: "conditions d'utilisation", href: "/cgu" },
+  between: " et la ",
+  privacy: { text: "politique de confidentialité", href: "/confidentialite" },
+} as const;
+
 // Libellés exacts affichés à côté des cases : enregistrés tels quels avec le lead.
 export const CONSENT_LABELS = {
-  cgu: "J'accepte les conditions d'utilisation et la politique de confidentialité",
+  cgu: `${CONSENT_CGU.before}${CONSENT_CGU.terms.text}${CONSENT_CGU.between}${CONSENT_CGU.privacy.text}`,
   recontact: "J'accepte d'être recontacté par EVO par email au sujet de ses offres",
 } as const;
 
