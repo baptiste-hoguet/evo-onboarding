@@ -78,7 +78,7 @@ export default function Confidentialite() {
           avec Instagram ou Facebook, jamais sur notre site, et nous ne voyons jamais votre mot de passe.
         </p>
         <ul className="lede">
-          <li><b>Ce que nous lisons, une seule fois</b> : votre nom d’utilisateur, le type de compte, le nombre d’abonnés, le nombre de reels et de publications des 7 derniers jours, le nombre de stories en ligne au moment de la connexion, et les vues de vos reels (total, moyenne, meilleur reel et son lien).</li>
+          <li><b>Ce que nous lisons, une seule fois</b> : votre nom d’utilisateur, le nombre d’abonnés, le nombre de reels et de publications des 7 derniers jours, le nombre de stories en ligne au moment de la connexion, et les vues de vos reels (total, moyenne, meilleur reel et son lien).</li>
           <li><b>Aucun accès conservé</b> : le jeton d’accès fourni par Meta sert à cette lecture puis est abandonné. Il n’est ni enregistré ni journalisé. Nous ne publions rien et ne lisons pas vos messages.</li>
           <li><b>Durée de conservation</b> : si vous envoyez le diagnostic, ces chiffres sont rattachés à votre diagnostic et suivent sa durée de conservation. Sinon, ils sont supprimés au bout de 24 heures.</li>
           <li><b>Retirer l’autorisation</b> : Meta peut laisser l’application EVO listée dans vos autorisations même si nous ne gardons aucun jeton. Vous pouvez la retirer dans Instagram (Paramètres › Apps et sites web), dans Facebook (Paramètres › Intégrations professionnelles) ou dans les paramètres de votre portefeuille business Meta. Le retrait nous est notifié par Meta et supprime les chiffres Instagram liés à votre compte.</li>
